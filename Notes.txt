@@ -1,0 +1,6 @@
+NOTES:
+1.) The DocumentRoot / PHP file display was redirected from the htdocs 
+folder to my direct folder (Web Application in my PC). 
+See Tutorial: https://stackoverflow.com/questions/18667582/run-my-php-files-from-outside-htdocs
+
+2.) Use complementary color palette: https://venngage.com/blog/blue-color-palettes/ (Burnt Sienna + Cadet Blue + Columbia Blue Color Palette)
