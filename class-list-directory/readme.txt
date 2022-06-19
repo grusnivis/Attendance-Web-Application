@@ -1,0 +1,1 @@
+The class-list-directory is used for storing class lists in .csv format via the class-list-server.php file.

@@ -6,35 +6,42 @@
     <body>
         <table class = "tablelogin">
             <tr>
-                <th>
+                <th class = "headerColumn">
                     <!-- temporary icon pls don't judge -->
                     </br>
                     <div class = "logo" >
                         <img src = "img/Group-H-Logo.png"/>
                     </div>
                     <h3> Teacher Menu </h3>
+                    <hr>
+                </th>
+
+                <!-- put the "page" thingy here that changes accordingly when user interacts with the placeholder links. how though???? -->
+                <th rowspan = "6"> 
+                    (temporary text. figure out how to display content upon link clicks)
                 </th>
             </tr>   
             <tr>
                 <!-- Search: how to upload things here -->
-                <td class = "firstColumn" > &nbsp; </br> Class List </br> &nbsp; </td>
-                <!-- put the "page" thingy here that changes accordingly when user interacts with the placeholder links. how though???? -->
-                <td rowspan = "5"> (please put the corresponding code here for the respective pages! Maybe it's javascript study that) </td>
+                <td class = "firstColumn" > &nbsp; </br> <a href = "class-list-upload.php">Upload Class List </a></br> &nbsp; </td>
             </tr>
             <tr>
                 <!-- should be a href link -->
-                <td class = "firstColumn"> &nbsp; </br> Placeholder Link 1 - Settings? </br> &nbsp; </td>
+                <td class = "firstColumn"> &nbsp; </br> <a href = "/"> Class Monitoring </a> </br> &nbsp; </td>
             </tr>
             <tr>
                 <!-- should be a href link -->
-                <td class = "firstColumn"> &nbsp; </br> Placeholder Link 2 </br> &nbsp; </td>
+                <td class = "firstColumn"> &nbsp; </br> <a href = "/"> Settings </a> </br> &nbsp; </td>
             </tr>
             <tr>
                 <!-- i think this should be integrated with the mysql database? -->
-                <td class = "firstColumn"> &nbsp; </br> Log Out </br> &nbsp; </td>
+                <!-- temporary logout php file -->
+                <td class = "firstColumn"> 
+                    &nbsp; </br> <a href = "logout.php"> Log Out </a></br> &nbsp;
+                </td>
             </tr>
             <tr>
-                <td class = "firstColumn"> </br></br></br> Group H - Web Application </br> For testing phase only </td>
+                <td class = "firstColumn"> <hr> Group H - Web Application </br> For testing phase only </br> &nbsp;</td>
             </tr>
         </table>
     </body>

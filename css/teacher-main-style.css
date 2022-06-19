@@ -1,7 +1,8 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;1,100;1,300;1,400;1,700&display=swap');
 
 body{
-    background-color: #FAF9F6;
+    background-color: #eaeaea;
+    font-family: "Lato", sans-serif;
 }
 
 img {
@@ -16,28 +17,44 @@ img {
 }
 
 table {
- font-size: 100%;
- width: 100%;
- border-collapse: collapse;
- font-family: "Roboto";
+    font-size: 100%;
+    width: 100%;
+    border-collapse: collapse;
+    font-family: "Lato", sans-serif;
 }
 
 .firstColumn{
     font-size: 100%;
-    font-family: "Roboto", Light;
+    font-family: "Lato", sans-serif;
     font-weight: 400;
+}
+
+.headerColumn{
+    width: 20%;
+    background-color: #4f6d7a;
 }
 
 h3{
     text-align: center;
+    font-family: "Lato", sans-serif;
+    color: #dd6e42;
+}
+
+a.link{
+    color: #e8dab2;
+}
+
+a:visited {
+    color: #c0d6df;
 }
 
 td{
-    background-color: #09ad57;
+    background-color: #4f6d7a;
+    color: #e8dab2;
 }
 
 th, td{
-    border: 1px solid #000000;
+    border: 0px; /*borderless*/
     padding: 2px;
     text-align: center;
 }

@@ -52,6 +52,8 @@
                         $_SESSION['username'] = 'admin';
                         
                         $msg = 'Login Successful!';
+
+                        header("location:teacher-menu.php");
                     }
                     
                     else {
