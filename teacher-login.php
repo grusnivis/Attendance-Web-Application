@@ -13,6 +13,10 @@
     */
 ?>
 
+<?php
+    session_start();
+?>
+
 <html>
     <head>
         <title>Group H - Web Application</title>
@@ -39,13 +43,13 @@
             </h4>
 
             <hr>
-            
+            <!-- commented this out. not needed anymore i think
             <div class = "container form-signin"> 
                 <?php
+                /*
                     $msg = '';
                     
-                    if (isset($_POST['login']) && !empty($_POST['username']) && !empty($_POST['password'])) {               
-                        /*SET USERNAME AND PASSWORD HERE*/   
+                    if (isset($_POST['login']) && !empty($_POST['username']) && !empty($_POST['password'])) {                
                         if ($_POST['username'] == 'admin' &&  $_POST['password'] == '1234') {
                         $_SESSION['valid'] = true;
                         $_SESSION['timeout'] = time();
@@ -60,15 +64,17 @@
                         $msg = 'Wrong username or password!';
                     }
                     }
+                */
                 ?>
             </div>
-
-            <div class = "con-form">      
-                <form class = "form-signin" role = "form" action = "<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>" method = "post">
-                    <h4 class = "form-signin-heading"><?php echo $msg; ?></h4>
+            -->
+            
+            <div class = "con-form">  
+                <form class = "form-signin" role = "form" action = "database-authenticate.php" method = "post">
+                    <h4 class = "form-signin-heading"><?php echo $msg = ''; ?></h4>
                     <!-- use "placeholder" for the filler text in boxes -->
-                    <input type = "text" class = "form-control" name = "username" placeholder = "username = admin" required autofocus>
-                    <input type = "password" class = "form-control" bname = "password" placeholder = "password = 1234" required >
+                    <input type = "text" class = "form-control" name = "username" placeholder = "username" required autofocus>
+                    <input type = "password" class = "form-control" name = "password" placeholder = "password" required >
                     <br class = "breakspace"/>
                     <button class = "buttonLogin" type = "submit" name = "login">Login</button>
                 </form>
