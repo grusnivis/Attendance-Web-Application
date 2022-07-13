@@ -1,25 +1,52 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;1,100;1,300;1,400;1,700&display=swap');
 
 body{
-  font-family: "Lato", sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    font-family: "Lato", sans-serif;
+    background-color: #eaeaea
 }
 
-
+/*
 div.upload-wrapper {
     color: white;
     font-weight: bold;
     display: flex;
   }
-   
+  */
+
+  .main-con{
+    width: 390px;
+    height: 390px;
+    border-radius: 5%;
+    text-align: center;
+    padding: 7px;
+    background-color: #4f6d7a;
+  }
+
+ h1{
+    color:#e8dab2;
+    font-family: "Lato", sans-serif, bold;
+    font-size: 30px;
+  }
+
+  .instructions{
+    color: #e8dab2;
+    font-family: "Lato", sans-serif;
+    font-weight: 400;
+  }
+
   input[type="file"] {
     position: absolute;
     left: -9999px;
   }
    
-  input[type="submit"] {
-    border: 3px solid #555;
-    color: white;
-    background: #666;
+  input[type="submit"] { /*upload button */
+    border: 0px;
+    color: #e8dab2;
+    background: #dd6e42;
     margin: 10px 0;
     border-radius: 5px;
     font-weight: bold;
@@ -34,22 +61,27 @@ div.upload-wrapper {
   label[for="file-upload"] {
     padding: 0.7rem;
     display: inline-block;
-    background: #4f6d7a;
+    background: #d9534f;
     cursor: pointer;
+    font-family: "Lato", sans-serif, bold;
+    font-weight: 400;
     border-radius: 0 5px 5px 0;
     border-left: 0;
   }
 
   label[for="file-upload"]:hover {
-    background: #d9534f;
+    background: #e8dab2;
   }
    
   span.file-name {
     padding: 0.7rem 3rem 0.7rem 0.7rem;
     white-space: nowrap;
     overflow: hidden;
-    background: #ffb543;
-    color: black;
+    background: #e8dab2;
+    justify-content: center;
+    font-family: "Lato", sans-serif, bold;
+    font-weight: 400;
+    color: #dd6e42;
     border-radius: 5px 0 0 5px;
     border-right: 0;
   }

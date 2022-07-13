@@ -19,14 +19,17 @@
             Also, it makes sure that the characters are not encoded 
             when the form is submitted.
             -->
-            <div class = "upload-wrapper">
-                <span class = "file-name"> Upload .csv file here! </span>
-                <label for = "file-upload"> Browse<input type = "file" id = "file-upload" name = "uploadedFile"> </label>
-            </div>
 
-            <input type = "submit" name = "uploadBtn" value = "Upload" />
+            <!-- <div class = "upload-wrapper"> -->
+            <div class = "main-con">
+                <h1> Class List Uploading </h1>
+                <p class = "instructions"> Upload your .csv file containing the class list here. </p>
+                <div class = "upload-con" >
+                    <span class = "file-name"> Upload .csv file here! </span>
+                    <label for = "file-upload"> Browse<input type = "file" id = "file-upload" name = "uploadedFile"> </label>
+                </div>
+                <input type = "submit" name = "uploadBtn" value = "Upload" />
+            </div>
         </form>
     </body>
 </html>
-
-
