@@ -30,6 +30,31 @@
                 </div>
                 <input type = "submit" name = "uploadBtn" value = "Upload" />
             </div>
+            <div class = "read-file-con">
+                <h1> Test Output </h1>
+                <?php
+                    /* 
+                    name of csv file,
+                    1000 - length of longest line, 
+                    "," - optional delimiter parameter. default is comma
+                    https://code.tutsplus.com/articles/read-a-csv-to-array-in-php--cms-39471
+                    */
+                    $row = 1;
+                    $open = fopen("7-20_Teacher1_CPE 3202_g2_22629.csv", "r");
+                    if($open !== FALSE){
+                        echo "<table>\n";
+                        while(($data = fgetcsv($open, 1000, ',')) !== FALSE){
+                            echo "<tr>";
+                            for ($i = 0; $i < count($data); $i++){
+                                echo "<td><p class = 'instructions'>".$data[$i]." "."</p></td>";
+                            }
+                            echo "</tr>\n";
+                        }
+                        echo "</table>\n";
+                    }
+                    fclose($open);
+                ?>  
+            </div>
         </form>
     </body>
 </html>
