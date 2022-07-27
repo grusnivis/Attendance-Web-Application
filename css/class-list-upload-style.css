@@ -26,9 +26,12 @@ div.upload-wrapper {
     background-color: #4f6d7a;
   }
 
+  p{
+      color: #e8dab2;
+  }
   .read-file-con{
     width: 390px;
-    height: 390px;
+    height: 900px;
     border-radius: 5%;
     text-align: center;
     padding: 7px;
@@ -40,6 +43,15 @@ div.upload-wrapper {
     font-family: "Lato", sans-serif, bold;
     font-size: 30px;
   }
+
+ table, th, td{
+     border: 1px solid black;
+     border-collapse: collapse;
+     padding: 10px;
+     border-color: #e8dab2;
+     align-content: center;
+     margin: 0px auto;
+ }
 
   .instructions{
     color: #e8dab2;

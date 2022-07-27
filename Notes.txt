@@ -1,9 +1,13 @@
+LAST UPDATE: 2022-07-28
+
 NOTES:
 1.) The DocumentRoot / PHP file display was redirected from the htdocs 
-folder to my direct folder (Web Application in my PC). 
+folder to my direct folder (Web Application in my PC).
+    - 220728 Update: redirected to C://Desktop/Web Application (Git)
 See Tutorial: https://stackoverflow.com/questions/18667582/run-my-php-files-from-outside-htdocs
 
 2.) Use complementary color palette: https://venngage.com/blog/blue-color-palettes/ (Burnt Sienna + Cadet Blue + Columbia Blue Color Palette)
 
-3.) PHP uploading files tutorial: https://code.tutsplus.com/tutorials/how-to-upload-a-file-in-php-with-example--cms-31763. The php.ini file is located at C:\xampp\php\php.ini.
-	- upload_tmp_dir setting is pointed to C:\Desktop\Web Application\class-list-directory on my PC
+3.) PHP uploading files tutorial: https://code.tutsplus.com/tutorials/how-to-upload-a-file-in-php-with-example--cms-31763.
+The php.ini file is located at C:\xampp\php\php.ini.
+	- upload_tmp_dir setting is pointed to C:\Desktop\Web Application (Git)\class-list-directory on my PC
