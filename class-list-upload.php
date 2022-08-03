@@ -1,4 +1,4 @@
-<html>
+<html lang = 'en'>
     <head> 
         <title> Upload Class Lists </title>
         <link type = "text/css" rel = "stylesheet" href = "css/class-list-upload-style.css"/>
@@ -110,6 +110,7 @@
                  * 1) https://stackoverflow.com/questions/17149935/how-to-edit-a-particular-line-of-the-csv-file-using-php
                  * 2) https://stackoverflow.com/questions/35440228/php-update-specific-row-in-csv-file
                  * 3) https://stackoverflow.com/questions/39950770/csv-change-one-field-column
+                 * 4) https://discover.hubpages.com/technology/PHP-form-inserts-data-into-CSV-file (try this one)
                  */
                 ?>
             </div>
