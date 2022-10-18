@@ -8,24 +8,27 @@
 
 <?php
     include ('database-config.php');
+    session_start();
 
-    $username = $_POST['username'];
+    $IDNum = $_POST['IDNum'];
     $password = $_POST['password'];
 
     //MySQLI injection prevention - clean up data retrieved from an HTML form
-    $username = stripcslashes($username);
+    $username = stripcslashes($IDNum);
     $password = stripcslashes($password);
     $username = mysqli_real_escape_string($link, $username);
     $password = mysqli_real_escape_string($link, $password);
 
     //on the 'login' table in phpmyadmin, search for the username and password inputted
-    $sql = "SELECT *FROM login WHERE username = '$username' AND password = '$password'"; 
+    $sql = "SELECT *FROM login WHERE IDNumber = '$IDNum' AND password = '$password'";
     $result = mysqli_query($link, $sql);
     $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
     $count = mysqli_num_rows($result);
 
     //if username and password 
     if ($count == 1){
+        //see solution here for sessions: https://www.simplilearn.com/tutorials/php-tutorial/php-login-form
+        $_SESSION['currentUser'] = $IDNum;
         header("location: teacher-main.php");
     }
     else{

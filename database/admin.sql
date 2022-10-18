@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 18, 2022 at 04:48 AM
+-- Generation Time: Oct 18, 2022 at 04:49 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `teacher`
+-- Database: `admin`
 --
 
 -- --------------------------------------------------------
@@ -28,18 +28,16 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `login` (
-  `IDNumber` varchar(10) NOT NULL,
-  `password` varchar(10) NOT NULL,
-  `firstName` varchar(30) NOT NULL,
-  `lastName` varchar(30) NOT NULL
+  `username` varchar(10) NOT NULL,
+  `password` varchar(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `login`
 --
 
-INSERT INTO `login` (`IDNumber`, `password`, `firstName`, `lastName`) VALUES
-('19102579', '12345', 'Kathryn Marie', 'Sigaya');
+INSERT INTO `login` (`username`, `password`) VALUES
+('admin1', '12345');
 
 --
 -- Indexes for dumped tables
@@ -49,7 +47,7 @@ INSERT INTO `login` (`IDNumber`, `password`, `firstName`, `lastName`) VALUES
 -- Indexes for table `login`
 --
 ALTER TABLE `login`
-  ADD PRIMARY KEY (`IDNumber`);
+  ADD PRIMARY KEY (`username`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

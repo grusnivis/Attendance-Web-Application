@@ -30,7 +30,7 @@
     }
     else{
         //definitely think of another solution aside from this
-        $login_err = "Invalid username or password.";
+        $login_err = "Invalid administrator username or password.";
         header("location: admin-login.php");
     }
 

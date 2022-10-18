@@ -7,7 +7,7 @@
     define('DB_SERVER', 'localhost'); //host name
     define('DB_USERNAME', 'root'); //host password
     define('DB_PASSWORD', ''); //database password
-    define('DB_NAME', 'admin'); //database name to connect to!!!
+    define('DB_NAME', 'admin'); //database name to connect to (admin)
 
     //attempt to connect to MySQL database
     $link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);

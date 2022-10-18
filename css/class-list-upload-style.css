@@ -18,12 +18,28 @@ div.upload-wrapper {
   */
 
   .main-con{
-    width: 390px;
-    height: 390px;
+    width: 700px;
+    height: 1210px;
     border-radius: 5%;
     text-align: center;
     padding: 7px;
     background-color: #4f6d7a;
+  }
+
+  .registerTeacherCon{
+      width: 400px;
+      height: 450px;
+      border-radius: 5%;
+      text-align: center;
+      padding: 7px;
+      background-color: #4f6d7a;
+  }
+
+  .fieldSettings{
+      width: 150px;
+      text-align: center;
+      margin: 0px auto;
+      display: block;
   }
 
   p{
@@ -40,7 +56,7 @@ div.upload-wrapper {
 
  h1{
     color:#e8dab2;
-    font-family: "Lato", sans-serif, bold;
+    font-family: "Lato", sans-serif;
     font-size: 30px;
   }
 
@@ -57,6 +73,14 @@ div.upload-wrapper {
     color: #e8dab2;
     font-family: "Lato", sans-serif;
     font-weight: 400;
+    text-align: center;
+  }
+
+  .config-titles{
+      color: #dd6e42;
+      font-family: "Lato", sans-serif;
+      font-weight: 800;
+      text-align: center;
   }
 
   input[type="file"] {
@@ -84,16 +108,17 @@ div.upload-wrapper {
     display: inline-block;
     background: #d9534f;
     cursor: pointer;
+    color: #e8dab2;
     font-family: "Lato", sans-serif, bold;
     font-weight: 400;
-    border-radius: 0 5px 5px 0;
+    border-radius: 5px 5px 5px 5px;
     border-left: 0;
   }
 
   label[for="file-upload"]:hover {
     background: #e8dab2;
   }
-   
+
   span.file-name {
     padding: 0.7rem 3rem 0.7rem 0.7rem;
     white-space: nowrap;
