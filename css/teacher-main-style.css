@@ -1,16 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;1,100;1,300;1,400;1,700&display=swap');
 
-body{
+body {
     background-color: #eaeaea;
     font-family: "Lato", sans-serif;
+    /*display: flex;
+    align-items: center;
+    justify-content: center;*/
+    margin: 0 auto;
 }
 
 img {
-   max-width: 100%;
-   height: auto;
+    max-width: 100%;
+    height: auto;
 }
 
-.logo{
+.logo {
     margin: auto;
     height: 150px;
     width: 150px;
@@ -18,29 +22,39 @@ img {
 
 table {
     font-size: 100%;
-    width: 100%;
+    width: 300px;
     border-collapse: collapse;
     font-family: "Lato", sans-serif;
 }
 
-.firstColumn{
+.teacherLoginCon {
+    border-radius: 5%;
+    text-align: center;
+}
+
+.firstColumn {
     font-size: 100%;
     font-family: "Lato", sans-serif;
     font-weight: 400;
 }
 
-.headerColumn{
-    width: 20%;
+.headerColumn {
     background-color: #4f6d7a;
 }
 
-h3{
+h3 {
     text-align: center;
     font-family: "Lato", sans-serif;
     color: #dd6e42;
 }
 
-a.link{
+p.welcome {
+    color: #e8dab2;
+    margin: 0;
+    padding: 0;
+}
+
+a.link {
     color: #e8dab2;
 }
 
@@ -48,13 +62,81 @@ a:visited {
     color: #c0d6df;
 }
 
-td{
+td {
     background-color: #4f6d7a;
     color: #e8dab2;
 }
 
-th, td{
+th, td {
     border: 0px; /*borderless*/
     padding: 2px;
     text-align: center;
+}
+
+/*top nav*/
+html * {
+    font-size: 16px;
+    line-height: 1.625;
+    font-family: Lato, sans-serif;
+}
+
+.btn {
+    background-color: #dc3545;
+    color: white;
+    text-align: center;
+    display: inline-block;
+    font-weight: 400;
+    vertical-align: middle;
+    cursor: pointer;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+}
+
+.topnav {
+    background-color: #4f6d7a;
+    overflow: hidden;
+}
+
+/* Style the links inside the navigation bar */
+.topnav a {
+    float: left;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+    text-transform: capitalize;
+}
+
+.topnav p {
+    float: left;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+    text-transform: capitalize;
+}
+
+/* Change the color of links on hover */
+.topnav a:hover {
+    text-decoration: none;
+    background-color: darkgray;
+    color: black;
+}
+
+/* Add a color to the active/current link */
+.topnav a.active {
+    background-color: #dd6e42;
+    color: white;
+}
+
+.tab {
+    background-color: white;
+    border-radius: 7px;
+    margin: 15px 80px;
+    padding: 20px;
 }

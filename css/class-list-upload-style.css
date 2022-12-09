@@ -6,8 +6,50 @@ body{
     justify-content: center;
     margin: 0 auto;
     font-family: "Lato", sans-serif;
-    background-color: #eaeaea
+    background-color: #4f6d7a;
 }
+
+.topnav {
+    background-color: #4f6d7a;
+    overflow: hidden;
+    top: -100px;
+    position: absolute;
+}
+
+/* Style the links inside the navigation bar */
+.topnav a {
+    float: left;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+    text-transform: capitalize;
+}
+
+.topnav p {
+    float: left;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+    text-transform: capitalize;
+}
+
+/* Change the color of links on hover */
+.topnav a:hover {
+    text-decoration: none;
+    background-color: darkgray;
+    color: black;
+}
+
+/* Add a color to the active/current link */
+.topnav a.active {
+    background-color: #dd6e42;
+    color: white;
+}
+
 
 /*
 div.upload-wrapper {
@@ -16,13 +58,14 @@ div.upload-wrapper {
     display: flex;
   }
   */
+.upload-con{
+    align-items: center;
+    justify-content: center;
+}
 
   .main-con{
-    width: 700px;
-    height: 1210px;
-    border-radius: 5%;
     text-align: center;
-    padding: 7px;
+    padding: 1px;
     background-color: #4f6d7a;
   }
 
@@ -37,10 +80,22 @@ div.upload-wrapper {
 
   .fieldSettings{
       width: 150px;
+      height: 30px;
+      font-size: 20px;
       text-align: center;
       margin: 0px auto;
       display: block;
   }
+
+  .dropdown-con{
+      text-align: center;
+      margin: 0px auto;
+      display: block;
+  }
+
+    select{
+        font-size: 20px;
+    }
 
   p{
       color: #e8dab2;
@@ -83,11 +138,18 @@ div.upload-wrapper {
       text-align: center;
   }
 
+div.upload-wrapper {
+    color: white;
+    font-weight: bold;
+    display: flex;
+}
+
   input[type="file"] {
     position: absolute;
     left: -9999px;
   }
-   
+
+  /*browse button*/
   input[type="submit"] { /*upload button */
     border: 0px;
     color: #e8dab2;
@@ -98,7 +160,8 @@ div.upload-wrapper {
     padding: 5px 20px;
     cursor: pointer;
   }
-   
+
+  /*browse button*/
   input[type="submit"]:hover {
     background: #555;
   }
@@ -106,7 +169,7 @@ div.upload-wrapper {
   label[for="file-upload"] {
     padding: 0.7rem;
     display: inline-block;
-    background: #d9534f;
+    background: #dd6e42;
     cursor: pointer;
     color: #e8dab2;
     font-family: "Lato", sans-serif, bold;
@@ -116,7 +179,7 @@ div.upload-wrapper {
   }
 
   label[for="file-upload"]:hover {
-    background: #e8dab2;
+    background: #555;
   }
 
   span.file-name {

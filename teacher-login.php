@@ -76,6 +76,9 @@
         <form class="form-signin" role="form" action="database-authenticate.php" method="post">
             <h4 class="form-signin-heading"><?php echo $msg = ''; ?></h4>
             <!-- use "placeholder" for the filler text in boxes -->
+            <?php
+                $login_err = '';
+            ?>
             <input type="text" class="form-control" name="IDNum" placeholder="ID Number" required autofocus>
             <input type="password" class="form-control" name="password" placeholder="password" required>
             <br class="breakspace"/>

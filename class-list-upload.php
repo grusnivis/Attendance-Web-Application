@@ -5,200 +5,7 @@
 
 //important for part 2
 session_start();
-
-//<!--- PART 1: CONFIG FILE
-$error = '';
-
-$markTeacher = '';
-$teacherLate = '';
-$teacherAbsent = '';
-$baseStudent = '';
-$studentLate = '';
-$studentAbsent = '';
-$classStart = '';
-$classEnd = '';
-$courseCode = '';
-$groupNumber = '';
-
-function clean_text($string)
-{
-    $string = trim($string); //remove whitespace from left and right side of string
-    $string = stripslashes($string); //removes backslashes from string
-    $string = htmlspecialchars($string); //converts predefined chars to html entities and store to string
-    return $string;
-}
-
-if (isset ($_POST["submit"])) {
-    //mark teacher = yes or no
-    if (empty($_POST['mark-teacher'])) {
-        $error .= '<p> No MARK TEACHER input </p>';
-    } else if (strtoupper($_POST['mark-teacher']) != ("YES" or "NO")) { //idk if this works tho LMAOOOO
-        $error .= '<p> Wrong MARK TEACHER input. Only YES and NO are accepted. </p>';
-    } else {
-        $markTeacher = strtoupper($_POST['mark-teacher']);
-    }
-
-    //teacher late = minutes
-    if (empty($_POST['teacher-late'])) {
-        $error .= '<p> No Teacher Late Input </p>';
-    } else if (!is_numeric($_POST['teacher-late'])) {
-        $error .= '<p> Input TEACHER LATE time in minutes only. </p>';
-    } else {
-        $teacherLate = $_POST['teacher-late'];
-    }
-
-    //teacher absent = minutes
-    if (empty($_POST['teacher-absent'])) {
-        $error .= '<p> No TEACHER ABSENT Input </p>';
-    } else if (!is_numeric($_POST['teacher-absent'])) {
-        $error .= '<p> Input TEACHER ABSENT time in minutes only. </p>';
-    } else {
-        $teacherAbsent = $_POST['teacher-absent'];
-    }
-
-    //base-student = yes or no
-    if (empty($_POST['base-student'])) {
-        $error .= '<p> No BASE STUDENT ON TEACHER ATTENDANCE input </p>';
-    } else if (strtoupper($_POST['base-student']) != ("YES" or "NO")) { //idk if this works tho LMAOOOO
-        $error .= '<p> Wrong BASE STUDENT ON TEACHER ATTENDANCE input. Only YES and NO are accepted. </p>';
-    } else {
-        $baseStudent = strtoupper($_POST['base-student']);
-    }
-
-    //student late = minutes
-    if (empty($_POST['student-late'])) {
-        $error .= '<p> No STUDENT LATE Input </p>';
-    } else if (!is_numeric($_POST['student-late'])) {
-        $error .= '<p> Input STUDENT LATE time in minutes only. </p>';
-    } else {
-        $studentLate = $_POST['student-late'];
-    }
-
-    //student absent = minutes
-    if (empty($_POST['student-absent'])) {
-        $error .= '<p> No STUDENT ABSENT Input </p>';
-    } else if (!is_numeric($_POST['student-absent'])) {
-        $error .= '<p> Input STUDENT ABSENT time in minutes only. </p>';
-    } else {
-        $studentAbsent = $_POST['student-absent'];
-    }
-
-    //tbh i don't know how to check for the time?
-    $classStart = $_POST['class-start'];
-    $classEnd = $_POST['class-end'];
-
-    //course-code - the course name in acronym and number
-    if (empty($_POST['course-code'])) {
-        $error .= '<p> No COURSE CODE Input </p>';
-    } else {
-        $courseCode = $_POST['course-code'];
-    }
-
-    //group-number = number
-    if (empty($_POST['group-number'])) {
-        $error .= '<p> No GROUP NUMBER Input </p>';
-    } else if (!is_numeric($_POST['group-number'])) {
-        $error .= '<p> Input GROUP NUMBER as a number only. </p>';
-    } else {
-        $groupNumber = $_POST['group-number'];
-    }
-
-    //'a' mode lets file pointer to the end of file
-    //one array = one row!
-    $config_csv[0] = array("MARK TEACHER ATTENDANCE", 'mark-teacher' => $markTeacher);
-    $config_csv[1] = array("TEACHER LATE", 'teacher-late' => $teacherLate);
-    $config_csv[2] = array("TEACHER ABSENT", 'teacher-absent' => $teacherAbsent);
-    $config_csv[3] = array("BASE STUDENT ON TEACHER ATTENDANCE", 'base-student' => $baseStudent);
-    $config_csv[4] = array("STUDENT LATE", 'student-late' => $studentLate);
-    $config_csv[5] = array("STUDENT ABSENT", 'student-absent' => $studentAbsent);
-    $config_csv[6] = array("CLASS START", 'class-start' => $classStart);
-    $config_csv[7] = array("CLASS END", 'class-end' => $classEnd);
-
-    //https://stackoverflow.com/questions/15501463/creating-csv-file-with-php
-    //working with date and time - https://code.tutsplus.com/tutorials/working-with-date-and-time-in-php--cms-31768
-
-    $hourStart = date('g:i A', strtotime($classStart));
-    $hourEnd = date('g:i A', strtotime($classEnd));
-
-    //str_replace(find, replace, string, count). count is optional
-    $hourStart = str_replace(':', '', $hourStart);
-    $hourEnd = str_replace(":", '', $hourEnd);
-
-    $fileOutput = $courseCode . "_g" . $groupNumber . "_S-" . $hourStart . "-" . $hourEnd . "-config" . ".csv";
-    if ($error == '') {
-        $file_open = fopen($fileOutput, "w+");
-        foreach ($config_csv as $line) {
-            fputcsv($file_open, $line, ',');
-        }
-
-        fclose($file_open);
-
-        //move the created file to the currently logged in user's designated folder
-        /* similar to this: https://www.javatpoint.com/php-mysql-login-system */
-        //database credentials, running MySQL with default setting (user 'root' with no password)
-        define('DB_SERVER', 'localhost'); //host name
-        define('DB_USERNAME', 'root'); //host password
-        define('DB_PASSWORD', ''); //database password
-        define('DB_NAME', 'teacher'); //database name to connect to (teacher)
-
-        //moving to the logged in user's folder
-        //attempt to connect to MySQL database
-        $databaseLink = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
-
-        //check the connection to the database
-        if ($databaseLink == false) {
-            //die() kinda functions like an exit() function
-            die("Error connecting to the server." . mysqli_connect_error());
-        }
-
-        //on the 'teacher' database, 'login' table in phpmyadmin, search for the id number in the session array
-        //mysql and sessions (use curly braces) https://stackoverflow.com/questions/5746614/session-variable-in-mysql-query
-        $sql = "SELECT *FROM login WHERE IDNumber = {$_SESSION['currentUser']}";
-        //$result = mysqli_query($databaseLink, $sql);
-        //$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
-        //$count = mysqli_num_rows($result);
-
-        if ($result = $databaseLink->query($sql)) {
-            //test later: https://www.tutorialspoint.com/fetch-a-specific-column-value-name-in-mysql
-            //see solution here for sessions: https://www.simplilearn.com/tutorials/php-tutorial/php-login-form
-            while ($row = $result->fetch_assoc()) {
-                //set the $row[""] to the column you want to use
-                $firstName = $row["firstName"];
-                $lastName = $row["lastName"];
-            }
-        }
-
-        //move the file to the logged-in user's folder
-        rename("$fileOutput", "./" . "$firstName" . " " . "$lastName" . "/" . "$fileOutput");
-
-
-        $error = '<p>Personal configurations set!</p>';
-
-        $markTeacher = '';
-        $teacherLate = '';
-        $teacherAbsent = '';
-        $baseStudent = '';
-        $studentLate = '';
-        $studentAbsent = '';
-        $classStart = '';
-        $classEnd = '';
-    }
-}
-
-/**
- * //<!--- PART 2: Move the created CSV file to the Teacher (First Name Last Name) folder. see line 7
- * $sqliConnect = mysqli_connect("localhost", "root", "", "teacher");
- *
- * if ($sqliConnect->connect_error){
- * die("Connection failed: " . $sqliConnect->connect_error);
- * }
- *
- * //put to the database
- * //nts: https://www.w3schools.com/php/php_mysql_select_where.asp
- * $sqliSelect = "SELECT first_name, last_name FROM login WHERE username = '$currentUser'";
- * $result =
- **/
-
+header("Cache-Control: no-cache, must-revalidate");
 ?>
 
 <html lang='en'>
@@ -209,12 +16,7 @@ if (isset ($_POST["submit"])) {
          the file for uploading the lists to the server is the class-list-server.php -->
 </head>
 <body>
-<?php
-if (isset($_SESSION['message']) && $_SESSION['message']) {
-    echo '<p class = "notification">' . $_SESSION['message'] . '</p>';
-    unset($_SESSION['message']);
-}
-?>
+
 <!--
 When you use the multipart/form-data value for the enctype attribute,
 it allows you to upload files using the POST method.
@@ -222,34 +24,84 @@ Also, it makes sure that the characters are not encoded
 when the form is submitted.
 https://code.tutsplus.com/tutorials/how-to-upload-a-file-in-php-with-example--cms-31763
 -->
-
 <!-- <div class = "upload-wrapper"> -->
-<div class="main-con">
+<div class= "topnav">
+    <!-- Search: how to upload things here -->
+    <a href="class-list-upload.php">Upload Class List </a>
+    <a href="2-create-table.php"> Class Monitoring </a>
+    <a href="logout.php"> Log Out </a> &nbsp;
+    <?php
+    echo "<p class = 'welcome'> Welcome, " . $_SESSION['currentUser'] . "! </p>";
+    ?>
+</div>
     <form method="POST" action="class-list-server.php" enctype="multipart/form-data">
-        <h1> Class List Uploading </h1>
-        <p class="instructions"> Return to the Teacher Menu <a href="teacher-main.php">here</a>.</p>
+        <h1> <center> Class List Uploading </center></h1>
+        <div class= "topnav">
+            <!-- Search: how to upload things here -->
+            <a href="class-list-upload.php">Upload Class List </a>
+            <a href="2-create-table.php"> Class Monitoring </a>
+            <a href="logout.php"> Log Out </a> &nbsp;
+            <?php
+            echo "<p class = 'welcome'> Welcome, " . $_SESSION['currentUser'] . "! </p>";
+            ?>
+        </div>
         <p class="instructions"> Upload your Class List File that is in .CSV format. </p>
+        <?php
+        if (isset($_SESSION['message']) && $_SESSION['message']) {
+            echo '<p class = "notification">' . $_SESSION['message'] . '</p>';
+            unset($_SESSION['message']);
+        }
+        ?>
         <div class="upload-con">
-            <label for="file-upload"> Browse <input type="file" id="file-upload" name="uploadedFile"> </label>
+            <table>
+                <tr>
+                    <td>
+                        <p class="instructions">Select the team teach partner for this particular class:</p>
+                        <?php
+                        //https://stackoverflow.com/questions/5189662/populate-a-drop-down-box-from-a-mysql-table-in-php
+                        $conn = new mysqli("localhost", "root", "", 'teacher');
+                        // Check connection
+                        if ($conn->connect_error) {
+                            die("Connection failed: " . $conn->connect_error);
+                        }
+
+                        $sqlQuery = "SELECT IDNumber, firstName, lastName FROM login ORDER BY lastName ASC";
+                        $result = mysqli_query($conn, $sqlQuery);
+
+                        echo "<select name = 'partner' class='dropup center-block' style='margin-left: 0%'>";
+                        echo "<option value = '0'>NOT A TEAM TEACH CLASS</option>";
+                        while ($row = mysqli_fetch_array($result)){
+                            //exclude current user in display: https://stackoverflow.com/questions/1248641/php-how-to-exclude-data-from-mysql
+                            if($row['IDNumber'] == $_SESSION["currentUser"]){
+                                continue;
+                            };
+                            echo "<option value = '". $row['IDNumber'] ."'>". $row['IDNumber'] . " - " .$row['firstName'] . " " . $row['lastName'] ."</option>";
+                        }
+                        echo "</select>";
+                        mysqli_close($conn);
+                        ?>
+                    </td>
+
+                    <td>
+                        <label for="file-upload" > Browse <input type="file" id="file-upload" name="uploadedFile"> </label>
+                    </td>
+                </tr>
+            </table>
+            <br>
         </div>
         <br>
-        <input type="submit" name="uploadBtn" value="Upload"/>
-    </form>
-
     <hr>
 
     <!-- important for the configuration file form! -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-    <form method="post">
         <h1>
             <center> Set Personal Configurations</center>
         </h1>
         <p class="instructions">
-            This is where you will configure your class settings for the Attendance Logging Device. A Comma-Separated
-            Values file (.CSV)
-            will be generated at the set directory after you click the Submit button.
+            This is where you will configure your uploaded class list settings for the Attendance Logging Device to use. A Comma-Separated
+            Values file (.CSV) will be generated at the set directory after you click the <b><u>Upload Class List and Set Configurations</u></b> button below.
         </p>
         <br>
         <table>
@@ -257,13 +109,23 @@ https://code.tutsplus.com/tutorials/how-to-upload-a-file-in-php-with-example--cm
             <tr>
                 <div class="form-group">
                     <td>
-                        <p class="config-titles"><u> <b>MARK TEACHER</b></u></p>
-                        <p class="instructions"> This is where the (???). Please input <i><b>YES or NO</b></i> only.
+                        <p class="config-titles"><u> <b>MARK TEACHER ATTENDANCE</b></u></p>
+                        <p class="instructions">
+                            If you wish to mark your personal attendance based on the <u>time of your class</u>,
+                            input <b><i>YES</i></b>. If you wish for your attendance to always be <u>PRESENT</u>
+                            regardless of the time from the start of your class, input <b><i>NO</i></b>.
                         </p>
                     </td>
                     <td>
-                        <input type="text" class="fieldSettings" placeholder="YES or NO" name="mark-teacher"
-                               value="<?php echo $markTeacher; ?>"/>
+                        <div class = 'dropdown-con'>
+                            <?php
+                            echo "<select name = 'mark-teacher' style = 'width: 150px'>";
+                            echo "<option value = 'NO'>NO </option>";
+                            echo "<option value = 'YES'>YES</option>";
+                            echo "</select>";
+                            ?>
+                        </div>
+                        <p class = "instructions"> <i>The default selection for this setting is  <b><u>NO</u></b></i>.</p>
                     </td>
                 </div>
             </tr>
@@ -272,11 +134,14 @@ https://code.tutsplus.com/tutorials/how-to-upload-a-file-in-php-with-example--cm
                 <div class="form-group">
                     <td>
                         <p class="config-titles"><u><b>TEACHER LATE</b></u></p>
-                        <p class="instructions"> This is where the (???). Please input the time in
-                            <i><b>minutes.</b></i></p>
+                        <p class="instructions">
+                            If MARK TEACHER is set as YES, what time would you be marked LATE? The time is set in <b>minutes</b>.
+                        </p>
                     </td>
-                    <td><input type="text" class="fieldSettings" placeholder="Time in Minutes" name="teacher-late"
-                               value="<?php echo $teacherLate; ?>"/></td>
+                    <td>
+                        <input type="number" min = "00" max = "59" class="fieldSettings" name="teacher-late" value="10"/>
+                        <p class = "instructions"> <i>The default time for this setting is <b><u>10</u></b> minutes.</i></p>
+                    </td>
                 </div>
             </tr>
 
@@ -284,11 +149,14 @@ https://code.tutsplus.com/tutorials/how-to-upload-a-file-in-php-with-example--cm
                 <div class="form-group">
                     <td>
                         <p class="config-titles"><u><b>TEACHER ABSENT</b></u></p>
-                        <p class="instructions">This is where the (???). Please input the time in <i><b>minutes.</b></i>
+                        <p class="instructions">
+                            If MARK TEACHER is set as YES, what time would you be marked ABSENT? The time is set in <b>minutes</b>.
                         </p>
                     </td>
-                    <td><input type="text" class="fieldSettings" placeholder="Time in Minutes" name="teacher-absent"
-                               value="<?php echo $teacherAbsent; ?>"/></td>
+                    <td>
+                        <input type="number" min = "00" max = "59" class="fieldSettings" name="teacher-absent" value="15"/>
+                        <p class = "instructions"> <i>The default time for this setting is <b><u>15</u></b> minutes.</i></p>
+                    </td>
                 </div>
             </tr>
 
@@ -296,10 +164,22 @@ https://code.tutsplus.com/tutorials/how-to-upload-a-file-in-php-with-example--cm
                 <div class="form-group">
                     <td>
                         <p class="config-titles"><u><b>BASE STUDENT ATTENDANCE ON TEACHER TAP</b></u></p>
-                        <p class="instructions">This is where the (???). Please input <i><b>YES or NO </b></i>only.</p>
+                        <p class="instructions">
+                            If you would like your students' attendance status (PRESENT, LATE, ABSENT)
+                            to be based on the class start time, input <b><i>NO</i></b>. If you want their attendance to be
+                            based on your initial ID tap on the device, input <b><i>YES</i></b>.
                     </td>
-                    <td><input type="text" class="fieldSettings" placeholder="YES or NO" name="base-student"
-                               value="<?php echo $baseStudent; ?>"/> <br></td>
+                    <td>
+                        <div class = 'dropdown-con'>
+                            <?php
+                            echo "<select name = 'student-attendance' style = 'width: 150px'>";
+                            echo "<option value = 'YES'>YES</option>";
+                            echo "<option value = 'NO'>NO</option>";
+                            echo "</select>";
+                            ?>
+                        </div>
+                        <p class = "instructions"> <i>The default selection for this setting is <b><u>YES</u></b></i>.</p>
+                    </td>
                 </div>
             </tr>
 
@@ -307,11 +187,14 @@ https://code.tutsplus.com/tutorials/how-to-upload-a-file-in-php-with-example--cm
                 <div class="form-group">
                     <td>
                         <p class="config-titles"><u><b>STUDENT LATE</b></u></p>
-                        <p class="instructions">This is where the (???). Please input the time in <i><b>minutes.</b></i>
+                        <p class="instructions">
+                            How many minutes from the start of attendance until the student is marked as <u>LATE</u>? The time
+                            is set in <b>minutes</b>.
                         </p>
                     </td>
-                    <td><input type="text" class="fieldSettings" placeholder="Time in Minutes" name="student-late"
-                               value="<?php echo $studentLate; ?>"/></td>
+                    <td><input type="number" min = "00" max = "59" class="fieldSettings" name="student-late" value="15"/>
+                        <p class = "instructions"> <i>The default time for this setting is <b><u>15</u></b> minutes.</i></p>
+                    </td>
                 </div>
             </tr>
 
@@ -319,70 +202,23 @@ https://code.tutsplus.com/tutorials/how-to-upload-a-file-in-php-with-example--cm
                 <div class="form-group">
                     <td>
                         <p class="config-titles"><u><b>STUDENT ABSENT</b></u></p>
-                        <p class="instructions">This is where the (???). Please input the time in <i><b>minutes.</b></i>
+                        <p class="instructions">
+                            How many minutes from the start of attendance until the student is marked as <u>ABSENT</u>? The time
+                            is set in <b>minutes</b>.
                         </p>
                     </td>
-                    <td><input type="text" class="fieldSettings" placeholder="Time in Minutes" name="student-absent"
-                               value="<?php echo $studentAbsent; ?>"/></td>
-                </div>
-            </tr>
-
-            <tr>
-                <div class="form-group">
                     <td>
-                        <p class="config-titles"><u><b>CLASS START</b></u></p>
-                        <p class="instructions">This should be the start time of the class. Input the time in <i><b>24-hour
-                                    format.</b></i></p>
+                        <input type="number" min = "00" max = "59" class="fieldSettings" name="student-absent" value="30"/>
+                        <p class = "instructions"> <i>The default time for this setting is <b><u>30</u></b> minutes.</i></p>
                     </td>
-                    <td><input type="text" class="fieldSettings" placeholder="Time in 24-hour Format" name="class-start"
-                               value="<?php echo $classStart; ?>"/></td>
-                </div>
-            </tr>
-
-            <tr>
-                <div class="form-group">
-                    <td>
-                        <p class="config-titles"><u><b>CLASS END</b></u></p>
-                        <p class="instructions">This should be the end time of the class. Input the time in <i><b>24-hour
-                                    format.</b></i></p>
-                    </td>
-                    <td><input type="text" class="fieldSettings" placeholder="Time in 24-hour Format" name="class-end"
-                               value="<?php echo $classEnd; ?>"/></td>
-                </div>
-            </tr>
-
-            <tr>
-                <div class="form-group">
-                    <td>
-                        <p class="config-titles"><u><b>COURSE CODE</b></u></p>
-                        <p class="instructions">This is the course code for the class. Format should be: e.g. <i><b>CPE-3202,
-                                    EM-1202</b></i></p>
-                    </td>
-                    <td><input type="text" class="fieldSettings" placeholder="Course Code Number" name="course-code"
-                               value="<?php echo $courseCode; ?>"/></td>
-                </div>
-
-
-            </tr>
-
-            <tr>
-                <div class="form-group">
-                    <td>
-                        <p class="config-titles"><u><b>GROUP NUMBER</b></u></p>
-                        <p class="instructions">This is the group number for the class. Please input
-                            <i><b>numbers</b></i> only.</p>
-                    </td>
-                    <td><input type="text" class="fieldSettings" placeholder="Group Number" name="group-number"
-                               value="<?php echo $groupNumber; ?>"/></td>
                 </div>
             </tr>
         </table>
 
         <div class="form-group">
             <!-- change button text through the value attribute -->
-            <input type="submit" name="submit" class="btn btn-info" value="Set Configurations"/>
+            <center><input type="submit" name="uploadBtn" class="btn btn-info" value="Upload Class List and Set Configurations"/></center>
         </div>
     </form>
-</div>
 </body>
 </html>
