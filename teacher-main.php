@@ -19,7 +19,20 @@ ini_set('display_errors', '1');
     <a href="2-create-table.php"> Class Monitoring </a>
     <a href="logout.php"> Log Out </a> &nbsp;
     <?php
-    echo "<p class = 'welcome'> Welcome, " . $_SESSION['currentUser'] . "! </p>";
+    $databaseLink = mysqli_connect('localhost', 'root', '', 'teacher');
+    $sqlStatement = $databaseLink->prepare("SELECT * FROM login WHERE IDNumber = ?");
+    $sqlStatement->bind_param("s", $_SESSION["currentUser"]);
+    $sqlStatement->execute();
+    $result = $sqlStatement->get_result();
+    if ($result->num_rows == 0) {
+        exit('The teacher is not registered in the database.');
+    }
+    while ($row = $result->fetch_assoc())
+        //set the $row[""] to the column you want to use
+        $firstName = $row["firstName"];
+    $sqlStatement->close();
+    mysqli_close($databaseLink);
+    echo "<p class = 'welcome'> Welcome, $firstName! </p>";
     ?>
 </div>
 <div>
