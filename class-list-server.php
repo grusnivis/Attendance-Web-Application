@@ -18,43 +18,34 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
         $fileNameCmps = explode(".", $fileName);
         $fileExtension = strtolower(end($fileNameCmps));
 
-        //<!--- THIS PART CHECKS IF THE FILENAME HAS THE "ClassListReport" STRING EXISTS TO VERIFY IF ITS REALLY THE CLASS LIST
-        $classListCheck = strpos($fileName, 'ClassListReport');
-        if ($classListCheck === false){
-            $message = 'The file uploaded is not a valid class list. Please make sure the file is downloaded 
-            from the ISMIS website itself (with "ClassListReport" as its filename).';
+        $allowedfileExtensions = array('csv'); //array('txt', 'xls', 'csv');
+
+        if (!in_array($fileExtension, $allowedfileExtensions)){
+            $message = 'The file uploaded is not a .csv file. Please make sure the class list file uploaded is in the .csv format.';
         }
-        else{
-            $teamTeachPartner = $_POST['partner'];
-            //echo "ID Number Selected: " . $teamTeachPartner;
-
-            // sanitize file-name
-            //$newFileName = md5(time() . $fileName) . '.' . $fileExtension;
-            //$newFileName = $fileName . '.' . $fileExtension;
-
-            //<!--- THIS PART CREATES THE FILENAME OF THE CLASS LISTS --->
-
+        else {
             //<!--- GET THE SCHEDULE PART OF THE FILENAME --->
             //set the row to get the schedule and the time in the class list
-            $row = 4;
+            $row = 1;
 
             //counters for the loop and array index
             $i = 1;
             $arrayCount = 0;
 
             //create schedule array
-            $schedule = array();
+            $classListCheck = array();
 
             //row first, then column
-            if (($handle = fopen($fileName, "r")) !== FALSE) {
+            if (($handle = fopen($fileTmpPath, "r")) !== FALSE) {
                 while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
                     if ($i >= $row) {
                         //should be like that. ex. if get 2nd column then
                         //$column = 1; $column < 2
-                        for ($column = 4; $column < 5; $column++) {
+                        for ($column = 6; $column < 7; $column++) {
                             //next line automatically assigns them to the designated array indexes
                             //explode function: string to array via the separator/delimiter
-                            $schedule[] = explode(" ", $data[$column]);
+                            $classListCheck[$arrayCount] = $data[$column];
+                            $arrayCount++;
                         }
                     }
                     $i++;
@@ -62,26 +53,28 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
             }
             fclose($handle);
 
-            //<!--- GET THE TIME PART OF THE FILENAME --->
+            //<!--- GET THE "UNIVERSITY OF SAN CARLOS" PART OF CLASS LIST --->
             //set the row to get the schedule and the time in the class list
-            $row = 4;
+            $row = 1;
 
             //counters for the loop and array index
             $i = 1;
             $arrayCount = 0;
 
-            //create time array
-            $time = array();
+            //create schedule array
+            $uniCheck = array();
 
             //row first, then column
-            if (($handle = fopen($fileName, "r")) !== FALSE) {
+            if (($handle = fopen($fileTmpPath, "r")) !== FALSE) {
                 while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
                     if ($i >= $row) {
                         //should be like that. ex. if get 2nd column then
                         //$column = 1; $column < 2
-                        for ($column = 9; $column < 10; $column++) {
+                        for ($column = 8; $column < 9; $column++) {
                             //next line automatically assigns them to the designated array indexes
-                            $time[] = explode(" ", $data[$column]);
+                            //explode function: string to array via the separator/delimiter
+                            $uniCheck[$arrayCount] = $data[$column];
+                            $arrayCount++;
                         }
                     }
                     $i++;
@@ -89,73 +82,133 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
             }
             fclose($handle);
 
-            //removes any special characters in the schedule and time strings (the file can't be created if they are there)
-            //$finalSchedule = str_replace(array('\'', '"', ',', ';', ':', '<', '>'), '', $schedule[0][0]);
-            //formatting is: COURSE CODE COURSE NUMBER_G(GROUP NUMBER)
-            $finalSchedule = $schedule[0][2] . " " . $schedule[0][3] . "_G" . $schedule[0][1];
-            $startingTime = str_replace(array('\'', '"', ',', ';', ':', '<', '>'), '', $time[0][2]);
-            $endingTime = str_replace(array('\'', '"', ',', ';', ':', '<', '>'), '', $time[0][5]);
-            //formatting is: STARTING TIME AM/PM - ENDING TIME AM/PM
-            $finalTime = $time[0][0] . " - " . $startingTime . " " . $time[0][3] . " - " . $endingTime . " ". $time[0][6];
-            //$finalTime = trim($finalTime); //removes whitespaces before and after the time string
 
-            //uses the teamteach selection to see if the file needs to prepend a "TM -" before the new filename
-            if ($teamTeachPartner != '0') {
-                //$newFileName = "TM - " . $finalSchedule . "_" . $finalTime;
-                //course code - group number - schedule
-                $newFileName = "TM - " . $finalSchedule . "_" . $finalTime;
-            } else {
-                $newFileName = $finalSchedule . "_" . $finalTime;
-            }
+            //<!--- [IF STMT] THIS PART CHECKS IF THE UPLOADED FILE IS REALLY THE CLASS LIST--->
+            if (($classListCheck[0] == "Class List") && ($uniCheck[1] == "UNIVERSITY OF SAN CARLOS"))  {
+                //<!--- MOVE THE UPLOADED FILE TO THE CURRENTLY LOGGED-IN USER'S FOLDER --->
+                /* similar to this: https://www.javatpoint.com/php-mysql-login-system */
 
-            //<!--THIS PART CHECKS IF THE FILE UPLOADED IS REALLY THE CLASS LIST
-            // check if file has one of the following extensions
-            $allowedfileExtensions = array('csv'); //array('txt', 'xls', 'csv');
+                //database credentials, running MySQL with default setting (user 'root' with no password)
+                //attempt to connect to MySQL "teacher" database
+                $databaseLink = mysqli_connect('localhost', 'root', '', 'teacher');
 
-            //<!--- MOVE THE UPLOADED FILE TO THE CURRENTLY LOGGED-IN USER'S FOLDER --->
-            /* similar to this: https://www.javatpoint.com/php-mysql-login-system */
+                //check the connection to the database
+                if ($databaseLink->connect_error) {
+                    //die() kinda functions like an exit() function
+                    exit('Error connecting to the server.');
+                }
+                mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
-            //database credentials, running MySQL with default setting (user 'root' with no password)
-            //attempt to connect to MySQL "teacher" database
-            $databaseLink = mysqli_connect('localhost', 'root', '', 'teacher');
+                //on the 'teacher' database, 'login' table in phpmyadmin, search for the id number in the session array
+                //mysql and sessions (use curly braces) https://stackoverflow.com/questions/5746614/session-variable-in-mysql-query
+                $sqlStatement = $databaseLink->prepare("SELECT * FROM login WHERE IDNumber = ?");
+                $sqlStatement->bind_param("s", $_SESSION["currentUser"]);
+                $sqlStatement->execute();
 
-            //check the connection to the database
-            if ($databaseLink->connect_error) {
-                //die() kinda functions like an exit() function
-                exit('Error connecting to the server.');
-            }
-            mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+                //<!---THIS PART CREATES THE TEACHER NAME FOR THE FILEPATH --->
+                //from: https://websitebeaver.com/prepared-statements-in-php-mysqli-to-prevent-sql-injection
+                //this uses sql prepared statements
+                $result = $sqlStatement->get_result();
+                if ($result->num_rows == 0) {
+                    exit('The teacher is not registered in the database.');
+                }
+                while ($row = $result->fetch_assoc()) {
+                    //set the $row[""] to the column you want to use
+                    $firstName = $row["firstName"];
+                    $lastName = $row["lastName"];
+                }
+                $sqlStatement->close();
+                mysqli_close($databaseLink);
 
-            //on the 'teacher' database, 'login' table in phpmyadmin, search for the id number in the session array
-            //mysql and sessions (use curly braces) https://stackoverflow.com/questions/5746614/session-variable-in-mysql-query
-            $sqlStatement = $databaseLink->prepare("SELECT * FROM login WHERE IDNumber = ?");
-            $sqlStatement->bind_param("s", $_SESSION["currentUser"]);
-            $sqlStatement->execute();
+                $teamTeachPartner = $_POST['partner'];
+                //echo "ID Number Selected: " . $teamTeachPartner;
 
-            //<!---THIS PART CREATES THE TEACHER NAME FOR THE FILEPATH --->
-            //from: https://websitebeaver.com/prepared-statements-in-php-mysqli-to-prevent-sql-injection
-            //this uses sql prepared statements
-            $result = $sqlStatement->get_result();
-            if ($result->num_rows == 0) {
-                exit('The teacher is not registered in the database.');
-            }
-            while ($row = $result->fetch_assoc()) {
-                //set the $row[""] to the column you want to use
-                $firstName = $row["firstName"];
-                $lastName = $row["lastName"];
-            }
-            $sqlStatement->close();
-            mysqli_close($databaseLink);
+                // sanitize file-name
+                //$newFileName = md5(time() . $fileName) . '.' . $fileExtension;
+                //$newFileName = $fileName . '.' . $fileExtension;
 
-            //<!--- [IF STMT] THIS PART CHECKS IF THE UPLOADED FILE IS A CSV FILE --->
-            if (in_array($fileExtension, $allowedfileExtensions)) {
+                //<!--- THIS PART CREATES THE FILENAME OF THE CLASS LISTS --->
+                //<!--- GET THE SCHEDULE PART OF THE FILENAME --->
+                //set the row to get the schedule and the time in the class list
+                $row = 4;
+
+                //counters for the loop and array index
+                $i = 1;
+                $arrayCount = 0;
+
+                //create schedule array
+                $schedule = array();
+
+                //row first, then column
+                if (($handle = fopen($fileTmpPath, "r")) !== FALSE) {
+                    while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+                        if ($i >= $row) {
+                            //should be like that. ex. if get 2nd column then
+                            //$column = 1; $column < 2
+                            for ($column = 4; $column < 5; $column++) {
+                                //next line automatically assigns them to the designated array indexes
+                                //explode function: string to array via the separator/delimiter
+                                $schedule[] = explode(" ", $data[$column]);
+                            }
+                        }
+                        $i++;
+                    }
+                }
+                fclose($handle);
+
+                //<!--- GET THE TIME PART OF THE FILENAME --->
+                //set the row to get the schedule and the time in the class list
+                $row = 4;
+
+                //counters for the loop and array index
+                $i = 1;
+                $arrayCount = 0;
+
+                //create time array
+                $time = array();
+
+                //row first, then column
+                if (($handle = fopen($fileTmpPath, "r")) !== FALSE) {
+                    while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+                        if ($i >= $row) {
+                            //should be like that. ex. if get 2nd column then
+                            //$column = 1; $column < 2
+                            for ($column = 9; $column < 10; $column++) {
+                                //next line automatically assigns them to the designated array indexes
+                                $time[] = explode(" ", $data[$column]);
+                            }
+                        }
+                        $i++;
+                    }
+                }
+                fclose($handle);
+
+                //removes any special characters in the schedule and time strings (the file can't be created if they are there)
+                //$finalSchedule = str_replace(array('\'', '"', ',', ';', ':', '<', '>'), '', $schedule[0][0]);
+                //formatting is: COURSE CODE COURSE NUMBER_G(GROUP NUMBER)
+                $finalSchedule = $schedule[0][2] . " " . $schedule[0][3] . "_G" . $schedule[0][1];
+                $startingTime = str_replace(array('\'', '"', ',', ';', ':', '<', '>'), '', $time[0][2]);
+                $endingTime = str_replace(array('\'', '"', ',', ';', ':', '<', '>'), '', $time[0][5]);
+                //formatting is: STARTING TIME AM/PM - ENDING TIME AM/PM
+                $finalTime = $time[0][0] . " - " . $startingTime . " " . $time[0][3] . " - " . $endingTime . " ". $time[0][6];
+                //$finalTime = trim($finalTime); //removes whitespaces before and after the time string
+
+                //uses the teamteach selection to see if the file needs to prepend a "TM -" before the new filename
+                if ($teamTeachPartner != '0') {
+                    //$newFileName = "TM - " . $finalSchedule . "_" . $finalTime;
+                    //course code - group number - schedule
+                    $newFileName = "TM - " . $finalSchedule . "_" . $finalTime;
+                } else {
+                    $newFileName = $finalSchedule . "_" . $finalTime;
+                }
+
                 // directory in which the uploaded file will be moved
                 $uploadFileDir = './' . $firstName . " " . $lastName . '/';
-                //concatenate file directory to file name. i.e. ./firstName lastName/filename.csv
 
+                //concatenate file directory to file name. i.e. ./firstName lastName/filename.csv
                 $dest_path_temp = $uploadFileDir . $newFileName . ".csv";
 
-                //move_uploaded_file(string $from, string $to): bool
+                //<!-- THIS PART MOVES THE CSV FILE FROM THE TEMPORARY PATH TO THE SET DESTINATION PATH -->
                 if (move_uploaded_file($fileTmpPath, $dest_path_temp)) {
                     //answer is a combo of both links!
                     //https://stackoverflow.com/questions/35740176/read-specific-column-in-csv-to-array
@@ -213,6 +266,51 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
                             $i++;
                         }
                     }
+                    fclose($handle);
+
+                    //<!--- THIS PART CREATES THE FORMATTED CLASS LIST CSV FILE --->
+                    $idNumIndex = 0;
+                    //prepend the id numbers of the students to the names array!
+                    foreach ($names as &$line) { //& reference: https://stackoverflow.com/questions/25198792/array-unshift-in-multidimensional-array-insert-at-first-element-in-all-arrays
+                        array_unshift($line, $idNumbers[$idNumIndex]);
+                        $idNumIndex++;
+                    }
+
+                    //make a copy of the array $name to use in updating and creating the masterlist csv file
+                    $namesCopy = array();
+                    $namesCopy = $names;
+
+                    //prepare header titles array at the first row of the class list csv file
+                    $header_csv = array("IDNumber", "Lastname", "Firstname");
+
+                    //create the formatted class list csv in the logged-in user's folder and write the prepared array to the file
+                    //this process overwrites the uploaded class list and will be formatted to the id number, last name and first name standard
+                    $handle = fopen($dest_path_temp, "w");
+                    //write UTF-8 byte order mark for outputting special characters to the csv file
+                    //from: https://stackoverflow.com/questions/4348802/how-can-i-output-a-utf-8-csv-in-php-that-excel-will-read-properly
+                    $BOM = chr(0xEF) . chr(0xBB) . chr(0xBF);
+                    fputs($handle, $BOM);
+
+                    //write the header titles to the first row of the csv
+                    fwrite($handle, implode(",", $header_csv) . "\r\n");
+
+                    //use for loop pls. foreach loop somehow duplicates the second to last
+                    //row values for some reason https://stackoverflow.com/questions/1293896/php-array-printing-using-a-loop
+
+                    //counter for the while loop
+                    $i = 0;
+
+                    //write to the prepared class list csv file
+                    while ($i < count($names)) {
+                        //IMPORTANT! use utf8_encode ONCE only to prevent wonky characters when outputting and writing!
+                        fwrite($handle, utf8_encode(implode(",", $names[$i])) . "\r\n");
+                        $i++;
+                    }
+                    /*
+                    foreach ($names as $line){
+                        fputcsv($handle, $line,',');
+                    }
+                    */
                     fclose($handle);
 
                     //<!--- THIS PART CREATES THE FORMATTED CLASS LIST CSV FILE --->
@@ -611,24 +709,24 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
                         }
                     }
 
-                    $message = 'The file entitled <i><u>' . $fileName . '</u></i> is successfully uploaded.';
-                }
-                //<!--- [ELSE STMT] THIS PART WILL BE EXECUTED IF THE UPLOADED FILE FAILED TO MOVE TO THE TEACHER'S FOLDER -->
-                else {
-                    $message = 'Upload failed. The teacher is not registered in the database.';
+
+
+                    $message = "Uploading done!";
+
+                } else{
+                    $message = "Uploading to the teacher's folder failed";
                 }
             }
-            //<!--- [ELSE STMT] THIS PART WILL BE EXECUTED IF THE UPLOADED FILE IS NOT A CSV FILE --->
-            else {
-                $message = 'Upload failed. Allowed file types: ' . implode(',', $allowedfileExtensions);
+            else{
+                $message = "The file uploaded is not a valid class list. Please make sure the class list is downloaded directly from the ISMIS website.";
             }
-        } //end of the "ClassListReport string checking procedures
-    } //end of the checking if there is uploaded file
-    //<!--- [ELSE STMT] THIS PART WILL BE EXECUTED IF THERE IS NO UPLOADED FILE --->
-    else {
-        $message = 'There is no uploaded file.<br>';
-        //$message .= 'Error:' . $_FILES['uploadedFile']['error'];
+
+        }
+    } else{
+            $message = "An error was encountered in uploading the file!";
     }
+} else{
+    $message = "File failed to upload!!! Check the button settings";
 }
 $_SESSION['message'] = $message;
 
