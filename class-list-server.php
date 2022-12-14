@@ -18,18 +18,73 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
         $fileNameCmps = explode(".", $fileName);
         $fileExtension = strtolower(end($fileNameCmps));
 
-        $classListCheck[0][1] = "Class List";
+        $allowedfileExtensions = array('csv'); //array('txt', 'xls', 'csv');
 
-        if ($classListCheck[0][1] != "Class List") {
-            $message = 'The file uploaded is not a valid class list. Please make sure the class list file is downloaded directly from the ISMIS website .';
+        if (!in_array($fileExtension, $allowedfileExtensions)){
+            $message = 'The file uploaded is not a .csv file. Please make sure the class list file uploaded is in the .csv format.';
         }
         else {
-            //<!--THIS PART CHECKS IF THE FILE UPLOADED IS REALLY THE CLASS LIST
-            // check if file has one of the following extensions
-            $allowedfileExtensions = array('csv'); //array('txt', 'xls', 'csv');
+            //<!--- GET THE SCHEDULE PART OF THE FILENAME --->
+            //set the row to get the schedule and the time in the class list
+            $row = 1;
 
-            //<!--- [IF STMT] THIS PART CHECKS IF THE UPLOADED FILE IS A CSV FILE --->
-            if (in_array($fileExtension, $allowedfileExtensions)) {
+            //counters for the loop and array index
+            $i = 1;
+            $arrayCount = 0;
+
+            //create schedule array
+            $classListCheck = array();
+
+            //row first, then column
+            if (($handle = fopen($fileTmpPath, "r")) !== FALSE) {
+                while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+                    if ($i >= $row) {
+                        //should be like that. ex. if get 2nd column then
+                        //$column = 1; $column < 2
+                        for ($column = 6; $column < 7; $column++) {
+                            //next line automatically assigns them to the designated array indexes
+                            //explode function: string to array via the separator/delimiter
+                            $classListCheck[$arrayCount] = $data[$column];
+                            $arrayCount++;
+                        }
+                    }
+                    $i++;
+                }
+            }
+            fclose($handle);
+
+            //<!--- GET THE "UNIVERSITY OF SAN CARLOS" PART OF CLASS LIST --->
+            //set the row to get the schedule and the time in the class list
+            $row = 1;
+
+            //counters for the loop and array index
+            $i = 1;
+            $arrayCount = 0;
+
+            //create schedule array
+            $uniCheck = array();
+
+            //row first, then column
+            if (($handle = fopen($fileTmpPath, "r")) !== FALSE) {
+                while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+                    if ($i >= $row) {
+                        //should be like that. ex. if get 2nd column then
+                        //$column = 1; $column < 2
+                        for ($column = 8; $column < 9; $column++) {
+                            //next line automatically assigns them to the designated array indexes
+                            //explode function: string to array via the separator/delimiter
+                            $uniCheck[$arrayCount] = $data[$column];
+                            $arrayCount++;
+                        }
+                    }
+                    $i++;
+                }
+            }
+            fclose($handle);
+
+
+            //<!--- [IF STMT] THIS PART CHECKS IF THE UPLOADED FILE IS REALLY THE CLASS LIST--->
+            if (($classListCheck[0] == "Class List") && ($uniCheck[1] == "UNIVERSITY OF SAN CARLOS"))  {
                 //<!--- MOVE THE UPLOADED FILE TO THE CURRENTLY LOGGED-IN USER'S FOLDER --->
                 /* similar to this: https://www.javatpoint.com/php-mysql-login-system */
 
@@ -661,9 +716,11 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
                 } else{
                     $message = "Uploading to the teacher's folder failed";
                 }
-            } else{
-                $message = "File uploaded is not a csv file";
             }
+            else{
+                $message = "The file uploaded is not a valid class list. Please make sure the class list is downloaded directly from the ISMIS website.";
+            }
+
         }
     } else{
             $message = "An error was encountered in uploading the file!";
