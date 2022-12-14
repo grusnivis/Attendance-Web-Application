@@ -35,6 +35,7 @@ https://code.tutsplus.com/tutorials/how-to-upload-a-file-in-php-with-example--cm
     ?>
 </div>
     <form method="POST" action="class-list-server.php" enctype="multipart/form-data">
+        <input type ="hidden" name="MAX_FILE_SIZE" value = 30000"/>
         <h1> <center> Class List Uploading </center></h1>
         <div class= "topnav">
             <!-- Search: how to upload things here -->
