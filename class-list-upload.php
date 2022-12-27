@@ -5,7 +5,7 @@
 
 //important for part 2
 session_start();
-header("Cache-Control: no-cache, must-revalidate");
+//header("Cache-Control: no-cache, must-revalidate");
 ?>
 
 <html lang='en'>
