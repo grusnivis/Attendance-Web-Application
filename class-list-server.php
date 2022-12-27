@@ -24,7 +24,7 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
             $message = 'The file uploaded is not a .csv file. Please make sure the class list file uploaded is in the .csv format.';
         }
         else {
-            //<!--- GET THE SCHEDULE PART OF THE FILENAME --->
+            //<!--- GET THE "CLASS LIST" PART OF THE CLASS LIST FILE --->
             //set the row to get the schedule and the time in the class list
             $row = 1;
 
@@ -32,7 +32,7 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
             $i = 1;
             $arrayCount = 0;
 
-            //create schedule array
+            //create class list check array
             $classListCheck = array();
 
             //row first, then column
