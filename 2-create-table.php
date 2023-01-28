@@ -263,24 +263,18 @@ $teacher_name = $firstName . " " . $lastName;
 $_SESSION["teacherName"] = $teacher_name;
 include('0-connect.php');
 ?>
+<!-- THIS SECTION IS FOR THE TOP NAVIGATION OF THE CLASS MONITORING LANDING PAGE -->
 <div>
     <nav class="topnav">
-        <a style="color:white;background-color: #4f6d7a;text-decoration:none">
-            <?php echo $teacher_name ?>
-        </a>
-
-        <a style="float:right;color:white"
-           href="logout.php"> Log Out
-        </a>
-
+        <a style="color:white;background-color: #4f6d7a;text-decoration:none"><?php echo "Welcome, " . $teacher_name . "!"?></a>
+        <a style = "color:white" href="/teacher-main.php">Home</a>
+        <a style = "color:white" href="/class-list-upload.php">Upload Class Lists</a>
+        <a style="float:right;color:white" href="/logout.php"> Log Out</a>
     </nav>
-
     <!--title instructions-->
-    <h1> SELECT THE CLASS YOU WANT TO MONITOR </h1>
-
+    <h1> SELECT THE CLASS YOU WANT TO MONITOR: </h1>
     <?php
     $show_tables = $db->query("SHOW TABLES");
-
     //<!-- THIS PART DISPLAYS THE TABLES AS BUTTONS -->
     while ($table_name = $show_tables->fetch_assoc()) {
         foreach ($table_name as $table) {
