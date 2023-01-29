@@ -43,7 +43,7 @@
 
 <?php
 	if(isset($_POST['update'])){
-		$send_date = (date("Y-m-d", strtotime($_POST['send_date'])));
+		$send_date = (date("Y-n-j", strtotime($_POST['send_date'])));
 		$stat = strtoupper($_POST['status']);
 
 		// checks if the person has logs from that date

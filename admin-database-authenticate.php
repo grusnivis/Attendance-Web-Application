@@ -19,7 +19,7 @@
     $password = mysqli_real_escape_string($link, $password);
 
     //on the 'login' table in phpmyadmin, search for the username and password inputted
-    $sql = "SELECT *FROM login WHERE username = '$username' AND password = '$password'"; 
+    $sql = "SELECT *FROM credentials WHERE username = '$username' AND password = '$password'";
     $result = mysqli_query($link, $sql);
     $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
     $count = mysqli_num_rows($result);
