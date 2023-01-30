@@ -367,7 +367,7 @@
                 echo "</table>";
 
 				function dl($array, $teacher_name, $cg){
-					// filename = download path/filename            
+					// filename = download path/filename
 					$tempname = strtoupper($teacher_name) . "_" . $cg . ".csv";
 					$file = fopen($tempname,"w");
 					fputcsv($file, array("ID#","Lastname","Name","Date","Status","Time-in"));
@@ -414,7 +414,8 @@
 				}
 
 				if(isset($_GET['download_csv'])){
-				// filename = download path/filename            
+				// filename = download path/filename
+                // NOTE: CHANGE FILEPATH ON THE SERVER PC
 				$filename = "C:/Users/Kath/Downloads/". strtoupper($teacher_name) . "_" . $cg . ".csv";
 				$file = fopen($filename,"w");
 				fputcsv($file, array("ID#","Lastname","Name","Date","Status","Time-in"));

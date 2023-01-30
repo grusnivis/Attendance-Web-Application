@@ -156,8 +156,9 @@
 
 							<?php
 								if(isset($_GET['download'])){
-								// filename = download path/filename            
-								$filename = "C:/Users/Amber/Downloads/". strtoupper($teacher_name) . "_" . $cg . ".csv";
+								// filename = download path/filename
+                                //NOTE: CHANGE FILEPATH ON THE SERVER PC
+								$filename = "C:/Users/Kath/Downloads/". strtoupper($teacher_name) . "_" . $cg . ".csv";
 								$file = fopen($filename,"w");
 								fputcsv($file, array("ID#","Lastname","Name","Date","Status","Time-in"));
 																	
@@ -170,8 +171,9 @@
 								}
 
 								if(isset($_POST['send_email'])){
-									// filename = download path/filename            
-									$filename = "C:/Users/Amber/Downloads/". strtoupper($teacher_name) . "_" . $cg . ".csv";
+									// filename = download path/filename
+                                    // NOTE: CHANGE FILEPATH ON THE SERVER PC
+									$filename = "C:/Users/Kath/Downloads/". strtoupper($teacher_name) . "_" . $cg . ".csv";
 									$file = fopen($filename,"w");
 									fputcsv($file, array("ID#","Lastname","Name","Date","Status","Time-in"));
 																	

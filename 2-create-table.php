@@ -82,8 +82,8 @@ function connect_to_db($date, $dir, $file_name, $cg, $teacher){
             Date VARCHAR(255) NOT NULL,
             Status VARCHAR(255) NOT NULL,
             Time VARCHAR(255) NOT NULL,
-            PRIMARY KEY (`RFID`,`ID`,`Date`)
-    )";
+            PRIMARY KEY (`RFID`,`ID`,`Date`)) 
+            DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci";
 
     // adds table to database
     //$db corresponds to the currently logged-in teacher's database connection in 0-connect.php
