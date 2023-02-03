@@ -11,10 +11,24 @@ session_start();
 <html lang='en'>
 <head>
     <title> Upload Class Lists </title>
+
+	<meta http-equiv="Content-Type"
+		content="text/html; charset=UTF-8">
+
+	<title>View Attendance</title>
+
+	<link rel="stylesheet" 
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+	
+	<link rel="stylesheet"
+		href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
     <link type="text/css" rel="stylesheet" href="css/class-list-upload-style.css"/>
+
     <!-- this PHP file is responsible for displaying the file upload form!
          the file for uploading the lists to the server is the class-list-server.php -->
 </head>
+
 <body>
 
 <!--
@@ -24,93 +38,90 @@ Also, it makes sure that the characters are not encoded
 when the form is submitted.
 https://code.tutsplus.com/tutorials/how-to-upload-a-file-in-php-with-example--cms-31763
 -->
-<!-- <div class = "upload-wrapper"> -->
-<div class= "topnav">
-    <!-- Search: how to upload things here -->
-    <a href="class-list-upload.php">Upload Class List </a>
-    <a href="2-create-table.php"> Class Monitoring </a>
-    <a href="logout.php"> Log Out </a> &nbsp;
-    <?php
-    echo "<p class = 'welcome'> Welcome, " . $_SESSION['currentUser'] . "! </p>";
-    ?>
-</div>
     <form method="POST" action="class-list-server.php" enctype="multipart/form-data">
         <input type ="hidden" name="MAX_FILE_SIZE" value = 30000"/>
-        <h1> <center> Class List Uploading </center></h1>
         <div class= "topnav">
-            <!-- Search: how to upload things here -->
-            <a href="class-list-upload.php">Upload Class List </a>
+            <a href="teacher-main.php" style="color: #f2f2f2;"><i class="fa fa-home" style="font-size: 25px;text-align:center"></i></a>
+            <a style="text-decoration: none; background-color: #4f6d7a; color: #f2f2f2;">
+            <?php echo "Welcome, " . $_SESSION['currentUser'] . "!"; ?></a>
+            
+            <a class="active" href="class-list-upload.php">Class List Uploading</a>
             <a href="2-create-table.php"> Class Monitoring </a>
-            <a href="logout.php"> Log Out </a> &nbsp;
-            <?php
-            echo "<p class = 'welcome'> Welcome, " . $_SESSION['currentUser'] . "! </p>";
-            ?>
+            <a href="logout.php" style="float:right"> Log Out </a> &nbsp;
+
         </div>
-        <p class="instructions"> Upload your Class List File that is in .CSV format. </p>
-        <?php
-        if (isset($_SESSION['message']) && $_SESSION['message']) {
-            echo '<p class = "notification">' . $_SESSION['message'] . '</p>';
-            unset($_SESSION['message']);
-        }
-        ?>
-        <div class="upload-con">
-            <table>
-                <tr>
-                    <td>
-                        <p class="instructions">Select the team teach partner for this particular class:</p>
-                        <?php
-                        //https://stackoverflow.com/questions/5189662/populate-a-drop-down-box-from-a-mysql-table-in-php
-                        $conn = new mysqli("localhost", "root", "", 'teacher');
-                        // Check connection
-                        if ($conn->connect_error) {
-                            die("Connection failed: " . $conn->connect_error);
-                        }
 
-                        $sqlQuery = "SELECT IDNumber, firstName, lastName FROM login ORDER BY lastName ASC";
-                        $result = mysqli_query($conn, $sqlQuery);
-
-                        echo "<select name = 'partner' class='dropup center-block' style='margin-left: 0%'>";
-                        echo "<option value = '0'>NOT A TEAM TEACH CLASS</option>";
-                        while ($row = mysqli_fetch_array($result)){
-                            //exclude current user in display: https://stackoverflow.com/questions/1248641/php-how-to-exclude-data-from-mysql
-                            if($row['IDNumber'] == $_SESSION["currentUser"]){
-                                continue;
-                            };
-                            echo "<option value = '". $row['IDNumber'] ."'>". $row['IDNumber'] . " - " .$row['firstName'] . " " . $row['lastName'] ."</option>";
-                        }
-                        echo "</select>";
-                        mysqli_close($conn);
-                        ?>
-                    </td>
-
-                    <td>
-                        <label for="file-upload" > Browse <input type="file" id="file-upload" name="uploadedFile"> </label>
-                    </td>
-                </tr>
-            </table>
-            <br>
+        <div class="container pt-5" style="text-align:center">
+            <h1> <center> Class List Uploading </center></h1>
         </div>
-        <br>
-    <hr>
 
-    <!-- important for the configuration file form! -->
+        <div class="tab">
+            <p class="instructions"> Upload your Class List File that is in .CSV format. </p>
+            <div class="upload-con">
+                <table>
+                    <tr>
+                        <td>
+                            <p class="instructions">Select the team teach partner for this particular class:</p>
+                            <?php
+                            //https://stackoverflow.com/questions/5189662/populate-a-drop-down-box-from-a-mysql-table-in-php
+                            $conn = new mysqli("localhost", "root", "", 'teacher');
+                            // Check connection
+                            if ($conn->connect_error) {
+                                die("Connection failed: " . $conn->connect_error);
+                            }
+
+                            $sqlQuery = "SELECT IDNumber, firstName, lastName FROM login ORDER BY lastName ASC";
+                            $result = mysqli_query($conn, $sqlQuery);
+
+                            echo "<select name = 'partner' class='dropup center-block' style='margin-left: 0%;padding: 5px;font-size:17px'>";
+                            echo "<option value = '0'>NOT A TEAM TEACH CLASS</option>";
+                            while ($row = mysqli_fetch_array($result)){
+                                //exclude current user in display: https://stackoverflow.com/questions/1248641/php-how-to-exclude-data-from-mysql
+                                if($row['IDNumber'] == $_SESSION["currentUser"]){
+                                    continue;
+                                };
+                                echo "<option value = '". $row['IDNumber'] ."'>". $row['IDNumber'] . " - " .$row['firstName'] . " " . $row['lastName'] ."</option>";
+                            }
+                            echo "</select>";
+                            mysqli_close($conn);
+                            ?>
+                        </td>
+
+                        <td>
+                            <label for="file-upload" > Browse <input type="file" id="file-upload" name="uploadedFile"> </label>
+                        </td>
+                    </tr>
+                </table>
+                <br>
+                <center>
+                    <?php
+                    if (isset($_SESSION['classListServerMsg']) && $_SESSION['classListServerMsg']) {
+                        echo '<p class = "notification">' . $_SESSION['classListServerMsg'] . '</p>';
+                        unset($_SESSION['classListServerMsg']);
+                    }
+                    ?>
+                </center>
+            </div>
+        </div>
+    <!-- <hr>
+
+    important for the configuration file form! -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-        <h1>
+    <div class="tab">
+        <h1 style="color:#4f6d7a">
             <center> Set Personal Configurations</center>
         </h1>
         <p class="instructions">
             This is where you will configure your uploaded class list settings for the Attendance Logging Device to use. A Comma-Separated
             Values file (.CSV) will be generated at the set directory after you click the <b><u>Upload Class List and Set Configurations</u></b> button below.
         </p>
-        <br>
         <table>
-
             <tr>
                 <div class="form-group">
                     <td>
-                        <p class="config-titles"><u> <b>MARK TEACHER ATTENDANCE</b></u></p>
+                        <p class="config-titles"><b>MARK TEACHER ATTENDANCE</b></p>
                         <p class="instructions">
                             If you wish to mark your personal attendance based on the <u>time of your class</u>,
                             input <b><i>YES</i></b>. If you wish for your attendance to always be <u>PRESENT</u>
@@ -134,7 +145,7 @@ https://code.tutsplus.com/tutorials/how-to-upload-a-file-in-php-with-example--cm
             <tr>
                 <div class="form-group">
                     <td>
-                        <p class="config-titles"><u><b>TEACHER LATE</b></u></p>
+                        <p class="config-titles"><b>TEACHER LATE</b></p>
                         <p class="instructions">
                             If MARK TEACHER is set as YES, what time would you be marked LATE? The time is set in <b>minutes</b>.
                         </p>
@@ -149,7 +160,7 @@ https://code.tutsplus.com/tutorials/how-to-upload-a-file-in-php-with-example--cm
             <tr>
                 <div class="form-group">
                     <td>
-                        <p class="config-titles"><u><b>TEACHER ABSENT</b></u></p>
+                        <p class="config-titles"><b>TEACHER ABSENT</b></p>
                         <p class="instructions">
                             If MARK TEACHER is set as YES, what time would you be marked ABSENT? The time is set in <b>minutes</b>.
                         </p>
@@ -164,7 +175,7 @@ https://code.tutsplus.com/tutorials/how-to-upload-a-file-in-php-with-example--cm
             <tr>
                 <div class="form-group">
                     <td>
-                        <p class="config-titles"><u><b>BASE STUDENT ATTENDANCE ON TEACHER TAP</b></u></p>
+                        <p class="config-titles"><b>BASE STUDENT ATTENDANCE ON TEACHER TAP</b></p>
                         <p class="instructions">
                             If you would like your students' attendance status (PRESENT, LATE, ABSENT)
                             to be based on the class start time, input <b><i>NO</i></b>. If you want their attendance to be
@@ -187,7 +198,7 @@ https://code.tutsplus.com/tutorials/how-to-upload-a-file-in-php-with-example--cm
             <tr>
                 <div class="form-group">
                     <td>
-                        <p class="config-titles"><u><b>STUDENT LATE</b></u></p>
+                        <p class="config-titles"><b>STUDENT LATE</b></p>
                         <p class="instructions">
                             How many minutes from the start of attendance until the student is marked as <u>LATE</u>? The time
                             is set in <b>minutes</b>.
@@ -202,7 +213,7 @@ https://code.tutsplus.com/tutorials/how-to-upload-a-file-in-php-with-example--cm
             <tr>
                 <div class="form-group">
                     <td>
-                        <p class="config-titles"><u><b>STUDENT ABSENT</b></u></p>
+                        <p class="config-titles"><b>STUDENT ABSENT</b></p>
                         <p class="instructions">
                             How many minutes from the start of attendance until the student is marked as <u>ABSENT</u>? The time
                             is set in <b>minutes</b>.
@@ -217,9 +228,11 @@ https://code.tutsplus.com/tutorials/how-to-upload-a-file-in-php-with-example--cm
         </table>
 
         <div class="form-group">
+            <br>
             <!-- change button text through the value attribute -->
             <center><input type="submit" name="uploadBtn" class="btn btn-info" value="Upload Class List and Set Configurations"/></center>
         </div>
+    </div>
     </form>
 </body>
 </html>

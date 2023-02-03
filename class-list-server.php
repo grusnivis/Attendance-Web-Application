@@ -7,7 +7,7 @@ header('Content-Type: text/csv; charset=utf-8mb4');
 session_start();
 //print_r($_SESSION);
 
-$message = '';
+$classListServerMsg = '';
 if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and Set Configurations') {
     if (isset($_FILES['uploadedFile']) && $_FILES['uploadedFile']['error'] === UPLOAD_ERR_OK) {
         // get details of the uploaded file
@@ -21,7 +21,7 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
         $allowedfileExtensions = array('csv'); //array('txt', 'xls', 'csv');
 
         if (!in_array($fileExtension, $allowedfileExtensions)){
-            $message = 'The file uploaded is not a .csv file. Please make sure the class list file uploaded is in the .csv format.';
+            $classListServerMsg = 'The file uploaded is not a .csv file. Please make sure the class list file uploaded is in the .csv format.';
         }
         else {
             //<!--- GET THE "CLASS LIST" PART OF THE CLASS LIST FILE --->
@@ -709,26 +709,24 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
                         }
                     }
 
-
-
-                    $message = "Uploading done!";
+                    $classListServerMsg = "Uploading done!";
 
                 } else{
-                    $message = "Uploading to the teacher's folder failed";
+                    $classListServerMsg = "Uploading to the teacher's folder failed";
                 }
             }
             else{
-                $message = "The file uploaded is not a valid class list. Please make sure the class list is downloaded directly from the ISMIS website.";
+                $classListServerMsg = "The file uploaded is not a valid class list. Please make sure the class list is downloaded directly from the ISMIS website.";
             }
 
         }
     } else{
-            $message = "An error was encountered in uploading the file!";
+        $classListServerMsg = "An error was encountered in uploading the file. Upload the class list in .csv format.";
     }
 } else{
-    $message = "File failed to upload!!! Check the button settings";
+    $classListServerMsg = "File failed to upload!";
 }
-$_SESSION['message'] = $message;
+$_SESSION['classListServerMsg'] = $classListServerMsg;
 
 header("Location: class-list-upload.php");
 ?>

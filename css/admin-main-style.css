@@ -1,7 +1,60 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;1,100;1,300;1,400;1,700&display=swap');
 
 body{
-    background-color: #eaeaea;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
     font-family: "Lato", sans-serif;
+    background-color: #4f6d7a;
 }
 
+.main-con{
+    text-align: center;
+    padding: 1px;
+    background-color: #4f6d7a;
+}
+
+.adminMainCon{
+    width: 400px;
+    height: 450px;
+    border-radius: 5%;
+    text-align: center;
+    padding: 7px;
+    background-color: #dd6e42;
+}
+
+
+/*text options*/
+h1{
+    color:#e8dab2;
+    font-family: "Lato", sans-serif;
+    font-size: 30px;
+}
+
+p{
+    color: #e8dab2;
+}
+
+.instructions{
+    color: #e8dab2;
+    font-family: "Lato", sans-serif;
+    font-weight: 400;
+    text-align: center;
+}
+
+/*button options*/
+input[type="submit"] { /*upload button */
+    border: 0px;
+    color: #e8dab2;
+    background: #4f6d7a;
+    margin: 10px 0;
+    border-radius: 5px;
+    font-weight: bold;
+    padding: 5px 20px;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background: #555;
+}

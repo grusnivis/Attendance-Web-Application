@@ -36,8 +36,7 @@
         $_SESSION['currentUser'] = $IDNum;
     }
     else{
-        //definitely think of another solution aside from this
-        $login_err = "Invalid username or password.";
+        $_SESSION["teacherLoginMsg"] = "Invalid username or password!";
         header("location: teacher-login.php");
     }
 

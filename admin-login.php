@@ -68,14 +68,17 @@
             </div>
             -->
             
-            <div class = "con-form">  
+            <div class = "con-form">
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+                <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
                 <form class = "form-signin" role = "form" action = "admin-database-authenticate.php" method = "post">
                     <h4 class = "form-signin-heading"><?php echo $msg = ''; ?></h4>
                     <!-- use "placeholder" for the filler text in boxes -->
                     <input type = "text" class = "form-control" name = "username" placeholder = "username" required autofocus>
                     <input type = "password" class = "form-control" name = "password" placeholder = "password" required >
                     <br class = "breakspace"/>
-                    <button class = "buttonLogin" type = "submit" name = "login">Login</button>
+                    <input type="submit" name="buttonLogin" class="btn btn-info" value="Login"/>
                 </form>
                 <p> Are you a teacher? <b> <a href = "teacher-login.php" > Log in here! </a> </b></p>
             </div> 

@@ -6,18 +6,16 @@ body{
     justify-content: center;
     margin: 0 auto;
     font-family: "Lato", sans-serif;
-    background-color: #4f6d7a;
+    background-color: #eaeaea;
 }
 
-.topnav {
+  .topnav {
     background-color: #4f6d7a;
     overflow: hidden;
-    top: -100px;
-    position: absolute;
-}
+  }
 
-/* Style the links inside the navigation bar */
-.topnav a {
+    /* Style the links inside the navigation bar */
+  .topnav a {
     float: left;
     color: #f2f2f2;
     text-align: center;
@@ -25,31 +23,29 @@ body{
     text-decoration: none;
     font-size: 17px;
     text-transform: capitalize;
-}
+  }
 
-.topnav p {
-    float: left;
-    color: #f2f2f2;
-    text-align: center;
-    padding: 14px 16px;
+    /* Change the color of links on hover */
+  .topnav a:hover {
     text-decoration: none;
-    font-size: 17px;
-    text-transform: capitalize;
-}
-
-/* Change the color of links on hover */
-.topnav a:hover {
-    text-decoration: none;
-    background-color: darkgray;
+    background-color:darkgray;
     color: black;
-}
+  }
 
-/* Add a color to the active/current link */
-.topnav a.active {
+    /* Add a color to the active/current link */
+  .topnav a.active {
     background-color: #dd6e42;
     color: white;
-}
+  }
 
+  .topnav p {
+      float: left;
+      color: #f2f2f2;
+      text-align: center;
+      text-decoration: none;
+      font-size: 17px;
+      text-transform: capitalize;
+  }
 
 /*
 div.upload-wrapper {
@@ -58,10 +54,20 @@ div.upload-wrapper {
     display: flex;
   }
   */
-.upload-con{
-    align-items: center;
-    justify-content: center;
-}
+
+  .tab {
+      background-color: white; 
+      border-radius: 7px; 
+      margin: 40px 150px;
+      padding: 20px;
+      align-items: center;
+      justify-content: center;
+  }
+
+  .upload-con{
+      align-items: center;
+      justify-content: center;
+  }
 
   .main-con{
     text-align: center;
@@ -85,6 +91,7 @@ div.upload-wrapper {
       text-align: center;
       margin: 0px auto;
       display: block;
+      padding-left: 10px;
   }
 
   .dropdown-con{
@@ -95,10 +102,12 @@ div.upload-wrapper {
 
     select{
         font-size: 20px;
+        padding-left: 50px;
+
     }
 
   p{
-      color: #e8dab2;
+      color: #0f0f0e;
   }
   .read-file-con{
     width: 390px;
@@ -110,22 +119,22 @@ div.upload-wrapper {
   }
 
  h1{
-    color:#e8dab2;
-    font-family: "Lato", sans-serif;
+    color:#dd6e42;
     font-size: 30px;
+    font-family: "Lato", sans-serif;
   }
 
  table, th, td{
      border: 1px solid black;
      border-collapse: collapse;
      padding: 10px;
-     border-color: #e8dab2;
+     border-color: #4f6d7a;
      align-content: center;
      margin: 0px auto;
  }
 
   .instructions{
-    color: #e8dab2;
+    color: #10100f;
     font-family: "Lato", sans-serif;
     font-weight: 400;
     text-align: center;
@@ -152,8 +161,8 @@ div.upload-wrapper {
   /*browse button*/
   input[type="submit"] { /*upload button */
     border: 0px;
-    color: #e8dab2;
-    background: #dd6e42;
+    background-color: #dc3545;
+		color: white;
     margin: 10px 0;
     border-radius: 5px;
     font-weight: bold;
@@ -169,9 +178,9 @@ div.upload-wrapper {
   label[for="file-upload"] {
     padding: 0.7rem;
     display: inline-block;
-    background: #dd6e42;
     cursor: pointer;
-    color: #e8dab2;
+    background-color: #dc3545;
+		color: white;    
     font-family: "Lato", sans-serif, bold;
     font-weight: 400;
     border-radius: 5px 5px 5px 5px;

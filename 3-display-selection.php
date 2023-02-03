@@ -200,7 +200,8 @@ $sem_a = round((($absentTotal / $total) * 100));
     <div style="float:right; width:35%; color:#444">
         <div class="tab" style="margin-top: 27%">
             <h5>Total Semestral Presence</h5>
-            <h2 style="font-weight:700"> <?php echo $sem_p; ?>% </h2>
+            <h4 style="font-weight:700 font-size:80px"> (out of <?php echo $total; ?> days)</h4>
+            <h2 style="font-weight:1000"> <?php echo $sem_p; ?>% </h2>
         </div>
 
         <!-- display total sem absence -->
