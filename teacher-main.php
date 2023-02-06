@@ -1,5 +1,5 @@
 <?php
-session_start();
+//session_start();
 	$conn = new mysqli("localhost", "root", "", "temp");
 	// Check connection
 	if ($conn->connect_error) {

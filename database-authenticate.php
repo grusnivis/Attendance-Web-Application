@@ -7,7 +7,7 @@
 -->
 
 <?php
-    session_start();
+    //session_start();
     include ('database-config.php');
 
     $IDNum = $_POST['IDNum'];
