@@ -4,7 +4,19 @@
 header('Content-Encoding: utf-8');
 header('Content-Type: text/csv; charset=utf-8mb4');
 
-session_start();
+//session_start();
+	$conn = new mysqli("localhost", "root", "", "temp");
+	// Check connection
+	if ($conn->connect_error) {
+		die("Connection failed: " . $conn->connect_error);
+	}
+	$sql = "SELECT val FROM temptb WHERE varname = 'IDNum' ORDER BY id DESC LIMIT 1";
+	$result = mysqli_query($conn, $sql);
+	if (mysqli_num_rows($result) > 0) {
+		$row = mysqli_fetch_assoc($result);
+		$tempvar1 = $row["val"];
+		mysqli_close($conn);
+	}
 //print_r($_SESSION);
 
 $message = '';
@@ -47,7 +59,7 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
                 //on the 'teacher' database, 'login' table in phpmyadmin, search for the id number in the session array
                 //mysql and sessions (use curly braces) https://stackoverflow.com/questions/5746614/session-variable-in-mysql-query
                 $sqlStatement = $databaseLink->prepare("SELECT * FROM login WHERE IDNumber = ?");
-                $sqlStatement->bind_param("s", $_SESSION["currentUser"]);
+                $sqlStatement->bind_param("s", $tempvar1);
                 $sqlStatement->execute();
 
                 //<!---THIS PART CREATES THE TEACHER NAME FOR THE FILEPATH --->
@@ -671,7 +683,17 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
 } else{
     $message = "File failed to upload!!! Check the button settings";
 }
-$_SESSION['message'] = $message;
+	$conn = new mysqli("localhost", "root", "", "temp");
+	// Check connection
+	if ($conn->connect_error) {
+		die("Connection failed: " . $conn->connect_error);
+	}
+	$sql = "INSERT INTO temptb (varname, val) VALUES ('message', '$message')";
+	
+	if (mysqli_query($conn, $sql)) {
+		mysqli_close($conn);
+	}
+//$_SESSION['message'] = $message;
 
 header("Location: class-list-upload.php");
 ?>

@@ -32,8 +32,20 @@
     if ($count == 1){
         //see solution here for sessions: https://www.simplilearn.com/tutorials/php-tutorial/php-login-form
         //$_SESSION['currentUser'] = $IDNum;
-        header("location: teacher-main.php");
-        $_SESSION['currentUser'] = $IDNum;
+	    // Create connection directly to database
+	    $conn = new mysqli("localhost", "root", "", "temp");
+	    // Check connection
+	    if ($conn->connect_error) {
+		    die("Connection failed: " . $conn->connect_error);
+	    }
+	    $sql = "INSERT INTO temptb (varname, val) VALUES ('IDNum', '$IDNum')";
+	
+	    if (mysqli_query($conn, $sql)) {
+		    mysqli_close($conn);
+		    header("location: teacher-main.php");
+	    }
+        //header("location: teacher-main.php");
+        //$_SESSION['currentUser'] = $IDNum;
     }
     else{
         //definitely think of another solution aside from this

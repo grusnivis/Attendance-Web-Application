@@ -1,5 +1,18 @@
 <?php
-$firstName = '';
+	$conn = new mysqli("localhost", "root", "", "temp");
+	// Check connection
+	if ($conn->connect_error) {
+		die("Connection failed: " . $conn->connect_error);
+	}
+	$sql = "SELECT val FROM temptb WHERE varname = 'message' ORDER BY id DESC LIMIT 1";
+	$result = mysqli_query($conn, $sql);
+	if (mysqli_num_rows($result) > 0) {
+		$row = mysqli_fetch_assoc($result);
+		$tempvar = $row["val"];
+		mysqli_close($conn);
+	}
+    
+    $firstName = '';
 $lastName = '';
 $IDNum = '';
 $password = '';
@@ -121,9 +134,9 @@ if (isset ($_POST["submit"])) {
 
 <body>
 <?php
-if (isset($_SESSION['message']) && $_SESSION['message']) {
-    echo '<p class = "notification">' . $_SESSION['message'] . '</p>';
-    unset($_SESSION['message']);
+if (isset($tempvar) && $tempvar) {
+    echo '<p class = "notification">' . $tempvar . '</p>';
+    unset($tempvar);
 }
 ?>
 

@@ -1,13 +1,35 @@
 <?php
-    session_start();
+    //session_start();
 
 	include '0-connect.php';
 	if(isset($_GET['table'])){
 		$cg = strtoupper($_GET['table']);
-		$_SESSION['table'] = $cg;
+		$conn = new mysqli("localhost", "root", "", "temp");
+		// Check connection
+		if ($conn->connect_error) {
+			die("Connection failed: " . $conn->connect_error);
+		}
+		$sql = "INSERT INTO temptb (varname, val) VALUES ('table', '$cg')";
+		
+		if (mysqli_query($conn, $sql)) {
+			mysqli_close($conn);
+		}
+		//$_SESSION['table'] = $cg;
 	}
 	else{
-		$cg = $_SESSION['table'];
+		$conn = new mysqli("localhost", "root", "", "temp");
+		// Check connection
+		if ($conn->connect_error) {
+			die("Connection failed: " . $conn->connect_error);
+		}
+		$sql = "SELECT val FROM temptb WHERE varname = 'table' ORDER BY id DESC LIMIT 1";
+		$result = mysqli_query($conn, $sql);
+		if (mysqli_num_rows($result) > 0) {
+			$row = mysqli_fetch_assoc($result);
+			$tempvar1 = $row["val"];
+			mysqli_close($conn);
+		}
+		$cg = $tempvar1;
 	}
 	
 	

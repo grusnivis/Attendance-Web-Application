@@ -1,7 +1,19 @@
 <?php
 session_start();
-//display if the session variable is passed
-print_r($_SESSION);
+	$conn = new mysqli("localhost", "root", "", "temp");
+	// Check connection
+	if ($conn->connect_error) {
+		die("Connection failed: " . $conn->connect_error);
+	}
+	$sql = "SELECT val FROM temptb WHERE varname = 'IDNum' ORDER BY id DESC LIMIT 1";
+	$result = mysqli_query($conn, $sql);
+	if (mysqli_num_rows($result) > 0) {
+		$row = mysqli_fetch_assoc($result);
+		$tempvar = $row["val"];
+        mysqli_close($conn);
+	}
+//display if the tempdb variable is passed
+print_r($tempvar);
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
 ?>
@@ -21,7 +33,7 @@ ini_set('display_errors', '1');
     <?php
     $databaseLink = mysqli_connect('localhost', 'root', '', 'teacher');
     $sqlStatement = $databaseLink->prepare("SELECT * FROM login WHERE IDNumber = ?");
-    $sqlStatement->bind_param("s", $_SESSION["currentUser"]);
+    $sqlStatement->bind_param("s", $tempvar);
     $sqlStatement->execute();
     $result = $sqlStatement->get_result();
     if ($result->num_rows == 0) {

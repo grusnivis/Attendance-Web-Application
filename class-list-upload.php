@@ -4,7 +4,19 @@
 //https://stackoverflow.com/questions/9571125/cant-pass-php-session-variables-to-multiple-pages
 
 //important for part 2
-session_start();
+//session_start();
+	$conn = new mysqli("localhost", "root", "", "temp");
+	// Check connection
+	if ($conn->connect_error) {
+		die("Connection failed: " . $conn->connect_error);
+	}
+	$sql = "SELECT val FROM temptb WHERE varname = 'IDNum' ORDER BY id DESC LIMIT 1";
+	$result = mysqli_query($conn, $sql);
+	if (mysqli_num_rows($result) > 0) {
+		$row = mysqli_fetch_assoc($result);
+		$tempvar1 = $row["val"];
+		mysqli_close($conn);
+	}
 header("Cache-Control: no-cache, must-revalidate");
 ?>
 
@@ -31,7 +43,7 @@ https://code.tutsplus.com/tutorials/how-to-upload-a-file-in-php-with-example--cm
     <a href="2-create-table.php"> Class Monitoring </a>
     <a href="logout.php"> Log Out </a> &nbsp;
     <?php
-    echo "<p class = 'welcome'> Welcome, " . $_SESSION['currentUser'] . "! </p>";
+    echo "<p class = 'welcome'> Welcome, " . $tempvar1 . "! </p>";
     ?>
 </div>
     <form method="POST" action="class-list-server.php" enctype="multipart/form-data">
@@ -43,14 +55,26 @@ https://code.tutsplus.com/tutorials/how-to-upload-a-file-in-php-with-example--cm
             <a href="2-create-table.php"> Class Monitoring </a>
             <a href="logout.php"> Log Out </a> &nbsp;
             <?php
-            echo "<p class = 'welcome'> Welcome, " . $_SESSION['currentUser'] . "! </p>";
+            echo "<p class = 'welcome'> Welcome, " . $tempvar1 . "! </p>";
             ?>
         </div>
         <p class="instructions"> Upload your Class List File that is in .CSV format. </p>
         <?php
-        if (isset($_SESSION['message']) && $_SESSION['message']) {
-            echo '<p class = "notification">' . $_SESSION['message'] . '</p>';
-            unset($_SESSION['message']);
+	        $conn = new mysqli("localhost", "root", "", "temp");
+	        // Check connection
+	        if ($conn->connect_error) {
+		        die("Connection failed: " . $conn->connect_error);
+	        }
+	        $sql = "SELECT val FROM temptb WHERE varname = 'message' ORDER BY id DESC LIMIT 1";
+	        $result = mysqli_query($conn, $sql);
+	        if (mysqli_num_rows($result) > 0) {
+		        $row = mysqli_fetch_assoc($result);
+		        $tempvar2 = $row["val"];
+		        mysqli_close($conn);
+	        }
+        if (isset($tempvar2) && $tempvar2) {
+            echo '<p class = "notification">' . $tempvar2 . '</p>';
+            unset($tempvar2);
         }
         ?>
         <div class="upload-con">
@@ -73,7 +97,7 @@ https://code.tutsplus.com/tutorials/how-to-upload-a-file-in-php-with-example--cm
                         echo "<option value = '0'>NOT A TEAM TEACH CLASS</option>";
                         while ($row = mysqli_fetch_array($result)){
                             //exclude current user in display: https://stackoverflow.com/questions/1248641/php-how-to-exclude-data-from-mysql
-                            if($row['IDNumber'] == $_SESSION["currentUser"]){
+                            if($row['IDNumber'] == $tempvar1){
                                 continue;
                             };
                             echo "<option value = '". $row['IDNumber'] ."'>". $row['IDNumber'] . " - " .$row['firstName'] . " " . $row['lastName'] ."</option>";

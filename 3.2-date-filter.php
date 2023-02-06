@@ -1,9 +1,39 @@
 <?php
-    session_start();
+    //session_start();
+	$conn = new mysqli("localhost", "root", "", "temp");
+	// Check connection
+	if ($conn->connect_error) {
+		die("Connection failed: " . $conn->connect_error);
+	}
+	$sql = "SELECT val FROM temptb WHERE varname = 'table' ORDER BY id DESC LIMIT 1";
+	$result = mysqli_query($conn, $sql);
+	if (mysqli_num_rows($result) > 0) {
+		$row = mysqli_fetch_assoc($result);
+		$tempvar1 = $row["val"];
+	}
+	$sql = "SELECT val FROM temptb WHERE varname = 'Teacher name' ORDER BY id DESC LIMIT 1";
+	$result = mysqli_query($conn, $sql);
+	if (mysqli_num_rows($result) > 0) {
+		$row = mysqli_fetch_assoc($result);
+		$tempvar2 = $row["val"];
+		mysqli_close($conn);
+	}
+ 
 	include '0-connect.php';
-	$teacher_name = $_SESSION["Teacher name"];
-    $cg = $_SESSION["table"];
-    $_SESSION['table'] = $cg;
+	$teacher_name = $tempvar2;
+    $cg = $tempvar1;
+    
+	$conn = new mysqli("localhost", "root", "", "temp");
+	// Check connection
+	if ($conn->connect_error) {
+		die("Connection failed: " . $conn->connect_error);
+	}
+	$sql = "INSERT INTO temptb (varname, val) VALUES ('table', '$cg')";
+	
+	if (mysqli_query($conn, $sql)) {
+		mysqli_close($conn);
+	}
+    //$_SESSION['table'] = $cg;
 
 	$array = array();
 	$array_s = array();
@@ -601,7 +631,18 @@
 				function dl_s($array_s, $teacher_name, $cg){
 					// filename = download path/filename            
 					$tempname = strtoupper($teacher_name) . "_" . $cg . ".csv";
-					$_SESSION['file'] = $tempname;
+					
+					$conn = new mysqli("localhost", "root", "", "temp");
+					// Check connection
+					if ($conn->connect_error) {
+						die("Connection failed: " . $conn->connect_error);
+					}
+					$sql = "INSERT INTO temptb (varname, val) VALUES ('file', '$tempname')";
+					
+					if (mysqli_query($conn, $sql)) {
+						mysqli_close($conn);
+					}
+					//$_SESSION['file'] = $tempname;
 					$file = fopen($tempname,"w");
 					fputcsv($file, array("Start date:",$_GET['start_date']," ","End date:",$_GET['end_date']));
 					fputcsv($file, array("Name","","Present","Late","Excused","Absent","Attendance Days","% Presence"));

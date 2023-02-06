@@ -18,6 +18,57 @@
 //at the top of each page.
 // https://stackoverflow.com/questions/9571125/cant-pass-php-session-variables-to-multiple-pages
 //session_start();
+ 
+	$servername = "localhost";
+	$username = "root";
+	$password = "";
+	$dbname = "temp";
+	
+	// Create connection to server
+	$conn = new mysqli($servername, $username, $password);
+	
+	// Check connection
+	if ($conn->connect_error) {
+		die("Connection failed: " . $conn->connect_error);
+	}
+	
+	// To check for existing database
+	$sql = "SHOW DATABASES LIKE '$dbname'";
+	$result = mysqli_query($conn, $sql);
+	
+	if (mysqli_num_rows($result) > 0) {
+	}
+
+// Creates database if there isn't one
+	else {
+		$sql = "CREATE DATABASE '$dbname'";
+		if (mysqli_query($conn, $sql)) {
+		} else {
+			echo "Error creating database: " . mysqli_error($conn);
+		}
+	}
+	
+	// To Check for existing tables in database
+	$conn = new mysqli($servername, $username, $password, $dbname);
+	$sql = "SHOW TABLES LIKE 'temptb'";
+	$result = mysqli_query($conn, $sql);
+	
+	if (mysqli_num_rows($result) > 0) {
+	}
+
+// Creates a Table if non-existent with 3 columns
+// One column for row identifier, another to know what variable it is, and what value it has
+	else {
+		$sql = "CREATE TABLE temptb (id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            varname VARCHAR(30) NOT NULL, val VARCHAR(30) NOT NULL)";
+		if (mysqli_query($conn, $sql)) {
+		} else {
+			echo "Error creating table: " . mysqli_error($conn);
+		}
+	}
+	
+	$conn->close();
+
 ?>
 
 <html>

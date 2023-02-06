@@ -1,4 +1,17 @@
 <?php
+    $conn = new mysqli("localhost", "root", "", "temp");
+    // Check connection
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+    $sql = "SELECT val FROM temptb WHERE varname = 'IDNum' ORDER BY id DESC LIMIT 1";
+    $result = mysqli_query($conn, $sql);
+    if (mysqli_num_rows($result) > 0) {
+        $row = mysqli_fetch_assoc($result);
+        $tempvar1 = $row["val"];
+        mysqli_close($conn);
+    }
+    
     // THIS PART CONNECTS TO THE DATABASE
     $servername = "localhost";
     $username = "root";
@@ -16,7 +29,7 @@
     //on the 'teacher' database, 'login' table in phpmyadmin, search for the id number in the session array
     //mysql and sessions (use curly braces) https://stackoverflow.com/questions/5746614/session-variable-in-mysql-query
     $statementQuery = $teacherDatabaseConnect->prepare("SELECT * FROM login WHERE IDNumber = ?");
-    $statementQuery->bind_param("s", $_SESSION["currentUser"]);
+    $statementQuery->bind_param("s", $tempvar1);
     $statementQuery->execute();
 
     //<!---THIS PART GETS THE FIRST NAME AND LAST NAME OF THE CURRENTLY LOGGED-IN USER --->

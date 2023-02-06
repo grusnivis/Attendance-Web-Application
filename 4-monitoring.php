@@ -1,10 +1,40 @@
 <?php
-    session_start();
-
+    //session_start();
+	$conn = new mysqli("localhost", "root", "", "temp");
+	// Check connection
+	if ($conn->connect_error) {
+		die("Connection failed: " . $conn->connect_error);
+	}
+	$sql = "SELECT val FROM temptb WHERE varname = 'table' ORDER BY id DESC LIMIT 1";
+	$result = mysqli_query($conn, $sql);
+	if (mysqli_num_rows($result) > 0) {
+		$row = mysqli_fetch_assoc($result);
+		$tempvar1 = $row["val"];
+	}
+	$sql = "SELECT val FROM temptb WHERE varname = 'Teacher name' ORDER BY id DESC LIMIT 1";
+	$result = mysqli_query($conn, $sql);
+	if (mysqli_num_rows($result) > 0) {
+		$row = mysqli_fetch_assoc($result);
+		$tempvar2 = $row["val"];
+		mysqli_close($conn);
+	}
+ 
 	include '0-connect.php';
-	$cg = $_SESSION["table"];
-	$teacher_name = strtoupper($_SESSION["Teacher name"]);
-    $_SESSION['table'] = $cg;
+	$cg = $tempvar1;
+	$teacher_name = strtoupper($tempvar2);
+	
+    $conn = new mysqli("localhost", "root", "", "temp");
+	// Check connection
+	if ($conn->connect_error) {
+		die("Connection failed: " . $conn->connect_error);
+	}
+	$sql = "INSERT INTO temptb (varname, val) VALUES ('table', '$cg')";
+	
+	if (mysqli_query($conn, $sql)) {
+		mysqli_close($conn);
+	}
+
+    //$_SESSION['table'] = $cg;
 	$fullname = $_GET["name"];
 	//separate surname and name
 	$name = explode(', ', $fullname);

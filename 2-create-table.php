@@ -1,5 +1,5 @@
 <?php
-    session_start();
+    //session_start();
 
     //THIS PART JUST CALLS THE PHP FILE FOR SCANNING OF ATTENDANCE LOG FOLDER 
     include ('1-scan-directory.php');
@@ -53,8 +53,18 @@
 
 <?php
     function connect_to_db($date, $dir, $file_name, $cg, $teacher)
-    {            
-        $_SESSION["Teacher name"] = $teacher;        
+    {
+	    $conn = new mysqli("localhost", "root", "", "temp");
+	    // Check connection
+	    if ($conn->connect_error) {
+		    die("Connection failed: " . $conn->connect_error);
+	    }
+	    $sql = "INSERT INTO temptb (varname, val) VALUES ('Teacher name', '$teacher')";
+	
+	    if (mysqli_query($conn, $sql)) {
+		    mysqli_close($conn);
+	    }
+        //$_SESSION["Teacher name"] = $teacher;
         //$_SESSION["Class Selected"] = $temp[3].'  '.$temp[2];
         //$_SESSION["table"] = $cg;
 
@@ -198,7 +208,18 @@
         // THIS IS WHERE WE CONNECT TO THE DATABASE OF THE TEACHER WHO SIGNED IN
         // the session below is to pass the name to the other php file
         $teacher_name = "christopher james m labrador";
-        $_SESSION["Teacher name"] = $teacher_name;
+	
+	    $conn = new mysqli("localhost", "root", "", "temp");
+	    // Check connection
+	    if ($conn->connect_error) {
+		    die("Connection failed: " . $conn->connect_error);
+	    }
+	    $sql = "INSERT INTO temptb (varname, val) VALUES ('Teacher name', '$teacher_name')";
+	
+	    if (mysqli_query($conn, $sql)) {
+		    mysqli_close($conn);
+	    }
+        //$_SESSION["Teacher name"] = $teacher_name;
         include '0-connect.php';
 
         $show_tables = $db->query("SHOW TABLES");

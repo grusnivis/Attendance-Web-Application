@@ -1,12 +1,24 @@
 <?php
+	$conn = new mysqli("localhost", "root", "", "temp");
+	// Check connection
+	if ($conn->connect_error) {
+		die("Connection failed: " . $conn->connect_error);
+	}
+	$sql = "SELECT val FROM temptb WHERE varname = 'IDNum' ORDER BY id DESC LIMIT 1";
+	$result = mysqli_query($conn, $sql);
+	if (mysqli_num_rows($result) > 0) {
+		$row = mysqli_fetch_assoc($result);
+		$tempvar = $row["val"];
+		mysqli_close($conn);
+	}
 //THIS PART JUST CALLS THE PHP FILE FOR SCANNING OF ATTENDANCE LOG FOLDER
 include('1-scan-directory.php');
 include('connect.php');
 ?>
 
 <?php
-session_start();
-echo 'For display session only:' . $_SESSION["currentUser"];
+//session_start();
+echo 'For display session only:' . $tempvar;
 
 // THIS CREATES A TABLE FOR EVERY FILE FOUND IN FOLDER
 foreach ($files_arr as $file_name) {
@@ -16,7 +28,18 @@ foreach ($files_arr as $file_name) {
 
     // Teacher's firstname lastname - Course code - Group number
     $cg = $temp[1] . '-' . $temp[2] . '-' . $temp[3];
-    $_SESSION["table"] = $cg;
+	
+    $conn = new mysqli("localhost", "root", "", "temp");
+	// Check connection
+	if ($conn->connect_error) {
+		die("Connection failed: " . $conn->connect_error);
+	}
+	$sql = "INSERT INTO temptb (varname, val) VALUES ('table', '$cg')";
+	
+	if (mysqli_query($conn, $sql)) {
+		mysqli_close($conn);
+	}
+    //$_SESSION["table"] = $cg;
 
     // path = directory + filename
     $path = $dir . $file_name;
@@ -112,7 +135,7 @@ if ($databaseLink == false) {
 
 //on the 'teacher' database, 'login' table in phpmyadmin, search for the id number in the session array
 //mysql and sessions (use curly braces) https://stackoverflow.com/questions/5746614/session-variable-in-mysql-query
-$sql = "SELECT *FROM login WHERE IDNumber = {$_SESSION['currentUser']}";
+$sql = "SELECT *FROM login WHERE IDNumber = {$tempvar}";
 //$result = mysqli_query($databaseLink, $sql);
 //$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
 //$count = mysqli_num_rows($result);
@@ -142,7 +165,7 @@ mysqli_select_db("monitoring") or die(mysql_error);
 //https://www.mytecbits.com/microsoft/sql-server/search-and-find-table-by-name
 //https://www.w3schools.com/php/php_mysql_select_where.asp
 //https://stackoverflow.com/questions/9898610/displaying-all-table-names-in-php-from-mysql-database
-$filteredTables = "SHOW TABLES FROM $dbname like '%%'
+$filteredTables = "SHOW TABLES FROM $dbname like '%%'";
 
 
 
@@ -177,7 +200,7 @@ $filteredTables = "SHOW TABLES FROM $dbname like '%%'
 
         //on the 'teacher' database, 'login' table in phpmyadmin, search for the id number in the session array
         //mysql and sessions (use curly braces) https://stackoverflow.com/questions/5746614/session-variable-in-mysql-query
-        $sql = "SELECT *FROM login WHERE IDNumber = {$_SESSION['currentUser']}";
+        $sql = "SELECT *FROM login WHERE IDNumber = {$tempvar}";
         //$result = mysqli_query($databaseLink, $sql);
         //$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
         //$count = mysqli_num_rows($result);
