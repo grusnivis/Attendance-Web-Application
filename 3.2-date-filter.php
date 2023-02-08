@@ -11,7 +11,7 @@
 		$row = mysqli_fetch_assoc($result);
 		$tempvar1 = $row["val"];
 	}
-	$sql = "SELECT val FROM temptb WHERE varname = 'Teacher name' ORDER BY id DESC LIMIT 1";
+	$sql = "SELECT val FROM temptb WHERE varname = 'teacherName' ORDER BY id DESC LIMIT 1";
 	$result = mysqli_query($conn, $sql);
 	if (mysqli_num_rows($result) > 0) {
 		$row = mysqli_fetch_assoc($result);
@@ -49,186 +49,15 @@
 ?>
 
 <html>
-
-<style>
-	@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;1,100;1,300;1,400;1,700&display=swap');
-
-	html * {
-	font-size: 16px;
-	line-height: 1.625;
-	font-family: Lato, sans-serif;
-	}
-
-    td,th {
-        border: 1px solid black;
-        padding: 10px;
-        margin: 5px;
-        text-align: center;
-    }
-
-	btn{
-		background-color: #dd6e42;
-		color: white;
-		text-align: center;
-		display:inline-block;
-		font-weight:400;
-		vertical-align:middle;
-		cursor:pointer;
-		border:1px solid transparent;
-		padding:.375rem .75rem;
-		font-size:1rem;
-		line-height:1.5;
-		border-radius:7px;
-		margin-left:10px; 
-	}
-
-	.topnav {
-		background-color: #4f6d7a;
-		overflow: hidden;
-	}
-  
-  /* Style the links inside the navigation bar */
-	.topnav a {
-		float: left;
-		color: #f2f2f2;
-		text-align: center;
-		padding: 14px 16px;
-		text-decoration: none;
-		font-size: 17px;
-	}
-  
-  /* Change the color of links on hover */
-	.topnav a:hover {
-		text-decoration: none;
-		background-color:darkgray;
-		color: black;
-	}
-  
-  /* Add a color to the active/current link */
-	.topnav a.active {
-		background-color: #dd6e42;
-		color: white;
-	}
-
-	* {
-		box-sizing: border-box
-	}
-
-	/* Style the tab */
-	.tab {
-		float: left;
-		background-color: white;
-		width: 20%;
-		border-radius: 7px;
-	}
-
-	/* Style the buttons inside the tab */
-	.tab button {
-		display: block;
-		background-color: inherit;
-		color: black;
-		padding: 22px 16px;
-		width: 100%;
-		border: none;
-		outline: none;
-		text-align: left;
-		cursor: pointer;
-		transition: 0.3s;
-		font-size: 17px;
-		border-radius: 7px;
-	}
-
-	/* Change background color of buttons on hover */
-	.tab button:hover {
-		background-color: darkgray;
-	}
-
-	/* Create an active/current "tab button" class */
-	.tab button.active {
-		background-color: #dd6e42;
-	}
-
-	/* Style the tab content */
-	.tabcontent {
-		float: right;
-		width:65%;
-		height: fit-content;
-		background-color: white;
-		border-radius: 7px;
-		padding:40px 50px; 
-		margin:50px 50px;
-	}
-
-	.overlay {
-		position: fixed;
-		top: 0;
-		bottom: 0;
-		left: 0;
-		right: 0;
-		background: rgba(0, 0, 0, 0.7);
-		transition: opacity 0.5s;
-		visibility: hidden;
-		opacity: 0;
-	}
-
-	.overlay:target {
-		visibility: visible;
-		opacity: 1;
-	}
-
-	.popup {
-		text-align: center;
-		margin: 40px auto;
-		padding: 15px;
-		background: #fff;
-		border-radius: 5px;
-		width: 83%;
-		max-height: 110%;
-		position: relative;
-	}
-
-	.popup h2 {
-		margin: 20px;
-		padding: 10px;
-		color: #4f6d7a;
-		font-size: 28px;
-	}
-
-	.popup .close {
-		position: absolute;
-		top: 20px;
-		right: 30px;
-		transition: all 200ms;
-		font-size: 30px;
-		font-weight: bold;
-		text-decoration: none;
-		color: #333;
-	}
-
-	.popup .close:hover {
-		color: #dd6e42;
-	}
-	
-	.popup .content {
-		text-align: center;
-		margin: 10px;
-		padding: 10px;
-		overflow: auto;
-		max-height: 60%;
-	}
-</style>
-
 <head>
-	<meta http-equiv="Content-Type"
-		content="text/html; charset=UTF-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 	<title>View Attendance</title>
 
-	<link rel="stylesheet" 
-        href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 
-	<link rel="stylesheet"
-		href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link type="text/css" rel="stylesheet" href="css/date-filter-style.css"/>
 
 	<!--<link rel="stylesheet" type="text/css"
 		href="css/monitoring-style.css"> -->
@@ -237,18 +66,18 @@
 
 <body style="background-color: #eaeaea">
 	<nav class="topnav">
-		<a href="http://localhost/attendance%20monitoring/2-create-table.php" style="color: #f2f2f2;"><i class="fa fa-home" style="font-size: 27px;text-align:center"></i></a>
-		<a href="http://localhost/attendance%20monitoring/3-display-selection.php" style="color: #f2f2f2">Overall Attendance</a>
-		<a href="http://localhost/attendance%20monitoring/3.1-class-list.php" style="color: #f2f2f2">Class List</a>
-		<a class="active" href="http://localhost/attendance%20monitoring/3.2-date-filter.php" style="color: #f2f2f2">Date Filter</a>
-		<a href="http://localhost/attendance%20monitoring/3.3-unenrolled.php" style="color: #f2f2f2">Unenrolled RFIDs</a>
-		<a href="#sign-out" style="color: #f2f2f2; float:right">Sign Out</a>
+		<a href="2-create-table.php" style="color: #f2f2f2;"><i class="fa fa-home" style="font-size: 27px;text-align:center"></i></a>
+		<a href="3-display-selection.php" style="color: #f2f2f2">Overall Attendance</a>
+		<a href="3.1-class-list.php" style="color: #f2f2f2">Class List</a>
+		<a class="active" href="3.2-date-filter.php" style="color: #f2f2f2">Date Filter</a>
+		<a href="3.3-unenrolled.php" style="color: #f2f2f2">Unenrolled RFIDs</a>
+		<a href="logout.php" style="color: #f2f2f2; float:right">Log Out</a>
 	</nav>
 
 	<div class="container pt-5" style="text-align:center">
         <!-- class course code display -->
 		<div style="text-align:center">
-			<h1 style="color:#dd6e42;font-size: 28px;"> <?php echo $cg; ?> Attendance</h1>
+			<h1 style="color:#dd6e42;font-size: 28px;"> <?php echo $cg; ?> Attendance Log</h1>
 			
 			<div style="padding-top: 40px; padding-bottom: 20px; text-align:center">
 				<!-- Date Filtering (this is for date selection)-->
@@ -692,7 +521,7 @@
 				//SUMMARY DOWNLOAD AND MAIL
 				if(isset($_GET['download_s_csv'])){
 					// filename = download path/filename            
-					$filename = "C:/Users/Amber/Downloads/". strtoupper($teacher_name) . "_" . $cg . ".csv";
+					$filename = "./Downloads/". strtoupper($teacher_name) . "_" . $cg . ".csv";
 					$file = fopen($filename,"w");
 					fputcsv($file, array("Start date:",$_GET['start_date']," ","End date:",$_GET['end_date']));
 					fputcsv($file, array("Name","Present","Late","Excused","Absent","Attendance Days","% Presence"));
@@ -709,7 +538,7 @@
 				if(isset($_POST['send_email_s'])){
 
 					// filename = download path/filename            
-					$filename = "C:/Users/Amber/Downloads/". strtoupper($teacher_name) . "_" . $cg . ".csv";
+					$filename = "./Downloads/". strtoupper($teacher_name) . "_" . $cg . ".csv";
 					$file = fopen($filename,"w");
 					fputcsv($file, array("Name","Present","Late","Excused","Absent","Attendance Days","% Presence"));
 											
@@ -870,7 +699,7 @@
 
 				if(isset($_GET['download_csv'])){
 				// filename = download path/filename            
-				$filename = "C:/Users/Amber/Downloads/". strtoupper($teacher_name) . "_" . $cg . ".csv";
+				$filename = "./Downloads/". strtoupper($teacher_name) . "_" . $cg . ".csv";
 				$file = fopen($filename,"w");
 				fputcsv($file, array("Start date:",$_GET['start_date']," ","End date:",$_GET['end_date']));
 				fputcsv($file, array("ID#","Lastname","Name","Date","Status","Time-in"));
@@ -885,7 +714,7 @@
 
 				if(isset($_POST['send_email'])){
 					// filename = download path/filename            
-					$filename = "C:/Users/Amber/Downloads/". strtoupper($teacher_name) . "_" . $cg . ".csv";
+					$filename = "./Downloads/". strtoupper($teacher_name) . "_" . $cg . ".csv";
 					$file = fopen($filename,"w");
 					fputcsv($file, array("ID#","Lastname","Name","Date","Status","Time-in"));
 																	
@@ -984,14 +813,10 @@ function display_table($db, $cg, $headers, $check_date, $date_from_user){
 		echo "<th>" . $value . "</th>";
 	}
 
-	$id = $db->query("select ID as id from `$cg` where Date='$date_from_user'
-					   order by Surname"); 
-	$concat= $db->query("select Concat(Surname, ', ', Name)
-						as name from `$cg` where Date='$date_from_user' 
-						 order by Surname");	
+	$id = $db->query("select ID as id from `$cg` where Date='$date_from_user' order by Surname");
+	$concat= $db->query("select Concat(Surname, ', ', Name) as name from `$cg` where Date='$date_from_user' order by Surname");
 
-	while ($id_num = $id->fetch_assoc() AND $row = $concat->fetch_assoc()
-			AND $other_col = $check_date->fetch_assoc()) { 
+	while ($id_num = $id->fetch_assoc() AND $row = $concat->fetch_assoc() AND $other_col = $check_date->fetch_assoc()) {
 		echo "<tr>";
 
 		$id_number = $id_num['id'];

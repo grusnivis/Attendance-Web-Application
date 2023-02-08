@@ -17,7 +17,7 @@
 		$tempvar1 = $row["val"];
 		mysqli_close($conn);
 	}
-header("Cache-Control: no-cache, must-revalidate");
+//header("Cache-Control: no-cache, must-revalidate");
 ?>
 
 <html lang='en'>

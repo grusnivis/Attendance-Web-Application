@@ -11,7 +11,7 @@
 		$row = mysqli_fetch_assoc($result);
 		$tempvar1 = $row["val"];
 	}
-	$sql = "SELECT val FROM temptb WHERE varname = 'Teacher name' ORDER BY id DESC LIMIT 1";
+	$sql = "SELECT val FROM temptb WHERE varname = 'teacherName' ORDER BY id DESC LIMIT 1";
 	$result = mysqli_query($conn, $sql);
 	if (mysqli_num_rows($result) > 0) {
 		$row = mysqli_fetch_assoc($result);
@@ -94,7 +94,7 @@
 
 		if($query_run){
 			//echo '<script> alert("Data Updated"); </script>';
-			header("Location: http://localhost/attendance%20monitoring/4-monitoring.php/?name=$fullname#");
+			header("Location: 4-monitoring.php/?name=$fullname#");
 			exit;
 		}
 		else{
@@ -105,11 +105,11 @@
 ?>
 
     <nav class="topnav">
-		<a href="http://localhost/attendance%20monitoring/2-create-table.php" style="color: #f2f2f2;"><i class="fa fa-home" style="font-size: 27px;text-align:center"></i></a>
-		<a href="http://localhost/attendance%20monitoring/3-display-selection.php" style="color: #f2f2f2">Overall Attendance</a>
-		<a href="http://localhost/attendance%20monitoring/3.1-class-list.php" style="color: #f2f2f2">Class List</a>		<a href="http://localhost/attendance%20monitoring/3.2-date-filter.php" style="color: #f2f2f2">Date Filter</a>
-		<a href="http://localhost/attendance%20monitoring/3.3-unenrolled.php" style="color: #f2f2f2">Unenrolled RFIDs</a>
-		<a href="#sign-out" style="color: #f2f2f2; float:right">Sign Out</a>
+		<a href="2-create-table.php" style="color: #f2f2f2;"><i class="fa fa-home" style="font-size: 27px;text-align:center"></i></a>
+		<a href="3-display-selection.php" style="color: #f2f2f2">Overall Attendance</a>
+		<a href="3.1-class-list.php" style="color: #f2f2f2">Class List</a>		<a href="http://localhost/attendance%20monitoring/3.2-date-filter.php" style="color: #f2f2f2">Date Filter</a>
+		<a href="3.3-unenrolled.php" style="color: #f2f2f2">Unenrolled RFIDs</a>
+		<a href="logout.php" style="color: #f2f2f2; float:right">Sign Out</a>
 	</nav>
 
 	<div>
@@ -207,9 +207,6 @@
 					<?php
 						}
 					?>
-		
-		
-
 
 		<script>
 		var acc = document.getElementsByClassName("accordion");
@@ -447,7 +444,7 @@
 
 				if(isset($_GET['download_csv'])){
 				// filename = download path/filename            
-				$filename = "C:/Users/Amber/Downloads/". strtoupper($teacher_name) . "_" . $cg . ".csv";
+				$filename = "C:/Users/Kath/Downloads/". strtoupper($teacher_name) . "_" . $cg . ".csv";
 				$file = fopen($filename,"w");
 				fputcsv($file, array("ID#","Lastname","Name","Date","Status","Time-in"));
 											
@@ -461,8 +458,9 @@
 
 				if(isset($_POST['send_email'])){
 
-					// filename = download path/filename            
-					$filename = "C:/Users/Amber/Downloads/". strtoupper($teacher_name) . "_" . $cg . ".csv";
+					// filename = download path/filename
+                    // NOTE: CHANGE FILEPATH ON THE SERVER PC
+					$filename = "C:/Users/Kath/Downloads/". strtoupper($teacher_name) . "_" . $cg . ".csv";
 					$file = fopen($filename,"w");
 					fputcsv($file, array("ID#","Lastname","Name","Date","Status","Time-in"));
 											
@@ -475,7 +473,7 @@
 					fclose($file);
 
 					// the necessary email addresses
-					$from = '19101182@usc.edu.ph';
+					$from = '19102579@usc.edu.ph';
 					$to = $_POST["email"]; 
 
 					//read from the uploaded file & base64_encode content
