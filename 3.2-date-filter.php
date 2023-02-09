@@ -374,9 +374,11 @@
 							}
 						}
 				}
-					if(($present + $late + $excused + $absent) !== $total){
-						$absent++;
-					}
+
+                    //changed if () to while()
+                    while (($present + $late + $excused + $absent) !== $total) {
+                        $absent++;
+                    }
 				
 					echo "<tr>";
 

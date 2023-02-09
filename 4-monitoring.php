@@ -311,7 +311,12 @@
     	</div>
 	</div>
 
-	<div class="tab" style="float:right; width:45%;height:fit-content;margin-left:0;margin-bottom:50px">
+    <!-- added this bit from here-->
+	<div class="tab" style="float:right; width:45%;height:fit-content;margin-left:0;margin-bottom:50px;padding:20px 0">
+        <h1 style = color:#4f6d7a;font-size:22px;> Total Attendance Days</h1>
+        <h1 style = color:black;font-size:45px;font-weight:600;><?php echo $total?></h1>
+    <!-- to here -->
+
 	<h1 style=color:#4f6d7a;font-size:22px;>Overall Attendance Percentage</h1>
 			<div class="piechart">
 				<div class="legend">

@@ -21,7 +21,7 @@ redirect to teacher-login-modify.php
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
     <form method = "POST" action = "teacher-login-modify.php">
-        <h1>Modify Teacher Credentials</h1>
+        <h1>Change Teacher Password</h1>
         <p class = "instructions">
             Please select the registered teacher that you want to modify the details from in
             the dropdown box below:

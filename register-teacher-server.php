@@ -10,7 +10,7 @@ $IDNum = '';
 $password = '';
 $email = '';
 
-if (isset ($_POST["submit"])) {
+if (isset ($_POST["register"])) {
     //ucfirst - returns the first character of the string capitalized (https://www.php.net/manual/en/function.ucfirst.php)
     $firstName = strtoupper($_POST["first-name"]);
     $lastName = strtoupper($_POST["last-name"]);
@@ -60,7 +60,7 @@ if (isset ($_POST["submit"])) {
     $createLoginTableStmt->execute();
     $createLoginTableStmt->close();
 
-    //prepare the query to insert the registered teacher to the teacheer database.
+    //prepare the query to insert the registered teacher to the teacher database.
     //it does duplicate checking first to see if the teacher is registered already
     $checkTeacherDBDuplicate = "SELECT * FROM login WHERE IDNumber = '$IDNum'";
     $statementDuplicate = mysqli_query($teacherDB, $checkTeacherDBDuplicate);
@@ -231,5 +231,9 @@ if (isset ($_POST["submit"])) {
 
     $_SESSION["registerTeacherMsg"] = "Teacher registration successful!";
     header("Location: register-teacher.php");
+}
+
+if (isset ($_POST["return-to-admin-main"])){
+    header("location: admin-main.php");
 }
 ?>

@@ -249,7 +249,8 @@ if (isset($_GET['download_pdf'])) {
     echo "<th> Name </th>";
 
     // this query doesn't include the empty ID and name columns
-    $rfid = $db->query("select Concat(RFID, ', ', ID) as rf_id from `$cg` WHERE NOT name='' group by Name order by Surname");
+    // update: added (from NOT name to NOT ID)
+    $rfid = $db->query("select Concat(RFID, ', ', ID) as rf_id from `$cg` WHERE NOT ID='' group by Name order by Surname");
 
     $concat = $db->query("select Concat(Surname, ', ', Name) as name from `$cg` WHERE NOT name='' group by Name order by Surname");
 
@@ -280,7 +281,9 @@ if (isset($_GET['download_pdf'])) {
             echo "<th> ID# </th>" . "<th> Lastname </th>" . "<th> Name </th>" .
                 "<th> Date </th>" . "<th> Status </th>" .
                 "<th> Time-in </th>";
-            $show_col = $db->query("SELECT ID,Surname,Name,Date,Status,Time FROM `$cg` order by Surname");
+
+            //updated this part with WHERE NOT
+            $show_col = $db->query("SELECT ID,Surname,Name,Date,Status,Time FROM `$cg` WHERE NOT ID = '' AND NOT Name = '' order by Surname");
 
             if ($show_col->num_rows > 0) {
 
@@ -470,7 +473,7 @@ if (isset($_GET['download_pdf'])) {
             $date = array();
             //$array_s = array();
 
-            $show_col = $db->query("SELECT Name,Surname,Date FROM `$cg` order by Surname");
+            $show_col = $db->query("SELECT Name,Surname,Date FROM `$cg` WHERE NOT ID = '' AND NOT Name = '' order by Surname");
 
             if ($show_col->num_rows > 0) {
                 echo "<table id='test' style=margin-left:auto;margin-right:auto;text-align:center>";
@@ -520,7 +523,8 @@ if (isset($_GET['download_pdf'])) {
                         }
                     }
 
-                    if (($present + $late + $excused + $absent) !== $total) {
+                    //changed if () to while ()
+                    while (($present + $late + $excused + $absent) !== $total) {
                         $absent++;
                     }
 

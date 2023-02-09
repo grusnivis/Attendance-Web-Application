@@ -6,34 +6,34 @@ body{
     justify-content: center;
     margin: 0 auto;
     font-family: "Lato", sans-serif;
-    background-color: #4f6d7a;
+    background-color: #eaeaea;
 }
 
 .main-con{
     text-align: center;
     padding: 1px;
-    background-color: #4f6d7a;
+    background-color: #eaeaea;
 }
 
 .adminMainCon{
     width: 400px;
-    height: 450px;
+    height: 410px;
     border-radius: 5%;
     text-align: center;
     padding: 7px;
-    background-color: #dd6e42;
+    background-color: white;
 }
 
 
 /*text options*/
 h1{
-    color:#e8dab2;
+    color:#4f6d7a;
     font-family: "Lato", sans-serif;
     font-size: 30px;
 }
 
 p{
-    color: #e8dab2;
+    color: #dd6e42;
 }
 
 .instructions{
@@ -46,12 +46,12 @@ p{
 /*button options*/
 input[type="submit"] { /*upload button */
     border: 0px;
-    color: #e8dab2;
-    background: #4f6d7a;
+    color: white;
+    background: #dc3545;
     margin: 10px 0;
     border-radius: 5px;
     font-weight: bold;
-    padding: 5px 20px;
+    padding: 10px 20px;
     cursor: pointer;
 }
 

@@ -7,6 +7,7 @@
 -->
 
 <?php
+    session_start();
     include ('admin-database-config.php');
 
     $username = $_POST['username'];
@@ -26,11 +27,11 @@
 
     //if username and password 
     if ($count == 1){
+        $_SESSION["adminCurrentUser"] = $username;
         header("location: admin-main.php");
     }
     else{
-        //definitely think of another solution aside from this
-        $login_err = "Invalid administrator username or password.";
+        $_SESSION["adminLoginMsg"] = "Invalid username or password!";
         header("location: admin-login.php");
     }
 

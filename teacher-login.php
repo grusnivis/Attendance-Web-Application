@@ -39,7 +39,7 @@ session_start();
 <div class="con-main">
     <h1>Attendance Monitoring System</h1>
     <h3> Welcome! </h3>
-    <h4> Group H 2022-2023 designed this system
+    <h4> Group H 2022-2023 designed this web application
         <br/>for the thesis entitled
         <i> Development of an Attendance Monitoring System with a Portable RFID-based Logging Device. </i>
         <p> <b> <i> Are you an administrator? <a href="admin-login.php"> Log in here! </a> </i></b></p>
@@ -52,6 +52,12 @@ session_start();
 
         <form class="form-signin" role="form" action="database-authenticate.php" method="post">
             <h4 class="form-signin-heading"><?php echo $msg = ''; ?></h4>
+            <!-- use "placeholder" for the filler text in boxes -->
+            <input type="text" class="form-control" name="IDNum" placeholder="ID Number" required autofocus>
+            <input type="password" class="form-control" name="password" placeholder="Password" required>
+            <br class="breakspace"/>
+            <input type="submit" name="buttonLogin" class="btn btn-info" value="Login"/>
+            <br class="breakspaceForNotif"/>
             <?php
             if (isset($_SESSION['teacherLoginMsg']) && $_SESSION['teacherLoginMsg']) {
                 echo '<p class = "notification">';
@@ -60,11 +66,6 @@ session_start();
                 unset ($_SESSION["teacherLoginMsg"]);
             }
             ?>
-            <!-- use "placeholder" for the filler text in boxes -->
-            <input type="text" class="form-control" name="IDNum" placeholder="ID Number" required autofocus>
-            <input type="password" class="form-control" name="password" placeholder="Password" required>
-            <br class="breakspace"/>
-            <input type="submit" name="buttonLogin" class="btn btn-info" value="Login"/>
         </form>
     </div>
 </div>

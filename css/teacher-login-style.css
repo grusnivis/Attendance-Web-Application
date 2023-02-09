@@ -43,6 +43,12 @@ h4{
    margin-top: -70px; /* change this to whatever height you want it */
 }
 
+.breakspaceForNotif {
+    display: block; /* makes it have a width */
+    content: ""; /* clears default height */
+    margin-top: -15px; /* change this to whatever height you want it */
+}
+
 .con-main{
     width: 390px;
     height: 430px;

@@ -63,13 +63,13 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Modify Teacher Details
         <p class = "instructions">
             <center>
                 <div class = "form-group">
-                    <h1> Teacher's Password </h1>
+                    <h1> Input New Teacher Password </h1>
                     <p class = "notification"> Enter the new password below.</p>
-                    <input type="text" class = "password" name = "password" value = "<?php echo $teacherPassword?>"/>
+                    <input type="password" class = "password" name = "password" value = "<?php echo $teacherPassword?>"/>
                 </div>
         <br/>
                 <div class = "form-group">
-                    <input type="submit" name="uploadBtn" class="btn btn-info" value="Update Teacher Login Credentials"/>
+                    <input type="submit" name="uploadBtn" class="btn btn-info" value="Update to New Teacher Password"/>
                 </div>
             </center>
         </p>

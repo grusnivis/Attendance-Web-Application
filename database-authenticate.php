@@ -32,8 +32,8 @@
     if ($countLogin == 1){
         //see solution here for sessions: https://www.simplilearn.com/tutorials/php-tutorial/php-login-form
         //$_SESSION['currentUser'] = $IDNum;
-        header("location: teacher-main.php");
         $_SESSION['currentUser'] = $IDNum;
+        header("location: 2-create-table.php");
     }
     else{
         $_SESSION["teacherLoginMsg"] = "Invalid username or password!";

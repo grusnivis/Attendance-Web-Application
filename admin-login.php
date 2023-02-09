@@ -20,7 +20,7 @@
 <html>
     <head>
         <title>Group H - Web Application</title>
-        <link type = "text/css" rel = "stylesheet" href = "css/teacher-login-style.css" />
+        <link type = "text/css" rel = "stylesheet" href = "css/admin-login-style.css" />
     </head>
     <body>
     <?php
@@ -34,40 +34,16 @@
     ?> 
         <br/>
         <div class="con-main">
-            <h1>Attendance System <i><u> [Administrator] </u></i></h1>
+            <h1>Attendance Monitoring System <i><u> [Administrator] </u></i></h1>
             <h3> Welcome! </h3>
-            <h4> Welcome to the administrator login menu. Please </br>
-            Input your credentials below.
+            <h4> Welcome to the administrator login menu for <br/>Group H's thesis entitled
+                <i> Development of an <br/>Attendance Monitoring System with a <br/>Portable RFID-based Logging Device.</i>
+                <br/>Please input your credentials below.
             </h4>
-            </h4>
+            <p> <b> <i>Are you a teacher? <a href = "teacher-login.php" > Log in here! </a> </i></b></p>
 
             <hr>
-            <!-- commented this out. not needed anymore i think
-            <div class = "container form-signin"> 
-                <?php
-                /*
-                    $msg = '';
-                    
-                    if (isset($_POST['login']) && !empty($_POST['username']) && !empty($_POST['password'])) {                
-                        if ($_POST['username'] == 'admin' &&  $_POST['password'] == '1234') {
-                        $_SESSION['valid'] = true;
-                        $_SESSION['timeout'] = time();
-                        $_SESSION['username'] = 'admin';
-                        
-                        $msg = 'Login Successful!';
 
-                        header("location:teacher-menu.php");
-                    }
-                    
-                    else {
-                        $msg = 'Wrong username or password!';
-                    }
-                    }
-                */
-                ?>
-            </div>
-            -->
-            
             <div class = "con-form">
                 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
                 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -75,12 +51,20 @@
                 <form class = "form-signin" role = "form" action = "admin-database-authenticate.php" method = "post">
                     <h4 class = "form-signin-heading"><?php echo $msg = ''; ?></h4>
                     <!-- use "placeholder" for the filler text in boxes -->
-                    <input type = "text" class = "form-control" name = "username" placeholder = "username" required autofocus>
-                    <input type = "password" class = "form-control" name = "password" placeholder = "password" required >
+                    <input type = "text" class = "form-control" name = "username" placeholder = "Username" required autofocus>
+                    <input type = "password" class = "form-control" name = "password" placeholder = "Password" required >
                     <br class = "breakspace"/>
                     <input type="submit" name="buttonLogin" class="btn btn-info" value="Login"/>
                 </form>
-                <p> Are you a teacher? <b> <a href = "teacher-login.php" > Log in here! </a> </b></p>
+                <br class="breakspaceForNotif"/>
+                <?php
+                if (isset($_SESSION['adminLoginMsg']) && $_SESSION['adminLoginMsg']) {
+                    echo '<p class = "notification">';
+                    echo $_SESSION["adminLoginMsg"];
+                    echo '</p>';
+                    unset ($_SESSION["adminLoginMsg"]);
+                }
+                ?>
             </div> 
         </div>
     

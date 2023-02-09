@@ -22,8 +22,7 @@ session_start();
         <table>
             <h1> Register Teacher </h1>
             <p class="instructions">
-                Fill up all the fields below for registering.
-                Return to the Administrator Menu <a href="admin-main.php"> here.</a>
+                Fill up all the text fields below for registering <br/> the teacher into the Attendance Monitoring System.</a>
             </p>
 
             <?php
@@ -34,7 +33,7 @@ session_start();
             <tr>
                 <div class="form-group">
                     <td>
-                        <p class="instructions"> First Name </p>
+                        <p class="instructions"><b>FIRST NAME</b></p>
                     </td>
                     <td>
                         <input type="text" class="firstName" placeholder="First Name" name="first-name"/>
@@ -45,7 +44,7 @@ session_start();
             <div class="form-group">
                 <tr>
                     <td>
-                        <p class="instructions"> Last Name </p>
+                        <p class="instructions"><b>LAST NAME</b></p>
                     </td>
                     <td>
                         <input type="text" class="lastName" placeholder="Last Name" name="last-name"/>
@@ -56,7 +55,7 @@ session_start();
             <div class="form-group">
                 <tr>
                     <td>
-                        <p class="instructions"> ID Number </p>
+                        <p class="instructions"> <b>ID NUMBER</b></p>
                     </td>
                     <td>
                         <!-- retain type = "text" due to teachers having letters in their ID number -->
@@ -68,7 +67,7 @@ session_start();
             <div class="Password">
                 <tr>
                     <td>
-                        <p class="instructions"> Password </p>
+                        <p class="instructions"><b>PASSWORD</b></p>
                     </td>
                     <td>
                         <input type="password" class="password" placeholder="Password" name="password"/>
@@ -79,7 +78,7 @@ session_start();
             <div class="form-group">
                 <tr>
                     <td>
-                        <p class="instructions"> Email </p>
+                        <p class="instructions"><b>EMAIL</b></p>
                     </td>
                     <td>
                         <!-- use input type = "email" for automatic email validation -->
@@ -92,12 +91,13 @@ session_start();
                 <tr>
                     <td colspan="2" align="center">
                         <!-- change button text through the value attribute -->
-                        <input type="submit" name="submit" class="btn btn-info" value="Register"/>
+                        <input type="submit" name="register" class="btn btn-info" value="Register"/>
                     </td>
                 </tr>
             </div>
     </form>
     </table>
+    <input type="submit" name="return-to-admin-main" class="btn btn-info" value="Return to Administrator Menu"/>
     <!-- THIS PART IS FOR DISPLAYING IF THE PUSHING TO LOGIN TABLE AND CREATING USER DATABASE IS SUCCESSFUL -->
     <?php
     if (isset($_SESSION['registerTeacherMsg']) && $_SESSION['registerTeacherMsg']) {

@@ -6,7 +6,7 @@ body{
     justify-content: center;
     margin: 0 auto;
     font-family: "Lato", sans-serif;
-    background-color: #4f6d7a;
+    background-color: #eaeaea;
 }
 
 .topnav {
@@ -66,25 +66,28 @@ div.upload-wrapper {
 .main-con{
     text-align: center;
     padding: 1px;
-    background-color: #4f6d7a;
+    background-color: white;
 }
 
+/** for the register teacher**/
 .registerTeacherCon{
     width: 400px;
     height: 450px;
     border-radius: 5%;
     text-align: center;
     padding: 7px;
-    background-color: #dd6e42;
+    background-color: white;
 }
 
+
+/** for the modify teacher password**/
 .selectLoginCon{
     width: 400px;
     height: 220px;
     border-radius: 5%;
     text-align: center;
     padding: 7px;
-    background-color: #dd6e42;
+    background-color: white;
 }
 
 .modifyLoginCon{
@@ -93,7 +96,7 @@ div.upload-wrapper {
     border-radius: 5%;
     text-align: center;
     padding: 7px;
-    background-color: #dd6e42;
+    background-color: white;
 }
 
 .dropdown-con{
@@ -107,7 +110,7 @@ select{
 }
 
 p{
-    color: #e8dab2;
+    color: #dd6e42;
 }
 .read-file-con{
     width: 390px;
@@ -119,7 +122,7 @@ p{
 }
 
 h1{
-    color:#e8dab2;
+    color:#4f6d7a;
     font-family: "Lato", sans-serif;
     font-size: 30px;
 }
@@ -134,7 +137,7 @@ table, th, td{
 }
 
 .instructions{
-    color: #e8dab2;
+    color: #dd6e42;
     font-family: "Lato", sans-serif;
     font-weight: 400;
     text-align: center;
@@ -161,8 +164,8 @@ input[type="file"] {
 /*browse button*/
 input[type="submit"] { /*upload button */
     border: 0px;
-    color: #e8dab2;
-    background: #4f6d7a;
+    color: white;
+    background: #dc3545;
     margin: 10px 0;
     border-radius: 5px;
     font-weight: bold;

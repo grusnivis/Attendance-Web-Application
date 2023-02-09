@@ -5,7 +5,7 @@ after updating the credentials, it will go back to teacher-login-select.php
 <?php
 session_start();
 
-if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Update Teacher Login Credentials'){
+if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Update to New Teacher Password'){
     //$newIDNum = $_POST["IDNum"];
     $newPassword = $_POST["password"];
 
