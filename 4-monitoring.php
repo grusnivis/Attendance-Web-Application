@@ -1,5 +1,4 @@
 <?php
-    //session_start();
 	$conn = new mysqli("localhost", "root", "", "temp");
 	// Check connection
 	if ($conn->connect_error) {
@@ -34,7 +33,6 @@
 		mysqli_close($conn);
 	}
 
-    //$_SESSION['table'] = $cg;
 	$fullname = $_GET["name"];
 	//separate surname and name
 	$name = explode(', ', $fullname);
@@ -73,7 +71,7 @@
 
 <?php
 	if(isset($_POST['update'])){
-		$send_date = (date("Y-m-d", strtotime($_POST['send_date'])));
+		$send_date = (date("Y-n-j", strtotime($_POST['send_date'])));
 		$stat = strtoupper($_POST['status']);
 
 		// checks if the person has logs from that date
@@ -105,11 +103,12 @@
 ?>
 
     <nav class="topnav">
-		<a href="2-create-table.php" style="color: #f2f2f2;"><i class="fa fa-home" style="font-size: 27px;text-align:center"></i></a>
-		<a href="3-display-selection.php" style="color: #f2f2f2">Overall Attendance</a>
-		<a href="3.1-class-list.php" style="color: #f2f2f2">Class List</a>		<a href="http://localhost/attendance%20monitoring/3.2-date-filter.php" style="color: #f2f2f2">Date Filter</a>
-		<a href="3.3-unenrolled.php" style="color: #f2f2f2">Unenrolled RFIDs</a>
-		<a href="logout.php" style="color: #f2f2f2; float:right">Sign Out</a>
+		<a href="/2-create-table.php" style="color: #f2f2f2;"><i class="fa fa-home" style="font-size: 27px;text-align:center"></i></a>
+		<a href="/3-display-selection.php" style="color: #f2f2f2">Overall Attendance</a>
+		<a href="/3.1-class-list.php" style="color: #f2f2f2">Class List</a>
+        <a href="/3.2-date-filter.php" style="color: #f2f2f2">Date Filter</a>
+		<a href="/3.3-unenrolled.php" style="color: #f2f2f2">Unenrolled RFIDs</a>
+		<a href="/logout.php" style="color: #f2f2f2; float:right">Sign Out</a>
 	</nav>
 
 	<div>
@@ -340,7 +339,12 @@
     	</div>
 	</div>
 
-	<div class="tab" style="float:right; width:45%;height:fit-content;margin-left:0;margin-bottom:50px">
+    <!-- added this bit from here-->
+	<div class="tab" style="float:right; width:45%;height:fit-content;margin-left:0;margin-bottom:50px;padding:20px 0">
+        <h1 style = color:#4f6d7a;font-size:22px;> Total Attendance Days</h1>
+        <h1 style = color:black;font-size:45px;font-weight:600;><?php echo $total?></h1>
+    <!-- to here -->
+
 	<h1 style=color:#4f6d7a;font-size:22px;>Overall Attendance Percentage</h1>
 			<div class="piechart">
 				<div class="legend">
@@ -396,7 +400,7 @@
                 echo "</table>";
 
 				function dl($array, $teacher_name, $cg){
-					// filename = download path/filename            
+					// filename = download path/filename
 					$tempname = strtoupper($teacher_name) . "_" . $cg . ".csv";
 					$file = fopen($tempname,"w");
 					fputcsv($file, array("ID#","Lastname","Name","Date","Status","Time-in"));
@@ -443,7 +447,8 @@
 				}
 
 				if(isset($_GET['download_csv'])){
-				// filename = download path/filename            
+				// filename = download path/filename
+                // NOTE: CHANGE FILEPATH ON THE SERVER PC
 				$filename = "C:/Users/Kath/Downloads/". strtoupper($teacher_name) . "_" . $cg . ".csv";
 				$file = fopen($filename,"w");
 				fputcsv($file, array("ID#","Lastname","Name","Date","Status","Time-in"));

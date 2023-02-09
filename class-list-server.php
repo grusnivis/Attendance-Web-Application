@@ -19,7 +19,7 @@ header('Content-Type: text/csv; charset=utf-8mb4');
 	}
 //print_r($_SESSION);
 
-$message = '';
+$classListServerMsg = '';
 if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and Set Configurations') {
     if (isset($_FILES['uploadedFile']) && $_FILES['uploadedFile']['error'] === UPLOAD_ERR_OK) {
         // get details of the uploaded file
@@ -33,7 +33,7 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
         $allowedfileExtensions = array('csv'); //array('txt', 'xls', 'csv');
 
         if (!in_array($fileExtension, $allowedfileExtensions)){
-            $message = 'The file uploaded is not a .csv file. Please make sure the class list file uploaded is in the .csv format.';
+            $classListServerMsg = 'The file uploaded is not a .csv file. Please make sure the class list file uploaded is in the .csv format.';
         }
         else {
             //<!--- GET THE "CLASS LIST" PART OF THE CLASS LIST FILE --->
@@ -114,7 +114,7 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
                 //on the 'teacher' database, 'login' table in phpmyadmin, search for the id number in the session array
                 //mysql and sessions (use curly braces) https://stackoverflow.com/questions/5746614/session-variable-in-mysql-query
                 $sqlStatement = $databaseLink->prepare("SELECT * FROM login WHERE IDNumber = ?");
-                $sqlStatement->bind_param("s", $tempvar1);
+                $sqlStatement->bind_param("s", $_SESSION["currentUser"]);
                 $sqlStatement->execute();
 
                 //<!---THIS PART CREATES THE TEACHER NAME FOR THE FILEPATH --->
@@ -278,6 +278,51 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
                             $i++;
                         }
                     }
+                    fclose($handle);
+
+                    //<!--- THIS PART CREATES THE FORMATTED CLASS LIST CSV FILE --->
+                    $idNumIndex = 0;
+                    //prepend the id numbers of the students to the names array!
+                    foreach ($names as &$line) { //& reference: https://stackoverflow.com/questions/25198792/array-unshift-in-multidimensional-array-insert-at-first-element-in-all-arrays
+                        array_unshift($line, $idNumbers[$idNumIndex]);
+                        $idNumIndex++;
+                    }
+
+                    //make a copy of the array $name to use in updating and creating the masterlist csv file
+                    $namesCopy = array();
+                    $namesCopy = $names;
+
+                    //prepare header titles array at the first row of the class list csv file
+                    $header_csv = array("IDNumber", "Lastname", "Firstname");
+
+                    //create the formatted class list csv in the logged-in user's folder and write the prepared array to the file
+                    //this process overwrites the uploaded class list and will be formatted to the id number, last name and first name standard
+                    $handle = fopen($dest_path_temp, "w");
+                    //write UTF-8 byte order mark for outputting special characters to the csv file
+                    //from: https://stackoverflow.com/questions/4348802/how-can-i-output-a-utf-8-csv-in-php-that-excel-will-read-properly
+                    $BOM = chr(0xEF) . chr(0xBB) . chr(0xBF);
+                    fputs($handle, $BOM);
+
+                    //write the header titles to the first row of the csv
+                    fwrite($handle, implode(",", $header_csv) . "\r\n");
+
+                    //use for loop pls. foreach loop somehow duplicates the second to last
+                    //row values for some reason https://stackoverflow.com/questions/1293896/php-array-printing-using-a-loop
+
+                    //counter for the while loop
+                    $i = 0;
+
+                    //write to the prepared class list csv file
+                    while ($i < count($names)) {
+                        //IMPORTANT! use utf8_encode ONCE only to prevent wonky characters when outputting and writing!
+                        fwrite($handle, utf8_encode(implode(",", $names[$i])) . "\r\n");
+                        $i++;
+                    }
+                    /*
+                    foreach ($names as $line){
+                        fputcsv($handle, $line,',');
+                    }
+                    */
                     fclose($handle);
 
                     //<!--- THIS PART CREATES THE FORMATTED CLASS LIST CSV FILE --->
@@ -721,36 +766,34 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
                         }
                     }
 
-
-
-                    $message = "Uploading done!";
+                    $classListServerMsg = "Uploading done!";
 
                 } else{
-                    $message = "Uploading to the teacher's folder failed";
+                    $classListServerMsg = "Uploading to the teacher's folder failed";
                 }
             }
             else{
-                $message = "The file uploaded is not a valid class list. Please make sure the class list is downloaded directly from the ISMIS website.";
+                $classListServerMsg = "The file uploaded is not a valid class list. Please make sure the class list is downloaded directly from the ISMIS website.";
             }
 
         }
     } else{
-            $message = "An error was encountered in uploading the file!";
+        $classListServerMsg = "An error was encountered in uploading the file. Upload the class list in .csv format.";
     }
 } else{
-    $message = "File failed to upload!!! Check the button settings";
+    $classListServerMsg = "File failed to upload!";
 }
 	$conn = new mysqli("localhost", "root", "", "temp");
 	// Check connection
 	if ($conn->connect_error) {
 		die("Connection failed: " . $conn->connect_error);
 	}
-	$sql = "INSERT INTO temptb (varname, val) VALUES ('message', '$message')";
+	$sql = "INSERT INTO temptb (varname, val) VALUES ('classListServerMsg', '$classListServerMsg')";
 	
 	if (mysqli_query($conn, $sql)) {
 		mysqli_close($conn);
 	}
-//$_SESSION['message'] = $message;
+//$_SESSION['classListServerMsg'] = $classListServerMsg;
 
 header("Location: class-list-upload.php");
 ?>

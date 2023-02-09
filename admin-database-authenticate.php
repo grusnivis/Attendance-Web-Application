@@ -18,7 +18,7 @@
     $username = mysqli_real_escape_string($link, $username);
     $password = mysqli_real_escape_string($link, $password);
 
-    //on the 'credentials' table in phpmyadmin, search for the username and password inputted
+    //on the 'login' table in phpmyadmin, search for the username and password inputted
     $sql = "SELECT *FROM credentials WHERE username = '$username' AND password = '$password'";
     $result = mysqli_query($link, $sql);
     $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
@@ -26,11 +26,11 @@
 
     //if username and password 
     if ($count == 1){
+        $_SESSION["adminCurrentUser"] = $username;
         header("location: admin-main.php");
     }
     else{
-        //definitely think of another solution aside from this
-        $login_err = "Invalid administrator username or password.";
+        $_SESSION["adminLoginMsg"] = "Invalid username or password!";
         header("location: admin-login.php");
     }
 

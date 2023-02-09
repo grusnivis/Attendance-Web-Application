@@ -64,20 +64,19 @@ foreach ($files_arr as $file_name) {
 ?>
 
 <?php
-	//<!-- THE FUNCTION PUSHES THE ATTENDANCE LOG CONTENTS TO THE TEACHER'S DATABASE-->
-	function connect_to_db($date, $dir, $file_name, $cg, $teacher)
-    {
-	    $conn = new mysqli("localhost", "root", "", "temp");
-	    // Check connection
-	    if ($conn->connect_error) {
-		    die("Connection failed: " . $conn->connect_error);
-	    }
-	    $sql = "INSERT INTO temptb (varname, val) VALUES ('teacherName', '$teacher')";
+//<!-- THE FUNCTION PUSHES THE ATTENDANCE LOG CONTENTS TO THE TEACHER'S DATABASE-->
+function connect_to_db($date, $dir, $file_name, $cg, $teacher){
+	$conn = new mysqli("localhost", "root", "", "temp");
+	// Check connection
+	if ($conn->connect_error) {
+		die("Connection failed: " . $conn->connect_error);
+	}
+	$sql = "INSERT INTO temptb (varname, val) VALUES ('teacherName', '$teacher')";
 	
-	    if (mysqli_query($conn, $sql)) {
-		    mysqli_close($conn);
-	    }
-
+	if (mysqli_query($conn, $sql)) {
+		mysqli_close($conn);
+	}
+    
     //include the connection to the database
     include('0-connect.php');
 
@@ -90,9 +89,9 @@ foreach ($files_arr as $file_name) {
             Date VARCHAR(255) NOT NULL,
             Status VARCHAR(255) NOT NULL,
             Time VARCHAR(255) NOT NULL,
-            PRIMARY KEY (`RFID`,`ID`,`Date`)
-    )";
-
+            PRIMARY KEY (`RFID`,`ID`,`Date`))
+            DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci";
+    
     // adds table to database
     //$db corresponds to the currently logged-in teacher's database connection in 0-connect.php
     mysqli_query($db, $create_table);
@@ -108,54 +107,121 @@ foreach ($files_arr as $file_name) {
         // skips the first line (first row in the csv file are the headers [rfid, id, last name, etc])
         fgetcsv($file);
 
-        // reads through the csv file
-        while (($ar = fgetcsv($file)) !== FALSE) {
+        // ADDED THIS BIT
+        //creates teacher attendance database and table to hold teacher info from attendance logs
+        $databaseConn = mysqli_connect("localhost", "root", "");
+        $dbName = "teacher attendance";
+
+        if ($databaseConn->connect_error){
+            //die() kinda functions like an exit() function
+            exit('Error connecting to the server.');
+        }
+        mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+
+        //create the "teacher attendance" database if it does not exist
+        $sqlStatement = $databaseConn->prepare("CREATE DATABASE IF NOT EXISTS `teacher attendance`");
+        $sqlStatement->execute();
+        $sqlStatement->close();
+        mysqli_close($databaseConn);
+
+        $teacherAttendanceDB = mysqli_connect("localhost", "root", "", $dbName);
+
+        if ($teacherAttendanceDB->connect_error) {
+            //die() kinda functions like an exit() function
+            exit('Error connecting to the teacher attendance database in the server.');
+        }
+        mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+
+        $attendanceTableStmt = $teacherAttendanceDB->prepare("CREATE TABLE IF NOT EXISTS teacher_attendance(
+                    Course VARCHAR(255) NOT NULL,
+                    RFID VARCHAR(255) NOT NULL,
+                    ID VARCHAR(255),
+                    Surname VARCHAR(255) NOT NULL,
+                    Name VARCHAR(255) NOT NULL,
+                    Date VARCHAR(255) NOT NULL,
+                    Status VARCHAR(255) NOT NULL,
+                    Time VARCHAR(255) NOT NULL)
+                    DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci");
+        //PRIMARY KEY (`Course`,`ID`,`Date`))
+
+        $attendanceTableStmt->execute();
+        $attendanceTableStmt->close();
+
+        // gets the teacher info line as string then explodes based on the comma delimiter
+        $line = explode(',',fgets($file));
+
+        while(($ar = fgetcsv($file)) !== FALSE) {
             // SQL query to store data in database
             // table name is teacher name-schedule-g#
 
-            // checks if row already exists in the table. adds the csv file row if yes, does nothing if no
-            $check = mysqli_query($db, "SELECT * FROM `$cg` WHERE
-                        RFID = '$ar[0]'
-                        AND ID='$ar[1]'
-                        AND Surname='$ar[2]'
-                        AND Name='$ar[3]'
-                        AND Date='$date'"
-            );
+            // checks if row already exists in the table, adds if yes, does nothing if no
+            $check=mysqli_query($teacherAttendanceDB,"select * from `teacher_attendance` where
+                        Course='$cg' and RFID='$line[0]' and ID='$line[1]' and Surname='$line[2]' and Name='$line[3]'
+                        and Date='$date'");
+            $checkrows=mysqli_num_rows($check);
 
-            //checks for the number of rows in the current teacher attendance table
-            $checkrows = mysqli_num_rows($check);
-
-            //<!-- [IF] if there are records that exist, update the table
-            if ($checkrows > 0) {
-                while ($row = $check->fetch_assoc()) {
-                    if (empty($row['Time'])) {
-                        $db->query("UPDATE `$cg` SET Status='$ar[4]', Time='$ar[5]' WHERE
-                                        ID='$ar[1]'
-                                        AND Surname='$ar[2]'
-                                        AND Name='$ar[3]'
-                                        AND Date='$date'"
-                        );
+            if($checkrows>0) {
+                while($row = $check->fetch_assoc()) {
+                    if (empty($row['Time'])){
+                        $teacherAttendanceDB->query("UPDATE `teacher_attendance`
+                                        SET Status='$line[4]', Time='$line[5]'
+                                        WHERE ID='$line[1]' AND Surname='$line[2]' AND Name='$line[3]'
+                                        AND Date='$date'");
                     }
                 }
-            } //<!-- [ELSE] if no records are found in that table, insert every attendance log contents in that table
-            else {
+            }
+
+            else{
                 // adds row, no entry found
-                $insert = "INSERT INTO `$cg`(RFID, ID, Surname, Name, Date, Status,Time)
+                $insert = "INSERT INTO `teacher_attendance`(Course,RFID,ID,Surname,Name,Date,Status,Time)
+                               VALUES('$cg','$line[0]','$line[1]','$line[2]','$line[3]','$date','$line[4]','$line[5]')";
+                $result = mysqli_query($teacherAttendanceDB, $insert) or die('Error querying database.');
+            }
+
+            //skips the teacher info line in csv
+            fgetcsv($file);
+
+            // reads thru the rest of the csv file
+            // SQL query to store data in database
+            // table name is teacher name-schedule-g#
+
+            // checks if row already exists in the table, adds if yes, does nothing if no
+            $check=mysqli_query($db,"select * from `$cg` where
+                        RFID='$ar[0]' and ID='$ar[1]' and Surname='$ar[2]' and Name='$ar[3]'
+                        and Date='$date'");
+            $checkrows=mysqli_num_rows($check);
+
+            if($checkrows>0) {
+                while($row = $check->fetch_assoc()) {
+                    if (empty($row['Time'])){
+                        $db->query("UPDATE `$cg`
+                                        SET Status='$ar[4]', Time='$ar[5]'
+                                        WHERE ID='$ar[1]' AND Surname='$ar[2]' AND Name='$ar[3]'
+                                        AND Date='$date'");
+                    }
+                }
+            }
+
+            else{
+                // adds row, no entry found
+                $insert = "INSERT INTO `$cg`(RFID,ID,Surname,Name,Date,Status,Time)
                                VALUES('$ar[0]','$ar[1]','$ar[2]','$ar[3]','$date','$ar[4]','$ar[5]')";
                 $result = mysqli_query($db, $insert) or die('Error querying database.');
             }
-        } //end of fgetcsv while loop
-    } //end of fopen if statement
+        }
+    }
 
-    // closes and deletes the file (path = dir + filename)
+    // closes and deletes the file
     fclose($file);
-    //close database connection to $db
+    //unlink($path);
     mysqli_close($db);
+    mysqli_close($teacherAttendanceDB);
+
+    //UNTIL HERE
     ?>
 
     <?php
 }
-
 ?>
 
 <!-- THIS PART IS WHERE THE PAGE DISPLAY STARTS -->
@@ -166,12 +232,33 @@ foreach ($files_arr as $file_name) {
     @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;1,100;1,300;1,400;1,700&display=swap');
 
     html * {
-    font-size: 16px;
-    line-height: 1.625;
-    font-family: Lato, sans-serif;
+        font-size: 16px;
+        line-height: 1.625;
+        font-family: Lato, sans-serif;
     }
 
-    btn{
+    body {
+        text-align: center;
+        background-color: #eaeaea;
+    }
+
+    h1 {
+        padding-top: 50px;
+        padding-bottom:10px;
+        color:#dd6e42;
+        font-size: 28px;
+        font-weight: 500;
+        text-align: center;
+    }
+
+    .tableBtnCon{
+        display:inline-block;
+        margin-block-start: 30pt;
+        margin: 40px 30px;
+        justify-content: center;
+    }
+
+    .btnInput{
         background-color: #dc3545;
         color: white;
         text-align: center;
@@ -217,7 +304,6 @@ foreach ($files_arr as $file_name) {
 
 </style>
 -->
-
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
@@ -271,24 +357,17 @@ $teacher_name = $firstName . " " . $lastName;
 $_SESSION["teacherName"] = $teacher_name;
 include('0-connect.php');
 ?>
+<!-- THIS SECTION IS FOR THE TOP NAVIGATION OF THE CLASS MONITORING LANDING PAGE -->
 <div>
     <nav class="topnav">
-        <a style="color:white;background-color: #4f6d7a;text-decoration:none">
-            <?php echo $teacher_name ?>
-        </a>
-
-        <a style="float:right;color:white"
-           href="logout.php"> Log Out
-        </a>
-
+        <a style="color:white;background-color: #4f6d7a;text-decoration:none"><?php echo "Welcome, " . $teacher_name . "!"?></a>
+        <a style = "color:white" href="/class-list-upload.php">Upload Class Lists</a>
+        <a style="float:right;color:white" href="/logout.php"> Log Out</a>
     </nav>
-
     <!--title instructions-->
-    <h1> SELECT THE CLASS YOU WANT TO MONITOR </h1>
-
+    <h1> SELECT THE CLASS YOU WANT TO MONITOR: </h1>
     <?php
     $show_tables = $db->query("SHOW TABLES");
-
     //<!-- THIS PART DISPLAYS THE TABLES AS BUTTONS -->
     while ($table_name = $show_tables->fetch_assoc()) {
         foreach ($table_name as $table) {

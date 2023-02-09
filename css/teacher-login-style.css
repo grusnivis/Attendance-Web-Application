@@ -40,12 +40,18 @@ h4{
 .breakspace {
    display: block; /* makes it have a width */
    content: ""; /* clears default height */
-   margin-top: -60px; /* change this to whatever height you want it */
+   margin-top: -70px; /* change this to whatever height you want it */
+}
+
+.breakspaceForNotif {
+    display: block; /* makes it have a width */
+    content: ""; /* clears default height */
+    margin-top: -15px; /* change this to whatever height you want it */
 }
 
 .con-main{
     width: 390px;
-    height: 390px;
+    height: 430px;
     border-radius: 5%;
     text-align: center;
     background-color: #4f6d7a;
@@ -94,10 +100,19 @@ h4{
     border-color:#017572;
  }
 
- .buttonLogin{
-   width: 50px;
-   height: 25px;
-   font-family: "Lato", sans-serif;
-   align-items: center;
- }
+/*button options*/
+input[type="submit"] { /*upload button */
+    border: 0px;
+    color: #e8dab2;
+    background: #d9534f;
+    margin: 10px 0;
+    border-radius: 5px;
+    font-weight: bold;
+    padding: 5px 20px;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background: #555;
+}
  

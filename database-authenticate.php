@@ -26,10 +26,10 @@
     $sql = "SELECT *FROM login WHERE IDNumber = '$IDNum' AND password = '$password'";
     $result = mysqli_query($link, $sql);
     $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
-    $count = mysqli_num_rows($result);
+    $countLogin = mysqli_num_rows($result);
 
     //if username and password 
-    if ($count == 1){
+    if ($countLogin == 1){
         //see solution here for sessions: https://www.simplilearn.com/tutorials/php-tutorial/php-login-form
         //$_SESSION['currentUser'] = $IDNum;
 	    // Create connection directly to database
@@ -42,14 +42,10 @@
 	
 	    if (mysqli_query($conn, $sql)) {
 		    mysqli_close($conn);
-		    header("location: teacher-main.php");
-	    }
-        //header("location: teacher-main.php");
-        //$_SESSION['currentUser'] = $IDNum;
-    }
+		    header("location: 2-create-table.php");
+	    } }
     else{
-        //definitely think of another solution aside from this
-        $login_err = "Invalid username or password.";
+        $_SESSION["teacherLoginMsg"] = "Invalid username or password!";
         header("location: teacher-login.php");
     }
 

@@ -30,8 +30,7 @@ if (isset($_GET['table'])) {
 		$tempvar1 = $row["val"];
 		mysqli_close($conn);
 	}
-	$cg = $tempvar1;
-}
+	$cg = $tempvar1;}
 
 // query to get dates from database (no duplicates)
 $append_date = array();
@@ -219,9 +218,14 @@ $sem_a = round((($absentTotal / $total) * 100));
 
     <!-- display total sem presence -->
     <div style="float:right; width:35%; color:#444">
-        <div class="tab" style="margin-top: 27%">
+        <div class="tab" style="margin-top: 5%">
+            <h5>Total Attendance Days</h5>
+            <h2 style="font-weight:700"> <?php echo count($append_date); ?> </h2>
+        </div>
+
+        <div class="tab" style="margin-top: 5%">
             <h5>Total Semestral Presence</h5>
-            <h2 style="font-weight:700"> <?php echo $sem_p; ?>% </h2>
+            <h2 style="font-weight:1000"> <?php echo $sem_p; ?>% </h2>
         </div>
 
         <!-- display total sem absence -->

@@ -1,5 +1,4 @@
 <?php
-    //session_start();
 	$conn = new mysqli("localhost", "root", "", "temp");
 	// Check connection
 	if ($conn->connect_error) {
@@ -186,8 +185,9 @@
 
 							<?php
 								if(isset($_GET['download'])){
-								// filename = download path/filename            
-								$filename = "C:/Users/Amber/Downloads/". strtoupper($teacher_name) . "_" . $cg . ".csv";
+								// filename = download path/filename
+                                //NOTE: CHANGE FILEPATH ON THE SERVER PC
+								$filename = "C:/Users/Kath/Downloads/". strtoupper($teacher_name) . "_" . $cg . ".csv";
 								$file = fopen($filename,"w");
 								fputcsv($file, array("ID#","Lastname","Name","Date","Status","Time-in"));
 																	
@@ -200,8 +200,9 @@
 								}
 
 								if(isset($_POST['send_email'])){
-									// filename = download path/filename            
-									$filename = "C:/Users/Amber/Downloads/". strtoupper($teacher_name) . "_" . $cg . ".csv";
+									// filename = download path/filename
+                                    // NOTE: CHANGE FILEPATH ON THE SERVER PC
+									$filename = "C:/Users/Kath/Downloads/". strtoupper($teacher_name) . "_" . $cg . ".csv";
 									$file = fopen($filename,"w");
 									fputcsv($file, array("ID#","Lastname","Name","Date","Status","Time-in"));
 																	
@@ -214,7 +215,8 @@
 									fclose($file);
 
 									// the necessary email addresses
-									$from = '19101182@usc.edu.ph';
+                                    // NOTE: CHANGE EMAIL ADDRESS ON SERVER PC IF NECESSARY
+									$from = '19102579@usc.edu.ph';
 									$to = $_POST["email"]; 
 
 									//read from the uploaded file & base64_encode content
@@ -401,9 +403,11 @@
 							}
 						}
 				}
-					if(($present + $late + $excused + $absent) !== $total){
-						$absent++;
-					}
+
+                    //changed if () to while()
+                    while (($present + $late + $excused + $absent) !== $total) {
+                        $absent++;
+                    }
 				
 					echo "<tr>";
 
@@ -520,8 +524,9 @@
 				
 				//SUMMARY DOWNLOAD AND MAIL
 				if(isset($_GET['download_s_csv'])){
-					// filename = download path/filename            
-					$filename = "./Downloads/". strtoupper($teacher_name) . "_" . $cg . ".csv";
+					// filename = download path/filename
+                    // NOTE: CHANGE FILEPATH ON THE SERVER PC
+					$filename = "C:/Users/Kath/Downloads/". strtoupper($teacher_name) . "_" . $cg . ".csv";
 					$file = fopen($filename,"w");
 					fputcsv($file, array("Start date:",$_GET['start_date']," ","End date:",$_GET['end_date']));
 					fputcsv($file, array("Name","Present","Late","Excused","Absent","Attendance Days","% Presence"));
@@ -537,8 +542,9 @@
 
 				if(isset($_POST['send_email_s'])){
 
-					// filename = download path/filename            
-					$filename = "./Downloads/". strtoupper($teacher_name) . "_" . $cg . ".csv";
+					// filename = download path/filename
+                    // NOTE: CHANGE FILEPATH ON THE SERVER PC
+					$filename = "C:/Users/Kath/Downloads/". strtoupper($teacher_name) . "_" . $cg . ".csv";
 					$file = fopen($filename,"w");
 					fputcsv($file, array("Name","Present","Late","Excused","Absent","Attendance Days","% Presence"));
 											
@@ -551,7 +557,8 @@
 					fclose($file);
 	
 					// the necessary email addresses
-					$from = '19101182@usc.edu.ph';
+                    // NOTE: CHANGE EMAIL ADDRESS ON SERVER PC IF NECESSARY
+					$from = '19102579@usc.edu.ph';
 					$to = $_POST["email"]; 
 	
 					//read from the uploaded file & base64_encode content
@@ -698,8 +705,9 @@
 				}
 
 				if(isset($_GET['download_csv'])){
-				// filename = download path/filename            
-				$filename = "./Downloads/". strtoupper($teacher_name) . "_" . $cg . ".csv";
+				// filename = download path/filename
+                // NOTE: CHANGE FILEPATH ON THE SERVER PC
+				$filename = "C:/Users/Kath/Downloads/". strtoupper($teacher_name) . "_" . $cg . ".csv";
 				$file = fopen($filename,"w");
 				fputcsv($file, array("Start date:",$_GET['start_date']," ","End date:",$_GET['end_date']));
 				fputcsv($file, array("ID#","Lastname","Name","Date","Status","Time-in"));
@@ -713,8 +721,9 @@
 				}
 
 				if(isset($_POST['send_email'])){
-					// filename = download path/filename            
-					$filename = "./Downloads/". strtoupper($teacher_name) . "_" . $cg . ".csv";
+					// filename = download path/filename
+                    // NOTE: CHANGE FILEPATH ON THE SERVER PC
+					$filename = "C:/Users/Kath/Downloads/". strtoupper($teacher_name) . "_" . $cg . ".csv";
 					$file = fopen($filename,"w");
 					fputcsv($file, array("ID#","Lastname","Name","Date","Status","Time-in"));
 																	
@@ -727,7 +736,8 @@
 					fclose($file);
 
 					// the necessary email addresses
-					$from = '19101182@usc.edu.ph';
+                    // NOTE: CHANGE EMAIL ADDRESS ON SERVER PC IF NECESSARY
+					$from = '19102579@usc.edu.ph';
 					$to = $_POST["email"]; 
 
 					//read from the uploaded file & base64_encode content
