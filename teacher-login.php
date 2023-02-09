@@ -41,10 +41,8 @@
 
 // Creates database if there isn't one
 	else {
-		$sql = "CREATE DATABASE '$dbname'";
+		$sql = "CREATE DATABASE 'temp'";
 		if (mysqli_query($conn, $sql)) {
-		} else {
-			echo "Error creating database: " . mysqli_error($conn);
 		}
 	}
 	
