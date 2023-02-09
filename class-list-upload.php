@@ -55,7 +55,7 @@ https://code.tutsplus.com/tutorials/how-to-upload-a-file-in-php-with-example--cm
         <div class= "topnav">
             <a href="teacher-main.php" style="color: #f2f2f2;"><i class="fa fa-home" style="font-size: 25px;text-align:center"></i></a>
             <a style="text-decoration: none; background-color: #4f6d7a; color: #f2f2f2;">
-            <?php echo "Welcome, " . $_SESSION['currentUser'] . "!"; ?></a>
+            <?php echo "Welcome, " . $tempvar1 . "!"; ?></a>
             
             <a class="active" href="class-list-upload.php">Class List Uploading</a>
             <a href="2-create-table.php"> Class Monitoring </a>
@@ -89,7 +89,7 @@ https://code.tutsplus.com/tutorials/how-to-upload-a-file-in-php-with-example--cm
                             echo "<option value = '0'>NOT A TEAM TEACH CLASS</option>";
                             while ($row = mysqli_fetch_array($result)){
                                 //exclude current user in display: https://stackoverflow.com/questions/1248641/php-how-to-exclude-data-from-mysql
-                                if($row['IDNumber'] == $_SESSION["currentUser"]){
+                                if($row['IDNumber'] == $tempvar1){
                                     continue;
                                 };
                                 echo "<option value = '". $row['IDNumber'] ."'>". $row['IDNumber'] . " - " .$row['firstName'] . " " . $row['lastName'] ."</option>";
@@ -107,9 +107,32 @@ https://code.tutsplus.com/tutorials/how-to-upload-a-file-in-php-with-example--cm
                 <br>
                 <center>
                     <?php
-                    if (isset($_SESSION['classListServerMsg']) && $_SESSION['classListServerMsg']) {
-                        echo '<p class = "notification">' . $_SESSION['classListServerMsg'] . '</p>';
-                        unset($_SESSION['classListServerMsg']);
+	                    // Create connection directly to specific database
+	                    $conn = new mysqli('localhost', 'root', '', 'temp');
+	                    // Obtain last value of variable user as 1 row
+	                    // format goes "SELECT value column FROM temptb table WHERE variable is user ORDER BY last input of id in descending with 1 row
+	                    $sql = "SELECT val FROM temptb WHERE varname = 'classListServerMsg' ORDER BY id DESC LIMIT 1";
+	                    $result = mysqli_query($conn, $sql);
+	                    if (mysqli_num_rows($result) > 0) {
+		                    $row = mysqli_fetch_assoc($result);
+		                    $tempvar1 = $row["val"];
+		                    mysqli_close($conn);
+	                    }
+	                    if (isset($tempvar1) && $tempvar1) {
+	                    echo '<p class = "notification">';
+	                    echo $tempvar1;
+	                    echo '</p>';
+	                    unset ($tempvar1);
+	                    $conn = new mysqli("localhost", "root", "", "temp");
+	                    // Check connection
+	                    if ($conn->connect_error) {
+		                    die("Connection failed: " . $conn->connect_error);
+	                    }
+	                    $sql = "INSERT INTO temptb (varname, val) VALUES ('classListServerMsg', '')";
+	
+	                    if (mysqli_query($conn, $sql)) {
+		                    mysqli_close($conn);
+	                    }
                     }
                     ?>
                 </center>

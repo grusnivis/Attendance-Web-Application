@@ -26,11 +26,31 @@
 
     //if username and password 
     if ($count == 1){
-        $_SESSION["adminCurrentUser"] = $username;
+	    $conn = new mysqli("localhost", "root", "", "temp");
+	    // Check connection
+	    if ($conn->connect_error) {
+		    die("Connection failed: " . $conn->connect_error);
+	    }
+	    $sql = "INSERT INTO temptb (varname, val) VALUES ('adminCurrentUser', '$username')";
+	
+	    if (mysqli_query($conn, $sql)) {
+		    mysqli_close($conn);
+	    }
+        //$_SESSION["adminCurrentUser"] = $username;
         header("location: admin-main.php");
     }
     else{
-        $_SESSION["adminLoginMsg"] = "Invalid username or password!";
+	    $conn = new mysqli("localhost", "root", "", "temp");
+	    // Check connection
+	    if ($conn->connect_error) {
+		    die("Connection failed: " . $conn->connect_error);
+	    }
+	    $sql = "INSERT INTO temptb (varname, val) VALUES ('adminLoginMsg', 'Invalid username or password!')";
+	
+	    if (mysqli_query($conn, $sql)) {
+		    mysqli_close($conn);
+	    }
+        //$_SESSION["adminLoginMsg"] = "Invalid username or password!";
         header("location: admin-login.php");
     }
 

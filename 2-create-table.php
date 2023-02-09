@@ -317,7 +317,19 @@ function connect_to_db($date, $dir, $file_name, $cg, $teacher){
 // the session below is to pass the name to the other php file
 //$teacher_name = "christopher james m labrador";
 //$_SESSION["Teacher name"] = $teacher_name;
-
+	
+	// Create connection directly to specific database
+	$conn = new mysqli('localhost', 'root', '', 'temp');
+	// Obtain last value of variable user as 1 row
+	// format goes "SELECT value column FROM temptb table WHERE variable is user ORDER BY last input of id in descending with 1 row
+	$sql = "SELECT val FROM temptb WHERE varname = 'IDNum' ORDER BY id DESC LIMIT 1";
+	$result = mysqli_query($conn, $sql);
+	if (mysqli_num_rows($result) > 0) {
+		$row = mysqli_fetch_assoc($result);
+		$tempvar1 = $row["val"];
+        mysqli_close($conn);
+	}
+ 
 //<!--- CREATE THE TEACHER NAME FOR GETTING THEIR CORRESPONDING ATTENDANCE LOGS --->
 /* similar to this: https://www.javatpoint.com/php-mysql-login-system */
 
@@ -332,10 +344,12 @@ if ($teacherLoginDB->connect_error) {
 }
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
+
+
 //on the 'teacher' database, 'login' table in phpmyadmin, search for the id number in the session array
 //mysql and sessions (use curly braces) https://stackoverflow.com/questions/5746614/session-variable-in-mysql-query
 $sqlStatement = $teacherLoginDB->prepare("SELECT * FROM login WHERE IDNumber = ?");
-$sqlStatement->bind_param("s", $_SESSION["currentUser"]);
+$sqlStatement->bind_param("s", $tempvar1);
 $sqlStatement->execute();
 
 //<!---THIS PART CREATES THE TEACHER NAME --->

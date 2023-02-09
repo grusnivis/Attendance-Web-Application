@@ -114,7 +114,7 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
                 //on the 'teacher' database, 'login' table in phpmyadmin, search for the id number in the session array
                 //mysql and sessions (use curly braces) https://stackoverflow.com/questions/5746614/session-variable-in-mysql-query
                 $sqlStatement = $databaseLink->prepare("SELECT * FROM login WHERE IDNumber = ?");
-                $sqlStatement->bind_param("s", $_SESSION["currentUser"]);
+                $sqlStatement->bind_param("s", $tempvar1);
                 $sqlStatement->execute();
 
                 //<!---THIS PART CREATES THE TEACHER NAME FOR THE FILEPATH --->

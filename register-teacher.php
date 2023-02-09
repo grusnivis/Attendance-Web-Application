@@ -111,9 +111,27 @@
     <input type="submit" name="return-to-admin-main" class="btn btn-info" value="Return to Administrator Menu"/>
     <!-- THIS PART IS FOR DISPLAYING IF THE PUSHING TO LOGIN TABLE AND CREATING USER DATABASE IS SUCCESSFUL -->
     <?php
-    if (isset($_SESSION['registerTeacherMsg']) && $_SESSION['registerTeacherMsg']) {
-        echo '<p class = "notification">' . $_SESSION['registerTeacherMsg'] . '</p>';
-        unset($_SESSION['registerTeacherMsg']);
+	    // Create connection directly to specific database
+	    $conn = new mysqli('localhost', 'root', '', 'temp');
+	    // Obtain last value of variable user as 1 row
+	    // format goes "SELECT value column FROM temptb table WHERE variable is user ORDER BY last input of id in descending with 1 row
+	    $sql = "SELECT val FROM temptb WHERE varname = 'registerTeacherMsg' ORDER BY id DESC LIMIT 1";
+	    $result = mysqli_query($conn, $sql);
+	    if (mysqli_num_rows($result) > 0) {
+		    $row = mysqli_fetch_assoc($result);
+		    $tempvar1 = $row["val"];
+	    }
+	    if (isset($tempvar1) && $tempvar1) {
+	    echo '<p class = "notification">';
+	    echo $tempvar1;
+	    echo '</p>';
+	    unset ($tempvar1);
+	    
+	    $sql = "INSERT INTO temptb (varname, val) VALUES ('registerTeacherMsg', '')";
+	
+	    if (mysqli_query($conn, $sql)) {
+		    mysqli_close($conn);
+	    }
     }
     ?>
 </div>

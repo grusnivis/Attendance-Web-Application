@@ -45,7 +45,17 @@
 		    header("location: 2-create-table.php");
 	    } }
     else{
-        $_SESSION["teacherLoginMsg"] = "Invalid username or password!";
+	    $conn = new mysqli("localhost", "root", "", "temp");
+	    // Check connection
+	    if ($conn->connect_error) {
+		    die("Connection failed: " . $conn->connect_error);
+	    }
+	    $sql = "INSERT INTO temptb (varname, val) VALUES ('teacherLoginMsg', 'Invalid username or password!')";
+	
+	    if (mysqli_query($conn, $sql)) {
+		    mysqli_close($conn);
+	    }
+        //$_SESSION["teacherLoginMsg"] = "Invalid username or password!";
         header("location: teacher-login.php");
     }
 

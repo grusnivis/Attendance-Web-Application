@@ -14,7 +14,17 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Modify Teacher Details
     //$_SESSION["teacherToBeUpdated"] = $_POST['teacherSelect'];
 
     if ($teacherSelected == '0'){
-        $_SESSION['modifyLoginMsg'] = "No teacher selected!";
+	    $conn = new mysqli("localhost", "root", "", "temp");
+	    // Check connection
+	    if ($conn->connect_error) {
+		    die("Connection failed: " . $conn->connect_error);
+	    }
+	    $sql = "INSERT INTO temptb (varname, val) VALUES ('modifyLoginMsg', 'No teacher selected!')";
+	
+	    if (mysqli_query($conn, $sql)) {
+		    mysqli_close($conn);
+	    }
+        //$_SESSION['modifyLoginMsg'] = "No teacher selected!";
         header("Location: teacher-login-select.php");
     }
     else{
@@ -40,8 +50,18 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Modify Teacher Details
                 $teacherPassword = $row["password"];
             }
         }
-
-        $_SESSION["referenceIDNum"] = $teacherIDNum;
+	
+	    $conn = new mysqli("localhost", "root", "", "temp");
+	    // Check connection
+	    if ($conn->connect_error) {
+		    die("Connection failed: " . $conn->connect_error);
+	    }
+	    $sql = "INSERT INTO temptb (varname, val) VALUES ('rederenceIDNum', '$teacherIDNum')";
+	
+	    if (mysqli_query($conn, $sql)) {
+		    mysqli_close($conn);
+	    }
+        //$_SESSION["referenceIDNum"] = $teacherIDNum;
         $searchTeacherStmt->close();
         mysqli_close($teacherLoginDB);
     }

@@ -595,7 +595,13 @@ if (isset($_GET['download_pdf'])) {
             {
                 // filename = download path/filename
                 $tempname = strtoupper($teacher_name) . "_" . $cg . ".csv";
-                $_SESSION['file'] = $tempname;
+	            // Create connection directly to specific database
+	            $conn = new mysqli('localhost', 'root', '', 'temp');
+	            $sql = "INSERT INTO temptb (varname, val) VALUES ('file', '$tempname')";
+                if (mysqli_query($conn, $sql)) {
+		            mysqli_close($conn);
+	            }
+                //$_SESSION['file'] = $tempname;
                 $file = fopen($tempname, "w");
                 fputcsv($file, array("Name", "Present", "Late", "Excused", "Absent", "Attendance Days", "% Presence"));
 

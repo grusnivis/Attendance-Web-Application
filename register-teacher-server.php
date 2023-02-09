@@ -2,7 +2,7 @@
 header('Content-Encoding: utf-8');
 header('Content-Type: text/csv; charset=utf-8mb4');
 
-session_start();
+//session_start();
 
 $firstName = '';
 $lastName = '';
@@ -69,7 +69,17 @@ if (isset ($_POST["register"])) {
 
     //if there is a duplicate id number
     if($countDup == 1){
-        $_SESSION['registerTeacherMsg'] = "The ID Number inputted is already registered in the database.";
+        $conn = new mysqli("localhost", "root", "", "temp");
+        // Check connection
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+        }
+        $sql = "INSERT INTO temptb (varname, val) VALUES ('registerTeacherMsg', 'The ID Number inputted is already registered in the database.')";
+    
+        if (mysqli_query($conn, $sql)) {
+            mysqli_close($conn);
+        }
+        //$_SESSION['registerTeacherMsg'] = "The ID Number inputted is already registered in the database.";
         mysqli_close($teacherDB);
         //returns to the register teacher page. it "aborts" the rest of the process
         header("location:register-teacher.php");
@@ -228,8 +238,18 @@ if (isset ($_POST["register"])) {
     $sqlStatement->close();
 
     mysqli_close($creatingTeacherDB);
-
-    $_SESSION["registerTeacherMsg"] = "Teacher registration successful!";
+    
+    $conn = new mysqli("localhost", "root", "", "temp");
+    // Check connection
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+    $sql = "INSERT INTO temptb (varname, val) VALUES ('registerTeacherMsg', 'Teacher registration successful!')";
+    
+    if (mysqli_query($conn, $sql)) {
+        mysqli_close($conn);
+    }
+    //$_SESSION["registerTeacherMsg"] = "Teacher registration successful!";
     header("Location: register-teacher.php");
 }
 

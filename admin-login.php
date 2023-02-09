@@ -58,11 +58,32 @@
                 </form>
                 <br class="breakspaceForNotif"/>
                 <?php
-                if (isset($_SESSION['adminLoginMsg']) && $_SESSION['adminLoginMsg']) {
+	                // Create connection directly to specific database
+	                $conn = new mysqli('localhost', 'root', '', 'temp');
+	                // Obtain last value of variable user as 1 row
+	                // format goes "SELECT value column FROM temptb table WHERE variable is user ORDER BY last input of id in descending with 1 row
+	                $sql = "SELECT val FROM temptb WHERE varname = 'adminLoginMsg' ORDER BY id DESC LIMIT 1";
+	                $result = mysqli_query($conn, $sql);
+	                if (mysqli_num_rows($result) > 0) {
+		                $row = mysqli_fetch_assoc($result);
+		                $tempvar1 = $row["val"];
+		                mysqli_close($conn);
+	                }
+                if (isset($tempvar1) && $tempvar1) {
                     echo '<p class = "notification">';
-                    echo $_SESSION["adminLoginMsg"];
+                    echo $tempvar1;
                     echo '</p>';
-                    unset ($_SESSION["adminLoginMsg"]);
+                    unset ($tempvar1);
+	                $conn = new mysqli("localhost", "root", "", "temp");
+	                // Check connection
+	                if ($conn->connect_error) {
+		                die("Connection failed: " . $conn->connect_error);
+	                }
+	                $sql = "INSERT INTO temptb (varname, val) VALUES ('adminLoginMsg', '')";
+	
+	                if (mysqli_query($conn, $sql)) {
+		                mysqli_close($conn);
+	                }
                 }
                 ?>
             </div> 

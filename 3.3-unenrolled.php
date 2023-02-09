@@ -21,7 +21,7 @@
 	if ($conn->connect_error) {
 		die("Connection failed: " . $conn->connect_error);
 	}
-	$sql = "INSERT INTO temptb (varname, val) VALUES ('table', '$cg')";
+	$sql = "INSERT INTO temptb (varname, val) VALUES ('Class Selected', '$class')";
 	
 	if (mysqli_query($conn, $sql)) {
 		mysqli_close($conn);
