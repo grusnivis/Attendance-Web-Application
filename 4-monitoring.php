@@ -1,5 +1,6 @@
 <?php
-	$conn = new mysqli("localhost", "root", "", "temp");
+	include '0-connect.php';
+    $conn = new mysqli("localhost", "root", "", "temp");
 	// Check connection
 	if ($conn->connect_error) {
 		die("Connection failed: " . $conn->connect_error);
@@ -10,6 +11,7 @@
 		$row = mysqli_fetch_assoc($result);
 		$tempvar1 = $row["val"];
 	}
+	$cg = $tempvar1;
 	$sql = "SELECT val FROM temptb WHERE varname = 'teacherName' ORDER BY id DESC LIMIT 1";
 	$result = mysqli_query($conn, $sql);
 	if (mysqli_num_rows($result) > 0) {
@@ -17,9 +19,6 @@
 		$tempvar2 = $row["val"];
 		mysqli_close($conn);
 	}
- 
-	include '0-connect.php';
-	$cg = $tempvar1;
 	$teacher_name = strtoupper($tempvar2);
 	
     $conn = new mysqli("localhost", "root", "", "temp");

@@ -1,9 +1,3 @@
-<?php
-
-session_start();
-
-?>
-
 <html>
 <head>
 <title> Administrator Menu</title>

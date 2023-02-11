@@ -1,5 +1,4 @@
 <?php
-session_start();
 
 //goes to Register-Teacher page
 if (isset($_POST['register-teacher']) && $_POST['register-teacher'] == 'Register Teacher'){

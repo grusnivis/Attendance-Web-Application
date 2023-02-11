@@ -13,10 +13,6 @@
     */
 ?>
 
-<?php
-    //session_start();
-?>
-
 <html>
     <head>
         <title>Group H - Web Application</title>
