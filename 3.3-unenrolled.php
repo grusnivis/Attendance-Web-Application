@@ -12,16 +12,13 @@
 	if (mysqli_num_rows($result) > 0) {
 		$row = mysqli_fetch_assoc($result);
 		$tempvar1 = $row["val"];
-		mysqli_close($conn);
 	}
 	$cg = $tempvar1;
  
-	$conn = new mysqli("localhost", "root", "", "temp");
-	// Check connection
 	if ($conn->connect_error) {
 		die("Connection failed: " . $conn->connect_error);
 	}
-	$sql = "INSERT INTO temptb (varname, val) VALUES ('Class Selected', '$class')";
+	$sql = "INSERT INTO temptb (varname, val) VALUES ('table', '$tempvar1')";
 	
 	if (mysqli_query($conn, $sql)) {
 		mysqli_close($conn);
