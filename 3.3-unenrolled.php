@@ -73,7 +73,7 @@
 		<a href="3.1-class-list.php" style="color: #f2f2f2">Class List</a>
 		<a href="3.2-date-filter.php" style="color: #f2f2f2">Date Filter</a>
         <a class="active" href="3.3-unenrolled.php" style="color: #f2f2f2">Unenrolled RFIDs</a>
-		<a href="logout.php" style="color: #f2f2f2; float:right">Sign Out</a>
+		<a href="logout.php" style="color: #f2f2f2; float:right">Log Out</a>
 	</nav>
 
 	<div class="container pt-5" style="text-align:center">
