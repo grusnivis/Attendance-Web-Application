@@ -368,7 +368,17 @@ $sqlStatement->close();
 mysqli_close($teacherLoginDB);
 
 $teacher_name = $firstName . " " . $lastName;
-$_SESSION["teacherName"] = $teacher_name;
+	$conn = new mysqli("localhost", "root", "", "temp");
+	// Check connection
+	if ($conn->connect_error) {
+		die("Connection failed: " . $conn->connect_error);
+	}
+	$sql = "INSERT INTO temptb (varname, val) VALUES ('teacherName', '$teacher_name')";
+	
+	if (mysqli_query($conn, $sql)) {
+		mysqli_close($conn);
+	}
+//$_SESSION["teacherName"] = $teacher_name;
 include('0-connect.php');
 ?>
 <!-- THIS SECTION IS FOR THE TOP NAVIGATION OF THE CLASS MONITORING LANDING PAGE -->
