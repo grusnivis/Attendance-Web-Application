@@ -29,7 +29,7 @@
 	// Create connection with database in server to create table
 	$conn = new mysqli('localhost', 'root', '', 'temp');
 	$create = $conn->query("CREATE TABLE IF NOT EXISTS temptb (id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-            varname VARCHAR(255) NOT NULL, val VARCHAR(255) NOT NULL)";);
+            varname VARCHAR(255) NOT NULL, val VARCHAR(255) NOT NULL)");
 	if ($conn->connect_error) {
 		die("Connection failed: " . $conn->connect_error);
 	}
