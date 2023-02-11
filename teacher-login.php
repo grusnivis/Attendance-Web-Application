@@ -18,6 +18,22 @@
 //at the top of each page.
 // https://stackoverflow.com/questions/9571125/cant-pass-php-session-variables-to-multiple-pages
 //session_start();
+	// Create connection
+	$conn = new mysqli('localhost', 'root', '');
+	$create = $conn->query("CREATE Database IF NOT EXISTS `temp`");
+	if ($conn->connect_error) {
+		die("Connection failed: " . $conn->connect_error);
+	}
+    mysqli_close($conn);
+    
+	// Create connection with database in server to create table
+	$conn = new mysqli('localhost', 'root', '', 'temp');
+	$create = $conn->query("CREATE TABLE IF NOT EXISTS temptb (id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            varname VARCHAR(255) NOT NULL, val VARCHAR(255) NOT NULL)";);
+	if ($conn->connect_error) {
+		die("Connection failed: " . $conn->connect_error);
+	}
+    mysqli_close($conn);
 ?>
 
 <html>
