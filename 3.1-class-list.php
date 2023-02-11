@@ -1,6 +1,9 @@
 <?php
 // LOOK FOR WAY TO DELETE ALL DOWNLOADED FILES FROM THE HTDOCS
 // CHANGE LOCATION OF DOWNLOAD
+	//declare variables upon start
+	include '0-connect.php';
+ 
 	$conn = new mysqli("localhost", "root", "", "temp");
 	// Check connection
 	if ($conn->connect_error) {
@@ -12,6 +15,8 @@
 		$row = mysqli_fetch_assoc($result);
 		$tempvar1 = $row["val"];
 	}
+	$cg = $tempvar1;
+ 
 	$sql = "SELECT val FROM temptb WHERE varname = 'teacherName' ORDER BY id DESC LIMIT 1";
 	$result = mysqli_query($conn, $sql);
 	if (mysqli_num_rows($result) > 0) {
@@ -19,19 +24,14 @@
 		$tempvar2 = $row["val"];
 		mysqli_close($conn);
 	}
-	
-	//declare variables upon start
-	include '0-connect.php';
 	$teacher_name = strtoupper($tempvar2);
-	$cg = $tempvar1;
-	
 	
 	$conn = new mysqli("localhost", "root", "", "temp");
 	// Check connection
 	if ($conn->connect_error) {
 		die("Connection failed: " . $conn->connect_error);
 	}
-	$sql = "INSERT INTO temptb (varname, val) VALUES ('table', '$cg')";
+	$sql = "INSERT INTO temptb (varname, val) VALUES ('table', '$tempvar1')";
 	
 	if (mysqli_query($conn, $sql)) {
 		mysqli_close($conn);
