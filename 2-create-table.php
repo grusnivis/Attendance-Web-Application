@@ -375,7 +375,7 @@ include('0-connect.php');
 <div>
     <nav class="topnav">
         <a style="color:white;background-color: #4f6d7a;text-decoration:none"><?php echo "Welcome, " . $teacher_name . "!"?></a>
-        <a style = "color:white" href="/class-list-upload.php">Upload Class Lists</a>
+        <a style = "color:white" href="class-list-upload.php">Upload Class Lists</a>
         <a style="float:right;color:white" href="logout.php"> Log Out</a>
     </nav>
     <!--title instructions-->
