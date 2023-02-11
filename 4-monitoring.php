@@ -12,6 +12,7 @@
 		$tempvar1 = $row["val"];
 	}
 	$cg = $tempvar1;
+ 
 	$sql = "SELECT val FROM temptb WHERE varname = 'teacherName' ORDER BY id DESC LIMIT 1";
 	$result = mysqli_query($conn, $sql);
 	if (mysqli_num_rows($result) > 0) {
@@ -26,7 +27,7 @@
 	if ($conn->connect_error) {
 		die("Connection failed: " . $conn->connect_error);
 	}
-	$sql = "INSERT INTO temptb (varname, val) VALUES ('table', '$cg')";
+	$sql = "INSERT INTO temptb (varname, val) VALUES ('table', '$tempvar1')";
 	
 	if (mysqli_query($conn, $sql)) {
 		mysqli_close($conn);
