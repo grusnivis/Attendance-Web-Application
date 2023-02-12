@@ -17,14 +17,14 @@ session_start();
     <form method="POST" action="admin-main-redirect.php" enctype="multipart/form-data">
 
     <h1> Administrator Menu</h1>
-    <p> Choose from the options below.</p>
+    <p> Welcome to the administrator account! Please choose from the options below.</p>
         <input type="submit" name="register-teacher" class="btn btn-info" style="width:300px" value="Register Teacher"/>
     <br/>
         <input type="submit" name="teacher-password" class="btn btn-info" style="width:300px" value="Change Teacher Password"/>
     <br/>
         <input type="submit" name="teacher-attendance" class="btn btn-info" style="width:300px" value="View Teacher Attendance"/>
     <br/>
-        <input type="submit" name="drop-export-tables" class="btn btn-info" style="width:300px" value="Drop and Export Databases"/>
+        <input type="submit" name="drop-export-tables" class="btn btn-info" style="width:300px" value="Delete and Export Databases"/>
     <br/>
         <hr/>
         <input type="submit" name="admin-logout" class="btn btn-info" style="width:300px" value="Log out"/>

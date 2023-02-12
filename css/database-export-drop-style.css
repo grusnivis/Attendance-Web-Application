@@ -9,19 +9,20 @@ body{
     background-color: #eaeaea;
 }
 
-.main-con{
-    text-align: center;
-    padding: 1px;
-    background-color: #eaeaea;
-}
-
-.adminMainCon{
+.database-export-drop-con{
     width: 400px;
-    height: 430px;
+    height: 560px;
     border-radius: 5%;
     text-align: center;
     padding: 7px;
     background-color: white;
+}
+
+.breakspaceForNotif {
+    display: block; /* makes it have a width */
+    content: ""; /* clears default height */
+    margin-top: 0px; /* change this to whatever height you want it */
+    margin-bottom: -10px; /* change this to whatever height you want it */
 }
 
 
@@ -30,6 +31,11 @@ h1{
     color:#4f6d7a;
     font-family: "Lato", sans-serif;
     font-size: 30px;
+}
+
+h3{
+    font-family: "Lato", sans-serif;
+    color: #dc3545;
 }
 
 p{

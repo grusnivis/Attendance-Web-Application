@@ -91,13 +91,15 @@ session_start();
                 <tr>
                     <td colspan="2" align="center">
                         <!-- change button text through the value attribute -->
-                        <input type="submit" name="register" class="btn btn-info" value="Register"/>
+                        <input type="submit" name="register" class="btn btn-info" style="width:230px" value="Register"/>
                     </td>
                 </tr>
             </div>
     </form>
     </table>
-    <input type="submit" name="return-to-admin-main" class="btn btn-info" value="Return to Administrator Menu"/>
+    <br/>
+    <hr/>
+    <input type="submit" name="return-to-admin-main" class="btn btn-info" style="color:300px; color: white; background: #dc3545;" value="Return to Administrator Menu"/>
     <!-- THIS PART IS FOR DISPLAYING IF THE PUSHING TO LOGIN TABLE AND CREATING USER DATABASE IS SUCCESSFUL -->
     <?php
     if (isset($_SESSION['registerTeacherMsg']) && $_SESSION['registerTeacherMsg']) {

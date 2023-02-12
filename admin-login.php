@@ -19,7 +19,7 @@
 
 <html>
     <head>
-        <title>Group H - Web Application</title>
+        <title>Attendance Monitoring System [Administrator]</title>
         <link type = "text/css" rel = "stylesheet" href = "css/admin-login-style.css" />
     </head>
     <body>
@@ -36,7 +36,7 @@
         <div class="con-main">
             <h1>Attendance Monitoring System <i><u> [Administrator] </u></i></h1>
             <h3> Welcome! </h3>
-            <h4> Welcome to the administrator login menu for <br/>Group H's thesis entitled
+            <h4> This is the <b> administrator login page </b> for <br/>Group H's thesis entitled
                 <i> Development of an <br/>Attendance Monitoring System with a <br/>Portable RFID-based Logging Device.</i>
                 <br/>Please input your credentials below.
             </h4>

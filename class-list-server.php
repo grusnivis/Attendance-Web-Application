@@ -269,12 +269,13 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
                     fclose($handle);
 
                     //<!--- THIS PART CREATES THE FORMATTED CLASS LIST CSV FILE --->
-                    $idNumIndex = 0;
+                    //TAGS: CHECK THIS ERROR, IDNUMBER, UNSHIFT, ARRAY_UNSHIFT
+                    //$idNumIndex = 0;
                     //prepend the id numbers of the students to the names array!
-                    foreach ($names as &$line) { //& reference: https://stackoverflow.com/questions/25198792/array-unshift-in-multidimensional-array-insert-at-first-element-in-all-arrays
-                        array_unshift($line, $idNumbers[$idNumIndex]);
-                        $idNumIndex++;
-                    }
+                    //foreach ($names as &$line) { //& reference: https://stackoverflow.com/questions/25198792/array-unshift-in-multidimensional-array-insert-at-first-element-in-all-arrays
+                    //    array_unshift($line, $idNumbers[$idNumIndex]);
+                    //    $idNumIndex++;
+                    //}
 
                     //make a copy of the array $name to use in updating and creating the masterlist csv file
                     $namesCopy = array();
@@ -358,7 +359,7 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
                     */
                     fclose($handle);
 
-                    //<!--- THIS PART WILL BE EXECUTED IF A PARTNER IS SELECTED ASIDE FROM "This class is not a team teach course"
+                    //<!--- THIS PART WILL BE EXECUTED IF A PARTNER IS SELECTED ASIDE FROM "NOT A TEAM TEACH COURSE"
                     if ($teamTeachPartner != '0') {
                         //<!--- PART 1: copying the formatted class list to the partner's folder --->
                         //move the created file to the currently logged-in user's designated folder
@@ -437,7 +438,7 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
                                     Teacher VARCHAR(255),
                                     Partner VARCHAR(255),
                                     Course VARCHAR(255))
-                                    DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci");
+                                    DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
                         $sqlStatement->execute();
 
                         //create the teacher name for inserting the currently logged-in user's name to the teamteach database
@@ -502,7 +503,7 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
                                     ID VARCHAR(255) PRIMARY KEY,
                                     Lastname VARCHAR(255),
                                     Firstname VARCHAR(255))
-                                    DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci");
+                                    DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
                         $sqlStatement->execute();
                         $sqlStatement->close();
 
@@ -709,10 +710,10 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
                         }
                     }
 
-                    $classListServerMsg = "Uploading done!";
+                    $classListServerMsg = "Uploading class list done!";
 
                 } else{
-                    $classListServerMsg = "Uploading to the teacher's folder failed";
+                    $classListServerMsg = "Uploading to the teacher's folder failed!";
                 }
             }
             else{

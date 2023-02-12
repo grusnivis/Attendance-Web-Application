@@ -87,7 +87,7 @@ $sem_a = round((($absentTotal / $total) * 100));
 ?>
 
 <html>
-<!--
+
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;1,100;1,300;1,400;1,700&display=swap');
 
@@ -165,7 +165,7 @@ $sem_a = round((($absentTotal / $total) * 100));
         padding-right: 30px;
     }
 </style>
--->
+
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
