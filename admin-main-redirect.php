@@ -13,8 +13,8 @@ else if (isset($_POST['teacher-attendance']) && $_POST['teacher-attendance'] == 
     header("location: 6-teacher-attendance.php");
 }
 //goes to drop-export-tables.php
-else if (isset($_POST['drop-export-tables']) && $_POST['drop-export-tables'] == 'Drop and Export Databases') {
-    header("location: drop-export-tables.php");
+else if (isset($_POST['drop-export-tables']) && $_POST['drop-export-tables'] == 'Delete and Export Databases') {
+    header("location: database-export-drop.php");
 }
 //goes to admin-logout.php (if the logout button is selected)
 else{

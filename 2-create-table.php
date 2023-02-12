@@ -141,7 +141,7 @@ function connect_to_db($date, $dir, $file_name, $cg, $teacher){
                     Date VARCHAR(255) NOT NULL,
                     Status VARCHAR(255) NOT NULL,
                     Time VARCHAR(255) NOT NULL)
-                    DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci");
+                    DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
         //PRIMARY KEY (`Course`,`ID`,`Date`))
 
         $attendanceTableStmt->execute();

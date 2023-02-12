@@ -11,30 +11,30 @@ body {
 
 p{
    font-family: "Lato", sans-serif;
-   color:#e8dab2;
+   color: #4f6d7a;
    font-size: 13px;
 }
 
 a {
    font-family: "Lato", sans-serif;
-   color: #c0d6df;
+    color: #d9534f;
 }
 
 h1{
     font-family: "Lato", sans-serif, bold;
-    color: #dd6e42;
+    color:#4f6d7a;
 }
 
 h3{
     font-family: "Lato", sans-serif;
     font-size: 25px;
-    color:#e8dab2;
+    color: #dd6e42;
 }
 
 h4{
     font-family: "Lato", sans-serif;
     font-weight: 400;
-    color: #e8dab2; 
+    color: #dd6e42;
 }
 
 .breakspace {
@@ -51,16 +51,16 @@ h4{
 
 .con-main{
     width: 390px;
-    height: 430px;
+    height: 450px;
     border-radius: 5%;
     text-align: center;
-    background-color: #4f6d7a;
+    background-color: white;
 }
 
 .form-signin {
     max-width: 1090px;
     margin: 0 auto;
-    color: #d9534f;
+    color: #4f6d7a;
  }
  
  .form-signin .form-signin-heading,
@@ -90,21 +90,21 @@ h4{
     margin-bottom: 15px;
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
-    border-color:#017572;
+    border-color:#4f6d7a;
  }
  
  .form-signin input[type="password"] {
     margin-bottom: 70px;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
-    border-color:#017572;
+    border-color:#4f6d7a;
  }
 
 /*button options*/
 input[type="submit"] { /*upload button */
     border: 0px;
-    color: #e8dab2;
-    background: #d9534f;
+    color: white;
+    background: #dc3545;
     margin: 10px 0;
     border-radius: 5px;
     font-weight: bold;

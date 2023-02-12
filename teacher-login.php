@@ -53,13 +53,13 @@
 ?>
 <br/>
 <div class="con-main">
-    <h1>Attendance Monitoring System</h1>
+    <h1>Attendance Monitoring System <i><u> [Teacher] </u></i></h1>
     <h3> Welcome! </h3>
-    <h4> Group H 2022-2023 designed this web application
-        <br/>for the thesis entitled
-        <i> Development of an Attendance Monitoring System with a Portable RFID-based Logging Device. </i>
-        <p> <b> <i> Are you an administrator? <a href="admin-login.php"> Log in here! </a> </i></b></p>
+    <h4> This is the <b> teacher login page </b>for <br/>Group H's thesis entitled
+        <i> Development of an <br/>Attendance Monitoring System with a <br/>Portable RFID-based Logging Device.</i>
+        <br/>Please input your credentials below.
     </h4>
+    <p> <b> <i>Are you an administrator? <a href = "admin-login.php" > Log in here! </a> </i></b></p>
     <hr>
 
     <div class="con-form">

@@ -127,10 +127,35 @@
 			<div class="popup">
 				<h2>EDIT ATTENDANCE <br/> (for Unenrolled RFIDs)</h2>
 				<a class="close" href="#">&times;</a>
+                <h3 style="font-size:medium;color:#dd6e42;text-align:left;padding-left:30px">
+                    <?php
+                    if(isset($_POST['find'])){
+                        $enrolled = $_POST['rfid'];
+                        // concatenates the ID, Surname and Name if the RFID is found in the database and ID is not blank
+                        // $match = $db->query("SELECT Concat(ID,',',Surname,',',Name) as found FROM `$cg` WHERE RFID=$enrolled AND NOT ID=''");
+
+
+                        $match = $db->query("SELECT Concat(ID,',',Surname,',',Name) as found FROM `$cg` 
+											WHERE RFID=$enrolled AND NOT ID=''");
+
+                        while($info = $match->fetch_assoc()){
+                            $disp_info = explode(',',$info['found']);
+                            echo "<div>" . "MATCH FOUND IN DATABASE" . "</br></div>";
+                            echo "RFID: " . $enrolled . "</br>";
+                            echo "ID: " . $disp_info[0] . "</br>";
+                            echo "Surname: " . $disp_info[1] . "</br>";
+                            echo "Name: " . $disp_info[2] . "</br>";
+                        }
+                    }
+
+                    ?>
+                </h3>
+
 				<div class="content">
 					<form action="" method="post">
                     <div class="form-group">
                         <label for=""> RFID </label>
+                            <div style="display:flex;">
                             <select name="rfid" class="form-control" required> 
                             <option disabled value="" selected>Select RFID</option>
 							<?php
@@ -144,24 +169,25 @@
 								}
 							?>
 							</select>
-					</div>
+                                <button type="submit" name="find" class="btn btn-danger" style="font-size: 13px;padding-left:10px"> Find </button>
+                            </div>
 
 					<div class="form-group">
                         <label for=""> ID Number</label>
                         <input type="text" name="id_num" class="form-control" 
-								style="text-transform: capitalize;" placeholder="Enter ID Number" required>
+								style="text-transform: capitalize;" placeholder="Enter ID Number">
 					</div>
 
 					<div class="form-group">
                         <label for=""> Surname </label>
                         <input type="text" name="surname" class="form-control" 
-								style="text-transform: capitalize;" placeholder="Enter Surname" required>
+								style="text-transform: capitalize;" placeholder="Enter Surname">
 					</div>
 
 					<div class="form-group">
                         <label for=""> Name </label>
                         <input type="text" name="name" class="form-control" 
-								style="text-transform: capitalize;" placeholder="Enter Name" required>
+								style="text-transform: capitalize;" placeholder="Enter Name">
 					</div>
 				</div>
 				
