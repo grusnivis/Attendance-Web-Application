@@ -103,12 +103,12 @@
 ?>
 
     <nav class="topnav">
-		<a href="localhost/Attendance-Web-Application/2-create-table.php" style="color: #f2f2f2;"><i class="fa fa-home" style="font-size: 27px;text-align:center"></i></a>
-		<a href="localhost/Attendance-Web-Application/3-display-selection.php" style="color: #f2f2f2">Overall Attendance</a>
-		<a href="localhost/Attendance-Web-Application/3.1-class-list.php" style="color: #f2f2f2">Class List</a>
-        <a href="localhost/Attendance-Web-Application/3.2-date-filter.php" style="color: #f2f2f2">Date Filter</a>
-		<a href="localhost/Attendance-Web-Application/3.3-unenrolled.php" style="color: #f2f2f2">Unenrolled RFIDs</a>
-		<a href="localhost/Attendance-Web-Application/logout.php" style="color: #f2f2f2; float:right">Log Out</a>
+		<a href="https://localhost/Attendance-Web-Application/2-create-table.php" style="color: #f2f2f2;"><i class="fa fa-home" style="font-size: 27px;text-align:center"></i></a>
+		<a href="https://localhost/Attendance-Web-Application/3-display-selection.php" style="color: #f2f2f2">Overall Attendance</a>
+		<a href="https://localhost/Attendance-Web-Application/3.1-class-list.php" style="color: #f2f2f2">Class List</a>
+        <a href="https://localhost/Attendance-Web-Application/3.2-date-filter.php" style="color: #f2f2f2">Date Filter</a>
+		<a href="https://localhost/Attendance-Web-Application/3.3-unenrolled.php" style="color: #f2f2f2">Unenrolled RFIDs</a>
+		<a href="https://localhost/Attendance-Web-Application/logout.php" style="color: #f2f2f2; float:right">Log Out</a>
 	</nav>
 
 	<div>
