@@ -465,7 +465,7 @@
 
 					// filename = download path/filename
                     // NOTE: CHANGE FILEPATH ON THE SERVER PC
-					$filename = "C:/Users/Kath/Downloads/". strtoupper($teacher_name) . "_" . $cg . ".csv";
+					$filename = "D:/Downloads/". strtoupper($teacher_name) . "_" . $cg . ".csv";
 					$file = fopen($filename,"w");
 					fputcsv($file, array("ID#","Lastname","Name","Date","Status","Time-in"));
 											
@@ -478,7 +478,7 @@
 					fclose($file);
 
 					// the necessary email addresses
-					$from = '19102579@usc.edu.ph';
+					$from = '17100948@usc.edu.ph';
 					$to = $_POST["email"]; 
 
 					//read from the uploaded file & base64_encode content

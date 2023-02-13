@@ -399,7 +399,7 @@ if (isset($_GET['download_pdf'])) {
             if (isset($_POST['send_email'])) {
                 // filename = download path/filename
                 //$filename = "C:/Users/Amber/Downloads/". strtoupper($teacher_name) . "_" . $cg . ".csv";
-                $filename = "C:/Users/Kath/Downloads/" . strtoupper($teacher_name) . "_" . $cg . ".csv";
+                $filename = "D:/Downloads/" . strtoupper($teacher_name) . "_" . $cg . ".csv";
                 $file = fopen($filename, "w");
                 fputcsv($file, array("ID#", "Lastname", "Name", "Date", "Status", "Time-in"));
 
@@ -413,7 +413,7 @@ if (isset($_GET['download_pdf'])) {
 
                 // the necessary email addresses
                 // edit the email address here!
-                $from = '19102579@usc.edu.ph';
+                $from = '17100948@usc.edu.ph';
                 $to = $_POST["email"];
 
                 //read from the uploaded file & base64_encode the contents
@@ -666,7 +666,7 @@ if (isset($_GET['download_pdf'])) {
             if (isset($_POST['send_email_s'])) {
 
                 // filename = download path/filename
-                $filename = "C:/Users/Kath/Downloads/" . strtoupper($teacher_name) . "_" . $cg . ".csv";
+                $filename = "D:/Downloads/" . strtoupper($teacher_name) . "_" . $cg . ".csv";
                 $file = fopen($filename, "w");
                 fputcsv($file, array("Name", "Present", "Late", "Excused", "Absent", "Attendance Days", "% Presence"));
 
@@ -679,7 +679,7 @@ if (isset($_GET['download_pdf'])) {
                 fclose($file);
 
                 // the necessary email addresses
-                $from = '19102579@usc.edu.ph';
+                $from = '17100948@usc.edu.ph';
                 $to = $_POST["email"];
 
                 //read from the uploaded file & base64_encode content
