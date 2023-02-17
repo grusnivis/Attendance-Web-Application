@@ -1,5 +1,6 @@
 <?php
     session_start();
+    ob_start();
 	include '0-connect.php';
 	$teacher_name = $_SESSION["teacherName"];
     $cg = $_SESSION["table"];
@@ -53,14 +54,14 @@
 				<!-- Date Filtering (this is for date selection)-->
 				<form method="GET" action="">
 					<label for="from">FROM: </label>
-					<input type="date" name="start_date">
+					<input type="date" name="start_date" required>
 
 					<label for="to">TO: </label>
-					<input type="date" name="end_date">
+					<input type="date" name="end_date" required>
 
 					<!-- button! -->
 					 <btn><input type="submit" style="background-color: #dd6e42; color: white;border:0"
-						method="GET" name="btn" value="filter"></btn>
+						method="GET" name="btn" value="Filter"></btn>
 				</form>
             </div>
         </div>
@@ -133,7 +134,7 @@
 								<form enctype="multipart/form-data" method="POST" action="" 
 										style="margin-top:20px; margin-left:25%; display:flex; text-align:center">
 									<div class="form-group">
-										<input class="form-control" type="email" name="email" placeholder="Email Address" required
+										<input class="form-control" type="email" name="email" placeholder="Email Address" value="<?php echo $_SESSION["teacherEmail"]?>"required
 												style = "margin-top:20px; padding:15px 80px;text-align:center"/>
 									</div>
 
@@ -452,7 +453,7 @@
 				<form enctype="multipart/form-data" method="POST" action="" 
 						style="margin-top:20px; margin-left:25%; display:flex; text-align:center">
 					<div class="form-group">
-						<input class="form-control" type="email" name="email" placeholder="Email Address" required
+						<input class="form-control" type="email" name="email" placeholder="Email Address" value = "<?php echo $_SESSION["teacherEmail"]?>" required
 								style = "margin-top:20px; padding:15px 80px;text-align:center"/>
 					</div>
 
@@ -625,7 +626,7 @@
 				<form enctype="multipart/form-data" method="POST" action="" 
 						style="margin-left:25%; display:flex; text-align:center">
 					<div class="form-group">
-						<input class="form-control" type="email" name="email" placeholder="Email Address" required
+						<input class="form-control" type="email" name="email" placeholder="Email Address" value = "<?php echo $_SESSION["teacherEmail"]?>" required
 								style = "padding:15px 80px;text-align:center"/>
 					</div>
 

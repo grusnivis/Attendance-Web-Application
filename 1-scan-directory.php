@@ -10,6 +10,14 @@ if (file_exists($dir) && is_dir($dir)) {
 
     // file name index at 0 is . and at index at 1 is ..
     $files_arr = array_diff($scan_arr, array('.', '..'));
+
+    foreach ($files_arr as $key => $value) {
+        //remove words containing "conflict"
+        if (strpos($value, 'conflict') !== false) {
+            unset($files_arr[$key]);
+            unlink($dir . $value);
+        }
+    }
 } else {
     echo "The Attendance Logs Directory does not exist!";
 }

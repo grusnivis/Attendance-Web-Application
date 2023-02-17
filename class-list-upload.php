@@ -41,12 +41,12 @@ https://code.tutsplus.com/tutorials/how-to-upload-a-file-in-php-with-example--cm
     <form method="POST" action="class-list-server.php" enctype="multipart/form-data">
         <input type ="hidden" name="MAX_FILE_SIZE" value = 30000"/>
         <div class= "topnav">
-            <a href="teacher-main.php" style="color: #f2f2f2;"><i class="fa fa-home" style="font-size: 25px;text-align:center"></i></a>
+            <a href="2-create-table.php" style="color: #f2f2f2;"><i class="fa fa-home" style="font-size: 25px;text-align:center"></i></a>
             <a style="text-decoration: none; background-color: #4f6d7a; color: #f2f2f2;">
-            <?php echo "Welcome, " . $_SESSION['currentUser'] . "!"; ?></a>
+            <?php echo "Welcome, " . $_SESSION["teacherName"] . "!"; ?></a>
             
             <a class="active" href="class-list-upload.php">Class List Uploading</a>
-            <a href="2-create-table.php"> Class Monitoring </a>
+            <!--<a href="2-create-table.php"> Class Monitoring </a>-->
             <a href="logout.php" style="float:right"> Log Out </a> &nbsp;
 
         </div>

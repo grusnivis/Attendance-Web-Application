@@ -551,7 +551,7 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
                         }
                     }
 
-                    //<!--- IF THE STUDENT MASTERLIST DIRECTORY EXISTS, UPDATE THE EXISTING STUDENT MASTERLIST CSV FILE --->
+                    //<!--- IF THE STUDENT MASTERLIST DIRECTORY EXISTS, UPDATE IT WITH THE EXISTING STUDENT MASTERLIST CSV FILE --->
 
                     else {
                         //getting the current masterlist contents to update the masterlist database with the rfid column

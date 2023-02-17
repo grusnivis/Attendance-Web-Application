@@ -33,7 +33,7 @@ session_start();
             <tr>
                 <div class="form-group">
                     <td>
-                        <p class="instructions"><b>FIRST NAME</b></p>
+                        <p class="teacherInfo"><b>FIRST NAME</b></p>
                     </td>
                     <td>
                         <input type="text" class="firstName" placeholder="First Name" name="first-name"/>
@@ -44,7 +44,7 @@ session_start();
             <div class="form-group">
                 <tr>
                     <td>
-                        <p class="instructions"><b>LAST NAME</b></p>
+                        <p class="teacherInfo"><b>LAST NAME</b></p>
                     </td>
                     <td>
                         <input type="text" class="lastName" placeholder="Last Name" name="last-name"/>
@@ -55,7 +55,7 @@ session_start();
             <div class="form-group">
                 <tr>
                     <td>
-                        <p class="instructions"> <b>ID NUMBER</b></p>
+                        <p class="teacherInfo"> <b>ID NUMBER</b></p>
                     </td>
                     <td>
                         <!-- retain type = "text" due to teachers having letters in their ID number -->
@@ -67,7 +67,7 @@ session_start();
             <div class="Password">
                 <tr>
                     <td>
-                        <p class="instructions"><b>PASSWORD</b></p>
+                        <p class="teacherInfo"><b>PASSWORD</b></p>
                     </td>
                     <td>
                         <input type="password" class="password" placeholder="Password" name="password"/>
@@ -78,7 +78,7 @@ session_start();
             <div class="form-group">
                 <tr>
                     <td>
-                        <p class="instructions"><b>EMAIL</b></p>
+                        <p class="teacherInfo"><b>EMAIL</b></p>
                     </td>
                     <td>
                         <!-- use input type = "email" for automatic email validation -->
