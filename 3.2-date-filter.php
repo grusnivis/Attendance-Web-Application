@@ -27,8 +27,11 @@
 	if (mysqli_num_rows($result) > 0) {
 		$row = mysqli_fetch_assoc($result);
 		$tv3 = $row["val"];
+		$teacherEmail = $tv3;
 	}
-	$teacherEmail = $tv3;
+	else{
+		$teacherEmail = '';
+    }
  
 	$sql = "INSERT INTO temptb (varname, val) VALUES ('table', '$cg')";
 	
