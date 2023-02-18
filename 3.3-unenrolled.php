@@ -21,8 +21,12 @@ ob_start(); //important to retain the inputs in the textboxes
 	if (mysqli_num_rows($result) > 0) {
 		$row = mysqli_fetch_assoc($result);
 		$te2 = $row["val"];
+		$findStudentRFID = $te2;
 	}
-	$findStudentRFID = $te2;
+    else{
+        $findStudentRFID = '';
+    }
+	
  
 	$sql = "INSERT INTO temptb (varname, val) VALUES ('table', '$tempvar1')";
 	
