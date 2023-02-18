@@ -22,9 +22,17 @@
 	if (mysqli_num_rows($result) > 0) {
 		$row = mysqli_fetch_assoc($result);
 		$tempvar2 = $row["val"];
-		mysqli_close($conn);
 	}
 	$teacher_name = strtoupper($tempvar2);
+	
+	$sql = "SELECT val FROM temptb WHERE varname = 'IDNum' ORDER BY id DESC LIMIT 1";
+	$result = mysqli_query($conn, $sql);
+	if (mysqli_num_rows($result) > 0) {
+		$row = mysqli_fetch_assoc($result);
+		$tv3 = $row["val"];
+		mysqli_close($conn);
+	}
+	$IDNum = $tv3;
 	
 	$conn = new mysqli("localhost", "root", "", "temp");
 	// Check connection
@@ -54,7 +62,7 @@ mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
 //on the "teacher" database, "login" table, search for the currently logged in user's IDNumber
 $sqlStatement = $teacherEmailDB->prepare("SELECT * FROM login WHERE IDNumber = ?");
-$sqlStatement->bind_param("s", $_SESSION["currentUser"]); //currentUser is the IDNumber of the logged-in teacher
+$sqlStatement->bind_param("s", $tv3); //currentUser is the IDNumber of the logged-in teacher
 $sqlStatement->execute();
 
 $result = $sqlStatement->get_result();
@@ -68,7 +76,18 @@ if ($result->num_rows == 0) {
 else {
     while ($row = $result->fetch_assoc()) {
         //set the $row[""] to the column you want to use
-        $_SESSION["teacherEmail"] = $row["email"];
+        $tv4 = $row["email"];
+        
+	    $conn = new mysqli("localhost", "root", "", "temp");
+	    // Check connection
+	    if ($conn->connect_error) {
+		    die("Connection failed: " . $conn->connect_error);
+	    }
+	    $sql = "INSERT INTO temptb (varname, val) VALUES ('teacherEmail', '$tv4')";
+	
+	    if (mysqli_query($conn, $sql)) {
+		    mysqli_close($conn);
+	    }
     }
 }
 
@@ -394,8 +413,21 @@ if (isset($_GET['download_pdf'])) {
                       style="margin-top:20px; margin-left:25%; display:flex; text-align:center">
 
                     <div class="form-group">
+                        <?php
+	                        $conn = new mysqli("localhost", "root", "", "temp");
+	                        // Check connection
+	                        if ($conn->connect_error) {
+		                        die("Connection failed: " . $conn->connect_error);
+	                        }
+	                        $sql = "SELECT val FROM temptb WHERE varname = 'teacherEmail' ORDER BY id DESC LIMIT 1";
+	                        $result = mysqli_query($conn, $sql);
+	                        if (mysqli_num_rows($result) > 0) {
+		                        $row = mysqli_fetch_assoc($result);
+		                        $tempvar1 = $row["val"];
+	                        }
+                        ?>
                         <input class="form-control" type="email" name="email" placeholder="Email Address" required
-                               style="margin-top:20px; padding:15px 80px;text-align:center" value = "<?php echo $_SESSION["teacherEmail"]?>"/>
+                               style="margin-top:20px; padding:15px 80px;text-align:center" value = "<?php echo $tempvar1?>"/>
                     </div>
 
                     <div class="form-group">
@@ -662,7 +694,7 @@ if (isset($_GET['download_pdf'])) {
                 <form enctype="multipart/form-data" method="POST" action=""
                       style="margin-top:20px; margin-left:25%; display:flex; text-align:center">
                     <div class="form-group">
-                        <input class="form-control" type="email" name="email" placeholder="<?php echo $_SESSION["teacherEmail"]?>" required
+                        <input class="form-control" type="email" name="email" placeholder="<?php echo $tempvar1?>" required
                                style="margin-top:20px; padding:15px 80px;text-align:center"/>
                     </div>
 

@@ -3,7 +3,6 @@
 $files_arr = array();
 $dir = './Attendance Logs/';
 
-
 //THIS PART JUST CALLS THE PHP FILE FOR SCANNING OF ATTENDANCE LOG FOLDER
 include('1-scan-directory.php');
 
@@ -421,8 +420,6 @@ if ($teacherLoginDB->connect_error) {
 }
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
-
-
 //on the 'teacher' database, 'login' table in phpmyadmin, search for the id number in the session array
 //mysql and sessions (use curly braces) https://stackoverflow.com/questions/5746614/session-variable-in-mysql-query
 $sqlStatement = $teacherLoginDB->prepare("SELECT * FROM login WHERE IDNumber = ?");
@@ -462,8 +459,8 @@ include('0-connect.php');
 <div>
     <nav class="topnav">
         <a style="color:white;background-color: #4f6d7a;text-decoration:none"><?php echo "Welcome, " . $teacher_name . "!"?></a>
-        <a style = "color:white" href="class-list-upload.php">Upload Class Lists</a>
-        <a style="float:right;color:white" href="logout.php"> Log Out</a>
+        <a style = "color:white" href="/class-list-upload.php">Upload Class Lists</a>
+        <a style="float:right;color:white" href="/logout.php"> Log Out</a>
     </nav>
     <!--title instructions-->
     <h1> SELECT THE CLASS YOU WANT TO MONITOR: </h1>

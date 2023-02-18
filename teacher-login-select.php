@@ -4,10 +4,6 @@ After selecting the teacher to be updated, it will
 redirect to teacher-login-modify.php
 -->
 
-<?php
-    //session_start();
-?>
-
 <!-- HTML START -->
 <html lang = 'en'>
 <head>

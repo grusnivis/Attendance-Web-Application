@@ -88,7 +88,17 @@ if (isset($_POST['database-export']) && $_POST['database-export'] == 'Export Sel
         echo $content;
     }
     else{
-        $_SESSION["exportTeacherDBMsg"] = "No Teacher selected!";
+        $conn = new mysqli("localhost", "root", "", "temp");
+        // Check connection
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+        }
+        $sql = "INSERT INTO temptb (varname, val) VALUES ('exportTeacherDBMsg', 'No Teacher selected!')";
+    
+        if (mysqli_query($conn, $sql)) {
+            mysqli_close($conn);
+        }
+        //$_SESSION["exportTeacherDBMsg"] = "No Teacher selected!";
     }
     //returns to the database-export-drop.php
     header("location: database-export-drop.php");
@@ -136,7 +146,17 @@ if (isset($_POST['database-drop']) && $_POST['database-drop'] == 'Delete All Dat
     mysqli_close($serverConnect);
 
     //returns to the database-export-drop.php
-    $_SESSION["dropTeacherDBMsg"] = "Teacher databases deleted successfully!";
+    $conn = new mysqli("localhost", "root", "", "temp");
+    // Check connection
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+    $sql = "INSERT INTO temptb (varname, val) VALUES ('dropTeacherDBMsg', 'Teacher databases deleted successfully!')";
+    
+    if (mysqli_query($conn, $sql)) {
+        mysqli_close($conn);
+    }
+    //$_SESSION["dropTeacherDBMsg"] = "Teacher databases deleted successfully!";
     header("location: database-export-drop.php");
 }
 

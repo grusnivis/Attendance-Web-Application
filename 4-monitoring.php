@@ -19,15 +19,17 @@
 	if (mysqli_num_rows($result) > 0) {
 		$row = mysqli_fetch_assoc($result);
 		$tempvar2 = $row["val"];
-		mysqli_close($conn);
 	}
 	$teacher_name = strtoupper($tempvar2);
-	
-    $conn = new mysqli("localhost", "root", "", "temp");
-	// Check connection
-	if ($conn->connect_error) {
-		die("Connection failed: " . $conn->connect_error);
+ 
+	$sql = "SELECT val FROM temptb WHERE varname = 'teacherName' ORDER BY id DESC LIMIT 1";
+	$result = mysqli_query($conn, $sql);
+	if (mysqli_num_rows($result) > 0) {
+		$row = mysqli_fetch_assoc($result);
+		$tempvar3= $row["val"];
 	}
+	$teacherEmail = $tempvar3;
+	
 	$sql = "INSERT INTO temptb (varname, val) VALUES ('table', '$tempvar1')";
 	
 	if (mysqli_query($conn, $sql)) {
@@ -422,7 +424,7 @@
 				<form enctype="multipart/form-data" method="POST" action="" 
 						style="margin-top:20px; margin-left:25%; display:flex; text-align:center">
 					<div class="form-group">
-						<input class="form-control" type="email" name="email" placeholder="Email Address" value = "<?php echo $_SESSION["teacherEmail"]?>" required
+						<input class="form-control" type="email" name="email" placeholder="Email Address" value = "<?php echo $teacherEmail?>" required
 								style = "margin-top:20px; padding:15px 80px;text-align:center"/>
 					</div>
 

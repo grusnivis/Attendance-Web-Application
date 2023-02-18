@@ -1,18 +1,3 @@
-<?php
-	$conn = new mysqli("localhost", "root", "", "temp");
-	// Check connection
-	if ($conn->connect_error) {
-		die("Connection failed: " . $conn->connect_error);
-	}
-	$sql = "SELECT val FROM temptb WHERE varname = 'message' ORDER BY id DESC LIMIT 1";
-	$result = mysqli_query($conn, $sql);
-	if (mysqli_num_rows($result) > 0) {
-		$row = mysqli_fetch_assoc($result);
-		$tempvar = $row["val"];
-		mysqli_close($conn);
-	}
-?>
-
 <!-- HTML start -->
 <html lang='en'>
 <head>
@@ -110,7 +95,7 @@
     </table>
     <br/>
     <hr/>
-    <input type="submit" name="return-to-admin-main" class="btn btn-info" style="color:300px; color: white; background: #dc3545;" value="Return to Administrator Menu"/>
+    <input type="submit" name="return-to-admin-main" class="btn btn-info" style="color: white; background: #dc3545;" value="Return to Administrator Menu"/>
     <!-- THIS PART IS FOR DISPLAYING IF THE PUSHING TO LOGIN TABLE AND CREATING USER DATABASE IS SUCCESSFUL -->
     <?php
 	    // Create connection directly to specific database

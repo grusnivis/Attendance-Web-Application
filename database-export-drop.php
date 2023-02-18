@@ -72,11 +72,29 @@ session_start();
         <!-- message prompt for exporting database -->
 
         <?php
-        if (isset($_SESSION["exportTeacherDBMsg"]) && $_SESSION["exportTeacherDBMsg"]) {
-            echo '<p class = "notification">';
-            echo $_SESSION["exportTeacherDBMsg"];
-            echo '</p>';
-            unset ($_SESSION["exportTeacherDBMsg"]);
+	        // Create connection directly to specific database
+	        $conn = new mysqli('localhost', 'root', '', 'temp');
+	        // Obtain last value of variable user as 1 row
+	        // format goes "SELECT value column FROM temptb table WHERE variable is user ORDER BY last input of id in descending with 1 row
+	        $sql = "SELECT val FROM temptb WHERE varname = 'exportTeacherDBMsg' ORDER BY id DESC LIMIT 1";
+	        $result = mysqli_query($conn, $sql);
+	        if (mysqli_num_rows($result) > 0) {
+		        $row = mysqli_fetch_assoc($result);
+		        $tp5 = $row["val"];
+		        mysqli_close($conn);
+	        }
+        if (isset($tp5) && $tp5) {
+	        echo '<p class = "notification">' . $tp5 . '</p>';
+	        $conn = new mysqli("localhost", "root", "", "temp");
+	        // Check connection
+	        if ($conn->connect_error) {
+		        die("Connection failed: " . $conn->connect_error);
+	        }
+	        $sql = "INSERT INTO temptb (varname, val) VALUES ('exportTeacherDBMsg', '')";
+	
+	        if (mysqli_query($conn, $sql)) {
+		        mysqli_close($conn);
+	        }
         }
         ?>
         <hr/>
@@ -88,11 +106,30 @@ session_start();
         <!-- message prompt for dropping databases-->
         <br class = "breakspaceForNotif"/>
         <?php
-        if (isset($_SESSION["dropTeacherDBMsg"]) && $_SESSION["dropTeacherDBMsg"]) {
-            echo '<p class = "notification">';
-            echo $_SESSION["dropTeacherDBMsg"];
-            echo '</p>';
-            unset ($_SESSION["dropTeacherDBMsg"]);
+	        // Create connection directly to specific database
+	        $conn = new mysqli('localhost', 'root', '', 'temp');
+	        // Obtain last value of variable user as 1 row
+	        // format goes "SELECT value column FROM temptb table WHERE variable is user ORDER BY last input of id in descending with 1 row
+	        $sql = "SELECT val FROM temptb WHERE varname = 'dropTeacherDBMsg' ORDER BY id DESC LIMIT 1";
+	        $result = mysqli_query($conn, $sql);
+	        if (mysqli_num_rows($result) > 0) {
+		        $row = mysqli_fetch_assoc($result);
+		        $tv2 = $row["val"];
+		        mysqli_close($conn);
+	        }
+        if (isset($tv2) && $tv2) {
+	        echo '<p class = "notification">' . $tv2 . '</p>';
+	
+	        $conn = new mysqli("localhost", "root", "", "temp");
+	        // Check connection
+	        if ($conn->connect_error) {
+		        die("Connection failed: " . $conn->connect_error);
+	        }
+	        $sql = "INSERT INTO temptb (varname, val) VALUES ('dropTeacherDBMsg', '')";
+	
+	        if (mysqli_query($conn, $sql)) {
+		        mysqli_close($conn);
+	        }
         }
         ?>
 
