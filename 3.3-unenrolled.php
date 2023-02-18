@@ -15,10 +15,15 @@ ob_start(); //important to retain the inputs in the textboxes
 		$tempvar1 = $row["val"];
 	}
 	$cg = $tempvar1;
- 
-	if ($conn->connect_error) {
-		die("Connection failed: " . $conn->connect_error);
+	
+	$sql = "SELECT val FROM temptb WHERE varname = 'findStudentRFID' ORDER BY id DESC LIMIT 1";
+	$result = mysqli_query($conn, $sql);
+	if (mysqli_num_rows($result) > 0) {
+		$row = mysqli_fetch_assoc($result);
+		$te2 = $row["val"];
 	}
+	$findStudentRFID = $te2;
+ 
 	$sql = "INSERT INTO temptb (varname, val) VALUES ('table', '$tempvar1')";
 	
 	if (mysqli_query($conn, $sql)) {
@@ -54,7 +59,7 @@ ob_start(); //important to retain the inputs in the textboxes
     <!--THIS PART WILL EXECUTE IF THE USER CLICKS THE "UPDATE STUDENT RFID INFORMATION" BUTTON -->
     <?php
     if (isset($_POST['update-info']) && $_POST['update-info'] == "UPDATE STUDENT RFID INFORMATION") {
-        $rfid_tag = $_SESSION['findStudentRFID'];
+        $rfid_tag = $findStudentRFID;
         $id_number = trim(strtoupper($_POST['studentIDNum']));
         $lastname = trim(strtoupper($_POST['studentLName']));
         $firstname = trim(strtoupper($_POST['studentFName']));
@@ -64,9 +69,30 @@ ob_start(); //important to retain the inputs in the textboxes
 
         if ($query_run) {
             //echo '<script> alert("Data Updated"); </script>';
-            $_SESSION["updateStudentRFIDMsg"] = "Updated the selected RFID successfully!";
-        } else {
-            $_SESSION["updateStudentRFIDMsg"] = "Updating the selected RFID unsuccessful. Please try again.";
+	        $conn = new mysqli("localhost", "root", "", "temp");
+	        // Check connection
+	        if ($conn->connect_error) {
+		        die("Connection failed: " . $conn->connect_error);
+	        }
+            $sql = "INSERT INTO temptb (varname, val) VALUES ('updateStudentRFIDMsg', 'Updated the selected RFID successfully!')";
+	
+	        if (mysqli_query($conn, $sql)) {
+		        mysqli_close($conn);
+	        }
+            //$_SESSION["updateStudentRFIDMsg"] = "Updated the selected RFID successfully!";
+        }
+        else {
+	        $conn = new mysqli("localhost", "root", "", "temp");
+	        // Check connection
+	        if ($conn->connect_error) {
+		        die("Connection failed: " . $conn->connect_error);
+	        }
+	        $sql = "INSERT INTO temptb (varname, val) VALUES ('updateStudentRFIDMsg', 'Updating the selected RFID unsuccessful. Please try again.')";
+	
+	        if (mysqli_query($conn, $sql)) {
+		        mysqli_close($conn);
+	        }
+            //$_SESSION["updateStudentRFIDMsg"] = "Updating the selected RFID unsuccessful. Please try again.";
             //echo '<script> alert("Data Not Updated"); </script>';
         }
         header("Location: #findStudentRFIDPopup");
@@ -143,8 +169,17 @@ ob_start(); //important to retain the inputs in the textboxes
             if (isset($_POST['find-student-rfid']) && $_POST['find-student-rfid'] == 'FIND STUDENT RFID') {
                 //KATHY SOLUTION
                 //default texts if not clicking "find" button
-                $_SESSION['findStudentRFID'] = $_POST["rfidStudent"];
-
+	            $temp = $_POST["rfidStudent"];
+	            $conn = new mysqli("localhost", "root", "", "temp");
+	            // Check connection
+	            if ($conn->connect_error) {
+		            die("Connection failed: " . $conn->connect_error);
+	            }
+	            $sql = "INSERT INTO temptb (varname, val) VALUES ('findStudentRFID', '$temp')";
+	
+	            if (mysqli_query($conn, $sql)) {
+		            mysqli_close($conn);
+	            }
                 //database credentials, running MySQL with default setting (user 'root' with no password)
                 //attempt to connect to MySQL "masterlist" database
                 $rfidFindDB = mysqli_connect('localhost', 'root', '', 'masterlist');
@@ -157,13 +192,38 @@ ob_start(); //important to retain the inputs in the textboxes
 
                 //on the "masterlist" database, "student" table in phpmyadmin DBMS, search for the equivalent RFID
                 $sqlStatement = $rfidFindDB->prepare("SELECT * FROM student WHERE RFID = ?");
-                $sqlStatement->bind_param("s", $_SESSION['findStudentRFID']);
+	            
+                $conn = new mysqli("localhost", "root", "", "temp");
+	            // Check connection
+	            if ($conn->connect_error) {
+		            die("Connection failed: " . $conn->connect_error);
+	            }
+	            $sql = "SELECT val FROM temptb WHERE varname = 'findStudentRFID' ORDER BY id DESC LIMIT 1";
+	            $result = mysqli_query($conn, $sql);
+	            if (mysqli_num_rows($result) > 0) {
+		            $row = mysqli_fetch_assoc($result);
+		            $tm3 = $row["val"];
+	            }
+	            $findStudentRFID = tm3;
+                
+                $sqlStatement->bind_param("s", $findStudentRFID);
                 $sqlStatement->execute();
 
                 $result = $sqlStatement->get_result();
                 //if no information on the rfid is found, return back to the edit menu with the error message
                 if ($result->num_rows == 0) {
-                    $_SESSION["findStudentRFIDMsg"] = "The selected student is not enrolled in the portable attendance device.";
+	
+	                $conn = new mysqli("localhost", "root", "", "temp");
+	                // Check connection
+	                if ($conn->connect_error) {
+		                die("Connection failed: " . $conn->connect_error);
+	                }
+	                $sql = "INSERT INTO temptb (varname, val) VALUES ('findStudentRFIDMsg', 'The selected student is not enrolled in the portable attendance device.')";
+	
+	                if (mysqli_query($conn, $sql)) {
+		                mysqli_close($conn);
+	                }
+                    //$_SESSION["findStudentRFIDMsg"] = "The selected student is not enrolled in the portable attendance device.";
 
                     $sqlStatement->close();
                     mysqli_close($rfidFindDB);
@@ -173,9 +233,24 @@ ob_start(); //important to retain the inputs in the textboxes
                 else {
                     while ($row = $result->fetch_assoc()) {
                         //set the $row[""] to the column you want to use
-                        $_SESSION['studentIDNumber'] = $row["ID"];
-                        $_SESSION['studentLastName'] = $row["Lastname"];
-                        $_SESSION['studentFirstName'] = $row["Firstname"];
+                        $ID = $row["ID"];
+                        $LN = $row["Lastname"];
+                        $FN = $row["Firstname"];
+	
+	                    $conn = new mysqli("localhost", "root", "", "temp");
+	                    // Check connection
+	                    if ($conn->connect_error) {
+		                    die("Connection failed: " . $conn->connect_error);
+	                    }
+	                    $sql = "INSERT INTO temptb (varname, val) VALUES ('studentIDNumber', '$ID')";
+	
+	                    if (mysqli_query($conn, $sql)) {
+		                    $sql = "INSERT INTO temptb (varname, val) VALUES ('studentLastName', '$LN')";
+		                    if (mysqli_query($conn, $sql)) {
+			                    $sql = "INSERT INTO temptb (varname, val) VALUES ('studentFirstName', '$FN')";
+			                    mysqli_close($conn);
+		                    }
+	                    }
                     }
                 }
 
@@ -216,15 +291,56 @@ ob_start(); //important to retain the inputs in the textboxes
 
                         <!-- THIS PART SHOWS IF THE RFID SEARCH IN MASTERLIST IS UNSUCCESSFUL -->
                         <?php
-                        if (isset($_SESSION['findStudentRFIDMsg']) && $_SESSION['findStudentRFIDMsg']) {
-                            echo '<p class = "notification">' . $_SESSION['findStudentRFIDMsg'] . '</p>';
-                            unset($_SESSION['findStudentRFIDMsg']);
-                        }
-
-                        if (isset($_SESSION["updateStudentRFIDMsg"]) && $_SESSION["updateStudentRFIDMsg"]) {
-                            echo '<p class = "notification">' . $_SESSION["updateStudentRFIDMsg"] . '</p>';
-                            unset($_SESSION["updateStudentRFIDMsg"]);
-                        }
+	                        // Create connection directly to specific database
+	                        $conn = new mysqli('localhost', 'root', '', 'temp');
+	                        // Obtain last value of variable user as 1 row
+	                        // format goes "SELECT value column FROM temptb table WHERE variable is user ORDER BY last input of id in descending with 1 row
+	                        $sql = "SELECT val FROM temptb WHERE varname = 'findStudentRFIDMsg' ORDER BY id DESC LIMIT 1";
+	                        $result = mysqli_query($conn, $sql);
+	                        if (mysqli_num_rows($result) > 0) {
+		                        $row = mysqli_fetch_assoc($result);
+		                        $tp5 = $row["val"];
+		                        mysqli_close($conn);
+	                        }
+	                        if (isset($tp5) && $tp5) {
+                            echo '<p class = "notification">' . $tp5 . '</p>';
+                            unset($$tp5);
+		                        $conn = new mysqli("localhost", "root", "", "temp");
+		                        // Check connection
+		                        if ($conn->connect_error) {
+			                        die("Connection failed: " . $conn->connect_error);
+		                        }
+		                        $sql = "INSERT INTO temptb (varname, val) VALUES ('findStudentRFIDMsg', '')";
+		
+		                        if (mysqli_query($conn, $sql)) {
+			                        mysqli_close($conn);
+		                        }
+                            }
+	                        // Create connection directly to specific database
+	                        $conn = new mysqli('localhost', 'root', '', 'temp');
+	                        // Obtain last value of variable user as 1 row
+	                        // format goes "SELECT value column FROM temptb table WHERE variable is user ORDER BY last input of id in descending with 1 row
+	                        $sql = "SELECT val FROM temptb WHERE varname = 'updateStudentRFIDMsg' ORDER BY id DESC LIMIT 1";
+	                        $result = mysqli_query($conn, $sql);
+	                        if (mysqli_num_rows($result) > 0) {
+		                        $row = mysqli_fetch_assoc($result);
+		                        $tp5 = $row["val"];
+		                        mysqli_close($conn);
+	                        }
+	                        if (isset($tp5) && $tp5) {
+		                        echo '<p class = "notification">' . $tp5 . '</p>';
+		                        unset($tp5);
+		                        $conn = new mysqli("localhost", "root", "", "temp");
+		                        // Check connection
+		                        if ($conn->connect_error) {
+			                        die("Connection failed: " . $conn->connect_error);
+		                        }
+		                        $sql = "INSERT INTO temptb (varname, val) VALUES ('updateStudentRFIDMsg', '')";
+		
+		                        if (mysqli_query($conn, $sql)) {
+			                        mysqli_close($conn);
+		                        }
+	                        }
                         ?>
                     </div>
                 </form>
@@ -247,6 +363,35 @@ ob_start(); //important to retain the inputs in the textboxes
                 <form method="POST" enctype="multipart/form-data">
                     <center>
                         <table>
+                            <?php
+	                            // Create connection directly to specific database
+	                            $conn = new mysqli('localhost', 'root', '', 'temp');
+	                            // Obtain last value of variable user as 1 row
+	                            // format goes "SELECT value column FROM temptb table WHERE variable is user ORDER BY last input of id in descending with 1 row
+	                            $sql = "SELECT val FROM temptb WHERE varname = 'studentIDNumber' ORDER BY id DESC LIMIT 1";
+	                            $result = mysqli_query($conn, $sql);
+	                            if (mysqli_num_rows($result) > 0) {
+		                            $row = mysqli_fetch_assoc($result);
+		                            $tv2 = $row["val"];
+	                            }
+                                $studentIDNumber = $tv2;
+	
+	                            $sql = "SELECT val FROM temptb WHERE varname = 'studentLastName' ORDER BY id DESC LIMIT 1";
+	                            $result = mysqli_query($conn, $sql);
+	                            if (mysqli_num_rows($result) > 0) {
+		                            $row = mysqli_fetch_assoc($result);
+		                            $tv3 = $row["val"];
+	                            }
+	                            $studentLastName = $tv3;
+	
+	                            $sql = "SELECT val FROM temptb WHERE varname = 'studentFirstName' ORDER BY id DESC LIMIT 1";
+	                            $result = mysqli_query($conn, $sql);
+	                            if (mysqli_num_rows($result) > 0) {
+		                            $row = mysqli_fetch_assoc($result);
+		                            $ta2 = $row["val"];
+	                            }
+	                            $studentFirstName = $ta2;
+                            ?>
                             <tr>
                                 <div class="form-group">
                                     <td>
@@ -255,7 +400,7 @@ ob_start(); //important to retain the inputs in the textboxes
                                     <td>
                                         <input type="text" name="studentIDNum" class="idnumber"
                                                style="text-transform: capitalize;" placeholder="Enter ID Number"
-                                               value="<?php echo $_SESSION["studentIDNumber"] ?>" required/>
+                                               value="<?php echo $studentIDNumber ?>" required/>
                                     </td>
 
                                 </div>
@@ -269,7 +414,7 @@ ob_start(); //important to retain the inputs in the textboxes
                                     <td>
                                         <input type="text" name="studentLName" class="lastname"
                                                style="text-transform: capitalize;" placeholder="Enter Surname"
-                                               value="<?php echo $_SESSION["studentLastName"] ?>" required/>
+                                               value="<?php echo $studentLastName?>" required/>
 
                                     </td>
 
@@ -284,7 +429,7 @@ ob_start(); //important to retain the inputs in the textboxes
                                     <td>
                                         <input type="text" name="studentFName" class="firstname"
                                                style="text-transform: capitalize;" placeholder="Enter Name"
-                                               value="<?php echo $_SESSION["studentFirstName"] ?>" required/>
+                                               value="<?php echo $studentFirstName?>" required/>
 
                                     </td>
                                 </div>
@@ -348,4 +493,3 @@ function show_unenrolled($db, $cg, $tab_date)
 }
 
 ?>
-
