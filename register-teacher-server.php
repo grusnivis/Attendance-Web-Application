@@ -49,14 +49,14 @@ if (isset ($_POST["register"])) {
 
     //create the "login" table if it does not exist
     //columns are: IDNumber, password, firstName, lastName, email
-    //character is set to utf8mb4_general_ci on default
+    //character is set to utf8mb4_unicode_ci on default
     $createLoginTableStmt = $teacherDB->prepare("CREATE TABLE IF NOT EXISTS login(
             IDNumber VARCHAR(255) PRIMARY KEY,
             password VARCHAR(255),
             firstName VARCHAR(255),
             lastName VARCHAR(255),
             email VARCHAR(255))
-            DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci");
+            DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
     $createLoginTableStmt->execute();
     $createLoginTableStmt->close();
 
@@ -137,7 +137,7 @@ if (isset ($_POST["register"])) {
                     IDNumber VARCHAR(255) PRIMARY KEY,
                     Lastname VARCHAR(255),
                     Firstname VARCHAR(255)) 
-                    DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci");
+                    DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
         $sqlStatement->execute();
         $sqlStatement->close();
 

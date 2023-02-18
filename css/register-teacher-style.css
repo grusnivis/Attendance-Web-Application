@@ -143,6 +143,13 @@ table, th, td{
     text-align: center;
 }
 
+.teacherInfo{
+    color: black;
+    font-family: "Lato", sans-serif;
+    font-weight: 400;
+    text-align: center;
+}
+
 .config-titles{
     color: #dd6e42;
     font-family: "Lato", sans-serif;

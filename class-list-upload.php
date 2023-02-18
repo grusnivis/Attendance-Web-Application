@@ -10,11 +10,17 @@
 	if ($conn->connect_error) {
 		die("Connection failed: " . $conn->connect_error);
 	}
-	$sql = "SELECT val FROM temptb WHERE varname = 'IDNum' ORDER BY id DESC LIMIT 1";
+	$sql = "SELECT val FROM temptb WHERE varname = 'teacherName' ORDER BY id DESC LIMIT 1";
 	$result = mysqli_query($conn, $sql);
 	if (mysqli_num_rows($result) > 0) {
 		$row = mysqli_fetch_assoc($result);
 		$tempvar1 = $row["val"];
+	}
+	$sql = "SELECT val FROM temptb WHERE varname = 'IDNum' ORDER BY id DESC LIMIT 1";
+	$result = mysqli_query($conn, $sql);
+	if (mysqli_num_rows($result) > 0) {
+		$row = mysqli_fetch_assoc($result);
+		$tv2 = $row["val"];
 		mysqli_close($conn);
 	}
 //header("Cache-Control: no-cache, must-revalidate");
@@ -29,7 +35,7 @@
 
 	<title>View Attendance</title>
 
-	<link rel="stylesheet"
+	<link rel="stylesheet" 
         href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 	
 	<link rel="stylesheet"
@@ -53,12 +59,12 @@ https://code.tutsplus.com/tutorials/how-to-upload-a-file-in-php-with-example--cm
     <form method="POST" action="class-list-server.php" enctype="multipart/form-data">
         <input type ="hidden" name="MAX_FILE_SIZE" value = 30000"/>
         <div class= "topnav">
-            <a href="teacher-main.php" style="color: #f2f2f2;"><i class="fa fa-home" style="font-size: 25px;text-align:center"></i></a>
+            <a href="2-create-table.php" style="color: #f2f2f2;"><i class="fa fa-home" style="font-size: 25px;text-align:center"></i></a>
             <a style="text-decoration: none; background-color: #4f6d7a; color: #f2f2f2;">
             <?php echo "Welcome, " . $tempvar1 . "!"; ?></a>
             
             <a class="active" href="class-list-upload.php">Class List Uploading</a>
-            <a href="2-create-table.php"> Class Monitoring </a>
+            <!--<a href="2-create-table.php"> Class Monitoring </a>-->
             <a href="logout.php" style="float:right"> Log Out </a> &nbsp;
 
         </div>
@@ -89,7 +95,7 @@ https://code.tutsplus.com/tutorials/how-to-upload-a-file-in-php-with-example--cm
                             echo "<option value = '0'>NOT A TEAM TEACH CLASS</option>";
                             while ($row = mysqli_fetch_array($result)){
                                 //exclude current user in display: https://stackoverflow.com/questions/1248641/php-how-to-exclude-data-from-mysql
-                                if($row['IDNumber'] == $tempvar1){
+                                if($row['IDNumber'] == $tv2){
                                     continue;
                                 };
                                 echo "<option value = '". $row['IDNumber'] ."'>". $row['IDNumber'] . " - " .$row['firstName'] . " " . $row['lastName'] ."</option>";

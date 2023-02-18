@@ -1,4 +1,5 @@
 <?php
+    ob_start();
 	include '0-connect.php';
     $conn = new mysqli("localhost", "root", "", "temp");
 	// Check connection
@@ -421,7 +422,7 @@
 				<form enctype="multipart/form-data" method="POST" action="" 
 						style="margin-top:20px; margin-left:25%; display:flex; text-align:center">
 					<div class="form-group">
-						<input class="form-control" type="email" name="email" placeholder="Email Address" required
+						<input class="form-control" type="email" name="email" placeholder="Email Address" value = "<?php echo $_SESSION["teacherEmail"]?>" required
 								style = "margin-top:20px; padding:15px 80px;text-align:center"/>
 					</div>
 

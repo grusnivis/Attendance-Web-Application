@@ -6,6 +6,83 @@ $dir = './Attendance Logs/';
 
 //THIS PART JUST CALLS THE PHP FILE FOR SCANNING OF ATTENDANCE LOG FOLDER
 include('1-scan-directory.php');
+
+//THIS PART UPDATES THE MASTERLIST DATABASE UPON LOGGING IN BY THE TEACHER
+
+//<!--- CREATE THE STUDENT MASTERLIST DIRECTORY IF IT DOES NOT EXIST --->
+//TAGS: CHANGE ADDRESS, DIRECTORY, SERVER PC
+if (!file_exists("./Student Masterlist/")){
+    mkdir("./Student Masterlist/", 0777, true);
+}
+
+if (file_exists('./Student Masterlist/StudentMasterlist.csv')) {
+    //getting the current masterlist contents to update the masterlist database with the rfid column
+    $handle = fopen("./Student Masterlist/StudentMasterlist.csv", "r");
+    $masterlistCSVArr = array();
+
+    //skips the first reading of the first line from csv file (first line is the header (rfid, id, last name, first name)
+    //https://stackoverflow.com/questions/10901113/php-dynamically-create-csv-skip-the-first-line-of-a-csv-file
+    fgetcsv($handle);
+    //continue to read the masterlist csv to put them into the array
+    while (($data = fgetcsv($handle, 1000, ',')) !== FALSE) {
+        $masterlistCSVArr[] = $data;
+    }
+    fclose($handle);
+
+    //IMPORTANT!! DO NOT UNSHIFT THE MASTERLIST CSV ARRAY FOR IT MIGHT HAVE THE RFID COLUMN FILLED OUT!
+
+    //connect to masterlist database
+    $creatingMasterlistDB = mysqli_connect('localhost', 'root', '');
+
+    //check the connection to the database
+    if ($creatingMasterlistDB->connect_error) {
+        //die() kinda functions like an exit() function
+        exit('Error connecting to the masterlist database in the server.');
+    }
+    mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+
+    $sqlStatement = $creatingMasterlistDB->prepare("CREATE DATABASE IF NOT EXISTS masterlist");
+    $sqlStatement->execute();
+    $sqlStatement->close();
+    mysqli_close($creatingMasterlistDB);
+
+    $studentMasterlistDB = mysqli_connect('localhost', 'root', '', 'masterlist');
+
+    //check the connection to the database
+    if ($studentMasterlistDB->connect_error) {
+        //die() kinda functions like an exit() function
+        exit('Error connecting to the masterlist database in the server.');
+    }
+    mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+
+    $sqlStatement = $studentMasterlistDB->prepare("CREATE TABLE IF NOT EXISTS student (
+                    RFID VARCHAR(255),
+                    ID VARCHAR(255) PRIMARY KEY,
+                    Lastname VARCHAR(255),
+                    Firstname VARCHAR(255)) 
+                    DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+    $sqlStatement->execute();
+    $sqlStatement->close();
+
+    //prepare the query to update the rfid column in the student table using the primary key ID
+    $sqlStatement = $studentMasterlistDB->prepare("UPDATE student SET RFID = ? WHERE ID = ?");
+    $sqlStatement->bind_param("ss", $rfid,  $id);
+
+    //update the student masterlist database using the masterlist csv array
+    //insert multidimensional array to mysql https://stackoverflow.com/questions/7746720/inserting-a-multi-dimensional-php-array-into-a-mysql-database
+    //try: https://stackoverflow.com/questions/39818418/using-php-to-insert-array-into-mysql-database
+    foreach ($masterlistCSVArr as $row) {
+        //rfid, id
+        $rfid = $row[0];
+        $id = $row[1];
+        $sqlStatement->execute();
+    }
+    $sqlStatement->close();
+
+    //close the connection to the student masterlist database
+    mysqli_close($studentMasterlistDB);
+}
+
 ?>
 
 <?php

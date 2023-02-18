@@ -42,6 +42,43 @@
 ?>
 
 <?php
+//database credentials, running MySQL with default setting (user 'root' with no password)
+//attempt to connect to MySQL "teacher" database
+$teacherEmailDB = mysqli_connect('localhost', 'root', '', 'teacher');
+
+if ($teacherEmailDB->connect_error) {
+    //die() kinda functions like an exit() function
+    exit('Error connecting to the teacher database in the server.');
+}
+mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+
+//on the "teacher" database, "login" table, search for the currently logged in user's IDNumber
+$sqlStatement = $teacherEmailDB->prepare("SELECT * FROM login WHERE IDNumber = ?");
+$sqlStatement->bind_param("s", $_SESSION["currentUser"]); //currentUser is the IDNumber of the logged-in teacher
+$sqlStatement->execute();
+
+$result = $sqlStatement->get_result();
+//if no id number is found, send error message
+if ($result->num_rows == 0) {
+    exit("The teacher is not registered in the attendance monitoring system.");
+
+    $sqlStatement->close();
+    mysqli_close($teacherEmailDB);
+} //if there is information on the id number, retrieve the contents
+else {
+    while ($row = $result->fetch_assoc()) {
+        //set the $row[""] to the column you want to use
+        $_SESSION["teacherEmail"] = $row["email"];
+    }
+}
+
+$sqlStatement->close();
+mysqli_close($teacherEmailDB);
+
+?>
+
+
+<?php
 //jump
 //SUMMARY DOWNLOAD AND MAIL
 //if the Export (Summary) button is clicked, execute the 5-pdf-summary.php file
@@ -355,9 +392,10 @@ if (isset($_GET['download_pdf'])) {
             <div style="display:flex">
                 <form enctype="multipart/form-data" method="POST" action=""
                       style="margin-top:20px; margin-left:25%; display:flex; text-align:center">
+
                     <div class="form-group">
                         <input class="form-control" type="email" name="email" placeholder="Email Address" required
-                               style="margin-top:20px; padding:15px 80px;text-align:center"/>
+                               style="margin-top:20px; padding:15px 80px;text-align:center" value = "<?php echo $_SESSION["teacherEmail"]?>"/>
                     </div>
 
                     <div class="form-group">
@@ -495,6 +533,7 @@ if (isset($_GET['download_pdf'])) {
         <h2>Class List Attendance Report (Summary)</h2>
         <a class="close" href="#">&times;</a>
 
+        <!-- THIS PART IS FOR THE WEB APP POPUP-->
         <div class="content">
             <?php
             $d = array();
@@ -505,9 +544,13 @@ if (isset($_GET['download_pdf'])) {
 
             if ($show_col->num_rows > 0) {
                 echo "<table id='test' style=margin-left:auto;margin-right:auto;text-align:center>";
-                echo "<th> Name </th>" . "<th> Present </th>" . "<th> Late </th>" .
-                    "<th> Excused </th>" . "<th> Absent </th>" .
-                    "<th> Attendance Days </th>" . "<th> % Presence </th>";
+                echo "<th> Name </th>" .
+                    "<th> Present </th>" .
+                    "<th> Late </th>" .
+                    "<th> Excused </th>" .
+                    "<th> Absent </th>" .
+                    "<th> Attendance Days </th>" .
+                    "<th> % Presence </th>";
 
                 // fetches this data if database is not empty
                 while ($row = $show_col->fetch_assoc()) {
@@ -619,7 +662,7 @@ if (isset($_GET['download_pdf'])) {
                 <form enctype="multipart/form-data" method="POST" action=""
                       style="margin-top:20px; margin-left:25%; display:flex; text-align:center">
                     <div class="form-group">
-                        <input class="form-control" type="email" name="email" placeholder="Email Address" required
+                        <input class="form-control" type="email" name="email" placeholder="<?php echo $_SESSION["teacherEmail"]?>" required
                                style="margin-top:20px; padding:15px 80px;text-align:center"/>
                     </div>
 
