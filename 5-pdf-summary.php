@@ -21,7 +21,7 @@
   }
   $table = $tempvar2;
   
-  require('tcpdf/tcpdf.php');
+  require('TCPDF/tcpdf.php');
   
   //TAGS: CHANGE FILE ADDRESS, SERVER PC
   //teacher name_course group.csv
