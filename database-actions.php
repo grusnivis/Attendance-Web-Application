@@ -151,6 +151,8 @@ if (isset($_POST['database-drop']) && $_POST['database-drop'] == 'Delete All Dat
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
     }
+    mysqli_close($conn);
+    $conn = new mysqli("localhost", "root", "", "temp");
     $create = $conn->query("CREATE TABLE IF NOT EXISTS temptb (id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             varname VARCHAR(255) NOT NULL, val VARCHAR(255) NOT NULL)");
     $sql = "INSERT INTO temptb (varname, val) VALUES ('dropTeacherDBMsg', 'Teacher databases deleted successfully!')";
