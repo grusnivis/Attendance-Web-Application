@@ -67,5 +67,5 @@ for ($c = 1; $c < count($row); $c++) {
     $pdf->writeHTML(trim($html), false, false, false, false, '');
 }
 ob_end_clean();
-$pdf->Output(utf8_encode(strtoupper($teacher_name)) . "_" . $cg . ".pdf", 'D', TRUE);
+$pdf->Output(utf8_encode(strtoupper($teacher)) . "_" . $table . ".pdf", 'D', TRUE);
 ?>
