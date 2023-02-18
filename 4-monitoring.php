@@ -22,7 +22,7 @@
 	}
 	$teacher_name = strtoupper($tempvar2);
  
-	$sql = "SELECT val FROM temptb WHERE varname = 'teacherName' ORDER BY id DESC LIMIT 1";
+	$sql = "SELECT val FROM temptb WHERE varname = 'teacherEmail' ORDER BY id DESC LIMIT 1";
 	$result = mysqli_query($conn, $sql);
 	if (mysqli_num_rows($result) > 0) {
 		$row = mysqli_fetch_assoc($result);
