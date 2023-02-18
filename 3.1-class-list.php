@@ -454,7 +454,7 @@ if (isset($_GET['download_pdf'])) {
             if (isset($_GET['download_csv'])) {
                 // filename = download path/filename
                 // NOTE: CHANGE THE FILE PATH FOR THE SERVER PC
-                $filename = "C:/Users/Kath/Downloads/" . strtoupper($teacher_name) . "_" . $cg . ".csv";
+                $filename = "D:/Downloads/" . strtoupper($teacher_name) . "_" . $cg . ".csv";
                 $file = fopen($filename, "w");
                 fputcsv($file, array("ID#", "Lastname", "Name", "Date", "Status", "Time-in"));
 
@@ -725,7 +725,7 @@ if (isset($_GET['download_pdf'])) {
             if (isset($_GET['download_s_csv'])) {
                 // filename = download path/filename
                 // NOTE: CHANGE THE FILEPATH FOR THE SERVER PC
-                $filename = "C:/Users/Kath/Downloads/" . strtoupper($teacher_name) . "_" . $cg . ".csv";
+                $filename = "D:/Downloads/" . strtoupper($teacher_name) . "_" . $cg . ".csv";
                 $file = fopen($filename, "w");
                 fputcsv($file, array("Name", "Present", "Late", "Excused", "Absent", "Attendance Days", "% Presence"));
 
