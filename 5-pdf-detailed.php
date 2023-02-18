@@ -21,7 +21,7 @@
 		mysqli_close($conn);
 	}
 	$table = $tv2;
-require('tcpdf/tcpdf.php');
+require('TCPDF/tcpdf.php');
 //TAGS: CHANGE FILE ADDRESS, SERVER PC
 //teacher name_course group.csv
 //teacher name is found at 2-create-table.php. $_session["table"] is found at 3-display-selection.php
