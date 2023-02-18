@@ -9,7 +9,6 @@
 	if (mysqli_num_rows($result) > 0) {
 		$row = mysqli_fetch_assoc($result);
 		$tempvar1 = $row["val"];
-		mysqli_close($conn);
 	}
 	$teacher = $tempvar1;
 	
