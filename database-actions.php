@@ -1,5 +1,5 @@
 <?php
-session_start();
+//session_start();
 
 //THIS PART WILL EXECUTE IF "Export Selected Teacher Database" IS SELECTED
 if (isset($_POST['database-export']) && $_POST['database-export'] == 'Export Selected Teacher Database') {
@@ -146,11 +146,13 @@ if (isset($_POST['database-drop']) && $_POST['database-drop'] == 'Delete All Dat
     mysqli_close($serverConnect);
 
     //returns to the database-export-drop.php
-    $conn = new mysqli("localhost", "root", "", "temp");
-    // Check connection
+    $conn = new mysqli("localhost", "root", "");
+    $create = $conn->query("CREATE Database IF NOT EXISTS `temp`");
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
     }
+    $create = $conn->query("CREATE TABLE IF NOT EXISTS temptb (id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            varname VARCHAR(255) NOT NULL, val VARCHAR(255) NOT NULL)");
     $sql = "INSERT INTO temptb (varname, val) VALUES ('dropTeacherDBMsg', 'Teacher databases deleted successfully!')";
     
     if (mysqli_query($conn, $sql)) {
