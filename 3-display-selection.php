@@ -202,12 +202,12 @@ $sem_a = round((($absentTotal / $total) * 100));
 
 <body style="background-color: #eaeaea">
 <nav class="topnav">
-    <a href="2-create-table.php"><i class="fa fa-home" style="font-size: 27px;text-align:center"></i></a>
-    <a class="active" href="3-display-selection.php">Overall Attendance</a>
-    <a href="3.1-class-list.php">Class List</a>
-    <a href="3.2-date-filter.php">Date Filter</a>
-    <a href="3.3-unenrolled.php">Unenrolled RFIDs</a>
-    <a href="logout.php" style="float:right;">Log Out</a>
+    <a href="/2-create-table.php"><i class="fa fa-home" style="font-size: 27px;text-align:center"></i></a>
+    <a class="active" href="/3-display-selection.php">Overall Attendance</a>
+    <a href="/3.1-class-list.php">Class List</a>
+    <a href="/3.2-date-filter.php">Date Filter</a>
+    <a href="/3.3-unenrolled.php">Unenrolled RFIDs</a>
+    <a href="/logout.php" style="float:right;">Log Out</a>
 </nav>
 
 <div class="container pt-5" style="text-align:center">
