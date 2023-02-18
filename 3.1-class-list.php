@@ -366,8 +366,9 @@ if (isset($_GET['download_pdf'])) {
                       style="margin-top:20px; margin-left:25%; display:flex; text-align:center">
 
                     <div class="form-group">
-                        <input class="form-control" type="email" name="email" placeholder="Email Address" required
-                               style="margin-top:20px; padding:15px 80px;text-align:center" value = "<?php echo $_SESSION["teacherEmail"]?>"/>
+                        <input class="form-control" type="email" name="email" placeholder="Email Address"
+                               value="<?php echo $_SESSION["teacherEmail"] ?>" required
+                               style="margin-top:20px; padding:15px 80px;text-align:center"/>
                     </div>
 
                     <div class="form-group">
@@ -628,7 +629,8 @@ if (isset($_GET['download_pdf'])) {
                 <form enctype="multipart/form-data" method="POST" action=""
                       style="margin-top:20px; margin-left:25%; display:flex; text-align:center">
                     <div class="form-group">
-                        <input class="form-control" type="email" name="email" placeholder="<?php echo $_SESSION["teacherEmail"]?>" required
+                        <input class="form-control" type="email" name="email" placeholder="Email Address"
+                               value="<?php echo $_SESSION["teacherEmail"] ?>" required
                                style="margin-top:20px; padding:15px 80px;text-align:center"/>
                     </div>
 
