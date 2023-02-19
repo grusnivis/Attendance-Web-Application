@@ -7,7 +7,7 @@ redirect to teacher-login-update.php
 <?php
 session_start();
 
-if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Modify Teacher Details') {
+if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Modify Teacher Password') {
     $teacherSelected = $_POST['teacherSelect'];
     //for the teacher-login-update.php file
     //the variable should be the idnumber selected
@@ -47,6 +47,8 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Modify Teacher Details
         else{
             while($row = $resultSearch->fetch_assoc()){
                 $teacherIDNum = $row["IDNumber"];
+                $teacherFName = $row["firstName"];
+                $teacherLname = $row["lastName"];
                 $teacherPassword = $row["password"];
             }
         }
@@ -84,8 +86,8 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Modify Teacher Details
             <center>
                 <div class = "form-group">
                     <h1> Input New Teacher Password </h1>
-                    <p class = "notification"> Enter the new password below.</p>
-                    <input type="password" class = "password" name = "password" value = "<?php echo $teacherPassword?>"/>
+                    <p class = "notification"> Enter the new password below for <?php echo $teacherFName . " ". $teacherLname?>.</p>
+                    <input type="password" class = "password" name = "password" placeholder="Enter new password" required/>
                 </div>
         <br/>
                 <div class = "form-group">

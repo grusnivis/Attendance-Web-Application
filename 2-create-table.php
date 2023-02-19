@@ -10,7 +10,7 @@ include('1-scan-directory.php');
 
 //<!--- CREATE THE STUDENT MASTERLIST DIRECTORY IF IT DOES NOT EXIST --->
 //TAGS: CHANGE ADDRESS, DIRECTORY, SERVER PC
-if (!file_exists("./Student Masterlist/")){
+if (!file_exists("./Student Masterlist/")) {
     mkdir("./Student Masterlist/", 0777, true);
 }
 
@@ -65,7 +65,7 @@ if (file_exists('./Student Masterlist/StudentMasterlist.csv')) {
 
     //prepare the query to update the rfid column in the student table using the primary key ID
     $sqlStatement = $studentMasterlistDB->prepare("UPDATE student SET RFID = ? WHERE ID = ?");
-    $sqlStatement->bind_param("ss", $rfid,  $id);
+    $sqlStatement->bind_param("ss", $rfid, $id);
 
     //update the student masterlist database using the masterlist csv array
     //insert multidimensional array to mysql https://stackoverflow.com/questions/7746720/inserting-a-multi-dimensional-php-array-into-a-mysql-database
@@ -99,7 +99,7 @@ foreach ($files_arr as $file_name) {
     // &#10; is for new line
     $date = $temp[0];
     $teacher = $temp[1];
-    $cg = $temp[3] . '-' . $temp[2] . ' ' .'(' . $temp[4] . ')';
+    $cg = $temp[3] . '-' . $temp[2] . ' ' . '(' . $temp[4] . ')';
     //$_SESSION['table'] = $cg;
 
     //<!-- THIS PART CHECKS IF THE CLASS IS A TEAM TEACH FILE -->
@@ -130,8 +130,7 @@ foreach ($files_arr as $file_name) {
                 }
             }
         }
-    }
-    //<!-- THE FUNCTION PUSHES THE ATTENDANCE LOG CONTENTS TO THE TEACHER'S DATABASE (NOT-TEAMTEACH VERSION)-->
+    } //<!-- THE FUNCTION PUSHES THE ATTENDANCE LOG CONTENTS TO THE TEACHER'S DATABASE (NOT-TEAMTEACH VERSION)-->
     else {
         //the teacher variable corresponds to the teacher name in the csv file attendance log
         connect_to_db($date, $dir, $file_name, $cg, $teacher);
@@ -188,7 +187,7 @@ function connect_to_db($date, $dir, $file_name, $cg, $teacher){
         $databaseConn = mysqli_connect("localhost", "root", "");
         $dbName = "teacher attendance";
 
-        if ($databaseConn->connect_error){
+        if ($databaseConn->connect_error) {
             //die() kinda functions like an exit() function
             exit('Error connecting to the server.');
         }
@@ -224,32 +223,31 @@ function connect_to_db($date, $dir, $file_name, $cg, $teacher){
         $attendanceTableStmt->close();
 
         // gets the teacher info line as string then explodes based on the comma delimiter
-        $line = explode(',',fgets($file));
+        $line = explode(',', fgets($file));
 
-        while(($ar = fgetcsv($file)) !== FALSE) {
+        while (($ar = fgetcsv($file)) !== FALSE) {
             // SQL query to store data in database
             // table name is teacher name-schedule-g#
 
             // checks if row already exists in the table, adds if yes, does nothing if no
-            $check=mysqli_query($teacherAttendanceDB,"select * from `teacher_attendance` where
+            $check = mysqli_query($teacherAttendanceDB, "select * from `teacher_attendance` where
                         Course='$cg' and RFID='$line[0]' and ID='$line[1]' and Surname='$line[2]' and Name='$line[3]'
                         and Date='$date'");
-            $checkrows=mysqli_num_rows($check);
+            $checkrows = mysqli_num_rows($check);
 
-            if($checkrows>0) {
-                while($row = $check->fetch_assoc()) {
-                    if (empty($row['Time'])){
-                        $teacherAttendanceDB->query("UPDATE `teacher_attendance`
+            if ($checkrows > 0) {
+                while ($row = $check->fetch_assoc()) {
+                    if (empty($row['Time'])) {
+                        $teacherAttendanceDB->query("UPDATE `teacher_attendance` 
                                         SET Status='$line[4]', Time='$line[5]'
-                                        WHERE ID='$line[1]' AND Surname='$line[2]' AND Name='$line[3]'
+                                        WHERE ID='$line[1]' AND Surname='$line[2]' AND Name='$line[3]' 
                                         AND Date='$date'");
                     }
                 }
             }
-
-            else{
+            else {
                 // adds row, no entry found
-                $insert = "INSERT INTO `teacher_attendance`(Course,RFID,ID,Surname,Name,Date,Status,Time)
+                $insert = "INSERT INTO `teacher_attendance`(Course,RFID,ID,Surname,Name,Date,Status,Time) 
                                VALUES('$cg','$line[0]','$line[1]','$line[2]','$line[3]','$date','$line[4]','$line[5]')";
                 $result = mysqli_query($teacherAttendanceDB, $insert) or die('Error querying database.');
             }
@@ -262,25 +260,24 @@ function connect_to_db($date, $dir, $file_name, $cg, $teacher){
             // table name is teacher name-schedule-g#
 
             // checks if row already exists in the table, adds if yes, does nothing if no
-            $check=mysqli_query($db,"select * from `$cg` where
+            $check = mysqli_query($db, "select * from `$cg` where
                         RFID='$ar[0]' and ID='$ar[1]' and Surname='$ar[2]' and Name='$ar[3]'
                         and Date='$date'");
-            $checkrows=mysqli_num_rows($check);
+            $checkrows = mysqli_num_rows($check);
 
-            if($checkrows>0) {
-                while($row = $check->fetch_assoc()) {
-                    if (empty($row['Time'])){
-                        $db->query("UPDATE `$cg`
+            if ($checkrows > 0) {
+                while ($row = $check->fetch_assoc()) {
+                    if (empty($row['Time'])) {
+                        $db->query("UPDATE `$cg` 
                                         SET Status='$ar[4]', Time='$ar[5]'
-                                        WHERE ID='$ar[1]' AND Surname='$ar[2]' AND Name='$ar[3]'
+                                        WHERE ID='$ar[1]' AND Surname='$ar[2]' AND Name='$ar[3]' 
                                         AND Date='$date'");
                     }
                 }
             }
-
-            else{
+            else {
                 // adds row, no entry found
-                $insert = "INSERT INTO `$cg`(RFID,ID,Surname,Name,Date,Status,Time)
+                $insert = "INSERT INTO `$cg`(RFID,ID,Surname,Name,Date,Status,Time) 
                                VALUES('$ar[0]','$ar[1]','$ar[2]','$ar[3]','$date','$ar[4]','$ar[5]')";
                 $result = mysqli_query($db, $insert) or die('Error querying database.');
             }
@@ -298,6 +295,7 @@ function connect_to_db($date, $dir, $file_name, $cg, $teacher){
 
     <?php
 }
+
 ?>
 
 <!-- THIS PART IS WHERE THE PAGE DISPLAY STARTS -->
@@ -458,9 +456,11 @@ include('0-connect.php');
 <!-- THIS SECTION IS FOR THE TOP NAVIGATION OF THE CLASS MONITORING LANDING PAGE -->
 <div>
     <nav class="topnav">
-        <a style="color:white;background-color: #4f6d7a;text-decoration:none"><?php echo "Welcome, " . $teacher_name . "!"?></a>
-        <a style = "color:white" href="/class-list-upload.php">Upload Class Lists</a>
-        <a style="float:right;color:white" href="/logout.php"> Log Out</a>
+        <a style="color:white;background-color: #4f6d7a;text-decoration:none"><?php echo "Welcome, " . $teacher_name . "!" ?></a>
+        <a href=".\class-list-upload.php" style="color:white">Upload Class Lists</a>
+        <a href=".\teacher-change-password.php" style="color:white">Change Password
+        <a href=".\user-manual-download-teacher.php" style="color:white">Download User Manual</a>
+        <a href=".\logout.php" style="float:right;color:white">Log Out</a>
     </nav>
     <!--title instructions-->
     <h1> SELECT THE CLASS YOU WANT TO MONITOR: </h1>
@@ -473,7 +473,7 @@ include('0-connect.php');
             <div class="tableBtnCon">
                 <!--once the user clicks the buttons it will redirect to 3-display-selection.php-->
                 <form method="get" action="3-display-selection.php">
-                    <input class="btnInput" type="submit" name="table" value="<?php echo $table; ?>"/>
+                    <input class="btnInput" type="submit" name="table" value="<?php echo strtoupper($table); ?>"/>
                 </form>
             </div>
             <?php

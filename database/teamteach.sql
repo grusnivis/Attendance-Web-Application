@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 18, 2022 at 04:49 AM
+-- Generation Time: Feb 19, 2023 at 08:20 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -18,36 +18,28 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `admin`
+-- Database: `teamteach`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `login`
+-- Table structure for table `teamteach`
 --
 
-CREATE TABLE `login` (
-  `username` varchar(10) NOT NULL,
-  `password` varchar(10) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE `teamteach` (
+  `Teacher` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `Partner` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `Course` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `login`
+-- Dumping data for table `teamteach`
 --
 
-INSERT INTO `login` (`username`, `password`) VALUES
-('admin1', '12345');
-
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `login`
---
-ALTER TABLE `login`
-  ADD PRIMARY KEY (`username`);
+INSERT INTO `teamteach` (`Teacher`, `Partner`, `Course`) VALUES
+('ANTONIETTE CAÑETE', 'ELLINE FABIAN', 'CPE 3101L-G1'),
+('ANTONIETTE CAÑETE', 'CHRISTOPHER JAMES LABRADOR', 'CPE 3105-G5');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

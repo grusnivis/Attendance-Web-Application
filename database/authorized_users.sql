@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 18, 2022 at 04:48 AM
+-- Generation Time: Feb 19, 2023 at 08:19 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -18,37 +18,40 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `teacher`
+-- Database: `authorized users`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `login`
+-- Table structure for table `users`
 --
 
-CREATE TABLE `login` (
-  `IDNumber` varchar(10) NOT NULL,
-  `password` varchar(10) NOT NULL,
-  `firstName` varchar(30) NOT NULL,
-  `lastName` varchar(30) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE `users` (
+  `RFID` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `IDNumber` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Lastname` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `Firstname` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `login`
+-- Dumping data for table `users`
 --
 
-INSERT INTO `login` (`IDNumber`, `password`, `firstName`, `lastName`) VALUES
-('19102579', '12345', 'Kathryn Marie', 'Sigaya');
+INSERT INTO `users` (`RFID`, `IDNumber`, `Lastname`, `Firstname`) VALUES
+(NULL, '06D205', 'FABIAN', 'ELLINE'),
+(NULL, '071F510', 'CAÑETE', 'ANTONIETTE'),
+(NULL, '071F545', 'LABRADOR', 'CHRISTOPHER JAMES'),
+('', '091F908', 'MACAPAGAL', 'ALVIN JOSEPH');
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `login`
+-- Indexes for table `users`
 --
-ALTER TABLE `login`
+ALTER TABLE `users`
   ADD PRIMARY KEY (`IDNumber`);
 COMMIT;
 

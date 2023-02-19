@@ -44,8 +44,8 @@ session_start();
         $i = 0;
         $count = count($databaseList);
 
-        echo "<select name = 'dbTeacherSelect' class='dropup center-block' style='margin-left: 0%;padding: 5px;font-size:17px'>";
-        echo "<option value = '0'>Select a Teacher</option>";
+        echo "<select name = 'dbTeacherSelect' class='dropup center-block' style='margin-left: 0%;padding: 5px;font-size:17px' required>";
+        echo "<option disabled value = '0'>Select a Teacher</option>";
 
         while ($i < $count){
             if ($databaseList[$i] != "admin" &&
@@ -56,10 +56,11 @@ session_start();
                 $databaseList[$i] != "phpmyadmin" &&
                 $databaseList[$i] != "mysql" &&
                 $databaseList[$i] != "teacher attendance" &&
+                $databaseList[$i] != "teamteach" &&
                 $databaseList[$i] != "masterlist"){
                 //skip those databases. do not export them
                 $dbListVar = $databaseList[$i];
-                echo "<option value = '". $databaseList[$i] ."'>". $databaseList[$i]."</option>";
+                echo "<option value = '". $databaseList[$i] ."'>". strtoupper($databaseList[$i]) ."</option>";
             }
             $i++;
         }
@@ -135,7 +136,7 @@ session_start();
 
         <hr/>
         <!-- returns to the administrator menu-->
-        <input type="submit" name="return-to-admin-main" class="btn btn-info" value="Return to Administrator Menu"/>
+        <input type="submit" name="return-to-admin-main" class="btn btn-info" value="Return to Administrator Menu" formnovalidate/>
     </form>
 </div>
 </body>

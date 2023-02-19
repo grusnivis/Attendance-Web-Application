@@ -32,7 +32,7 @@
                         <p class="teacherInfo"><b>FIRST NAME</b></p>
                     </td>
                     <td>
-                        <input type="text" class="firstName" placeholder="First Name" name="first-name"/>
+                        <input type="text" class="firstName" placeholder="First Name" name="first-name" required/>
                     </td>
                 </div>
             </tr>
@@ -43,7 +43,7 @@
                         <p class="teacherInfo"><b>LAST NAME</b></p>
                     </td>
                     <td>
-                        <input type="text" class="lastName" placeholder="Last Name" name="last-name"/>
+                        <input type="text" class="lastName" placeholder="Last Name" name="last-name" required/>
                     </td>
                 </tr>
             </div>
@@ -55,7 +55,7 @@
                     </td>
                     <td>
                         <!-- retain type = "text" due to teachers having letters in their ID number -->
-                        <input type="text" class="IDNum" placeholder="ID Number" name="IDNum"/>
+                        <input type="text" class="IDNum" placeholder="ID Number" name="IDNum" required/>
                     </td>
                 </tr>
             </div>
@@ -66,7 +66,7 @@
                         <p class="teacherInfo"><b>PASSWORD</b></p>
                     </td>
                     <td>
-                        <input type="password" class="password" placeholder="Password" name="password"/>
+                        <input type="password" class="password" placeholder="Password" name="password" required/>
                     </td>
                 </tr>
             </div>
@@ -78,7 +78,7 @@
                     </td>
                     <td>
                         <!-- use input type = "email" for automatic email validation -->
-                        <input type="email" class="email" placeholder="Email" name="email"/>
+                        <input type="email" class="email" placeholder="Email" name="email" required/>
                     </td>
                 </tr>
             </div>
@@ -95,7 +95,7 @@
     </table>
     <br/>
     <hr/>
-    <input type="submit" name="return-to-admin-main" class="btn btn-info" style="color: white; background: #dc3545;" value="Return to Administrator Menu"/>
+    <input type="submit" name="return-to-admin-main" class="btn btn-info" style="color:300px; color: white; background: #dc3545;" value="Return to Administrator Menu" formnovalidate/>
     <!-- THIS PART IS FOR DISPLAYING IF THE PUSHING TO LOGIN TABLE AND CREATING USER DATABASE IS SUCCESSFUL -->
     <?php
 	    // Create connection directly to specific database

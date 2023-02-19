@@ -257,7 +257,7 @@
 									$sentMailResult = mail($to, "Exported Attendance Log", $body, $headers);
 
 									if($sentMailResult ){
-										echo "<h3 style=text-align:center>File Sent Successfully<h3>";
+                                        echo "<h3 style=text-align:center>Attendance report sent successfully!<h3>";
 										unlink($filename); // delete the file after attachment sent.
 									}
 									else{
@@ -466,6 +466,8 @@
 					fclose($file);
 				}
 
+            echo "<br/><h5>You can send a copy of the attendance report via email or you can download it in CSV or PDF format.</h5>";
+
 
 				function dl_s($array_s, $teacher_name, $cg){
 					// filename = download path/filename            
@@ -529,6 +531,11 @@
 				}
 				
 				//SUMMARY DOWNLOAD AND MAIL
+				$localSD = $_GET['start_date'];
+				$localED = $_GET['end_date'];
+				$_SESSION['sd_copy'] = $localSD;
+				$_SESSION['ed_copy'] = $localED;
+				$_SESSION['array_s_copy'] = $array_s;
 				if(isset($_GET['download_s_csv'])){
 					// filename = download path/filename
                     // NOTE: CHANGE FILEPATH ON THE SERVER PC
@@ -619,6 +626,7 @@
 	<div id="dl_options_s" class="overlay">
         <div class="popup" style="width:40%; margin:10% 30%">
 			<h2>Download Options:</h2>
+            <h5>Select a file format to download. For CSV format, the attendance report will be placed in the computer's Downloads folder.</h5>
 			<a class="close" href="#">&times;</a>
 			<form method="GET">
 				<div class="form-group">
@@ -638,6 +646,7 @@
 	<div id="dl_options" class="overlay">
         <div class="popup" style="width:40%; margin:10% 30%">
 			<h2>Download Options:</h2>
+            <h5>Select a file format to download. For CSV format, the attendance report will be placed in the computer's Downloads folder.</h5>
 			<a class="close" href="#">&times;</a>
 			<form method="GET">
 				<div class="form-group">
@@ -657,8 +666,9 @@
 	<!-- JUMP -->
 	<div id="date" class="overlay">
 		<div class="popup" style="width:83%;">
-			<h2 style="margin-top:90px; font-size:28px;">ATTENDANCE REPORT (DETAILED)</h2>     
-			<a class="close" href="#">&times;</a>               
+			<h2 style="margin-top:90px; font-size:28px;">ATTENDANCE REPORT (DETAILED)</h2>
+            <h5>You can send a copy of the attendance report via email or you can download it in CSV or PDF format.</h5>
+			<a class="close" href="#">&times;</a>
 											
 			<div class="content" style="padding-top:50px">
 			<?php       
@@ -706,10 +716,15 @@
 			</div>
 
 			<?php
+				//DETAILED DOWNLOAD AND SEND
 				if(array_key_exists('Dl',$_GET)){
 					dl($array, $teacher_name, $cg);
 				}
-
+				$localSD = $_GET['start_date'];
+				$localED = $_GET['end_date'];
+				$_SESSION['sd_copy'] = $localSD;
+				$_SESSION['ed_copy'] = $localED;
+				$_SESSION['array_copy'] = $array;
 				if(isset($_GET['download_csv'])){
 				// filename = download path/filename
                 // NOTE: CHANGE FILEPATH ON THE SERVER PC
@@ -778,7 +793,7 @@
 					$sentMailResult = mail($to, "Exported Attendance Log", $body, $headers);
 
 					if($sentMailResult ){
-						echo "<h3 style=text-align:center>File Sent Successfully<h3>";
+                        echo "<h3 style=text-align:center>Attendance report sent successfully!<h3>";
 						unlink($filename); // delete the file after attachment sent.
 					}
 					else{

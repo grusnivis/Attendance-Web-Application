@@ -26,6 +26,31 @@ require('TCPDF/tcpdf.php');
 //teacher name is found at 2-create-table.php. $_session["table"] is found at 3-display-selection.php
 $filename = "D:/Downloads/". $teacher . "_" . $table . ".csv";
 
+if ( !file_exists( $filename ) && !is_dir( $filename ) ) {
+    //Creates .csv file if .csv doesn't exist
+    $sd = $_SESSION['sd_copy'];
+    $ed = $_SESSION['ed_copy'];
+    $array = $_SESSION['array_copy'];
+    $filename = "C:/Users/Kath/Downloads/". strtoupper($teacher_name) . "_" . $cg . ".csv";
+	$file = fopen($filename,"w");
+	fputcsv($file, array("Start date: ", "$sd", "End date: ", "$ed"));
+	fputcsv($file, array("ID#","Lastname","Name","Date","Status","Time-in"));
+																	
+	if (count($array) > 0) {
+		foreach ($array as $row) {
+			fputcsv($file, $row);
+		}
+	}
+	fclose($file);
+				   
+}
+else{
+    //Clones a temporary .csv file if .csv exists
+    $tempFileName = "C:/Users/Kath/Downloads/". strtoupper($teacher_name) . "_TEMP_" . $cg . ".csv";
+    copy($filename, $tempFileName);
+    $filename = $tempFileName;
+}
+
 $pdf = new TCPDF('P', 'mm', 'Letter', true, 'UTF-8');
 $pdf->AddPage();
 $pdf->setAutoPageBreak(1, 23);
@@ -66,6 +91,7 @@ for ($c = 1; $c < count($row); $c++) {
     $html .= '</tr>' . '</table>';
     $pdf->writeHTML(trim($html), false, false, false, false, '');
 }
+unlink($filename);
 ob_end_clean();
 $pdf->Output(utf8_encode(strtoupper($teacher)) . "_" . $table . ".pdf", 'D', TRUE);
 ?>

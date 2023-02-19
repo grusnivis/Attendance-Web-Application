@@ -16,6 +16,10 @@ else if (isset($_POST['teacher-attendance']) && $_POST['teacher-attendance'] == 
 else if (isset($_POST['drop-export-tables']) && $_POST['drop-export-tables'] == 'Delete and Export Databases') {
     header("location: database-export-drop.php");
 }
+//goes to user-manual-download-admin.php
+else if (isset($_POST['download-manual']) && $_POST['download-manual'] == 'Download User Manual') {
+    header("location:user-manual-download-admin.php");
+}
 //goes to admin-logout.php (if the logout button is selected)
 else{
     header("location: admin-logout.php");

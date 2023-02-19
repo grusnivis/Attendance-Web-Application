@@ -19,7 +19,7 @@ redirect to teacher-login-modify.php
     <form method = "POST" action = "teacher-login-modify.php">
         <h1>Change Teacher Password</h1>
         <p class = "instructions">
-            Please select the registered teacher that you want to modify the details from in
+            Please select the registered teacher that you want to modify the password from in
             the dropdown box below:
             <br/>
             <br/>
@@ -36,7 +36,7 @@ redirect to teacher-login-modify.php
             $result = mysqli_query($loginTableCon, $sqlQuery);
 
             echo "<select name = 'teacherSelect' class='dropup center-block' style='margin-left: 0%'>";
-            echo "<option value = '0'>Select a Teacher</option>";
+            echo "<option disabled value = '0'>Select a Teacher</option>";
             while ($row = mysqli_fetch_array($result)){
                 echo "<option value = '". $row['IDNumber'] ."'>". $row['firstName'] . " " . $row['lastName'] ."</option>";
             }
@@ -46,7 +46,7 @@ redirect to teacher-login-modify.php
         </p>
         <div class="form-group">
             <!-- change button text through the value attribute -->
-            <center><input type="submit" name="uploadBtn" class="btn btn-info" value="Modify Teacher Details"/></center>
+            <center><input type="submit" name="uploadBtn" class="btn btn-info" value="Modify Teacher Password"/></center>
         </div>
         <?php
 	        $conn = new mysqli('localhost', 'root', '', 'temp');
