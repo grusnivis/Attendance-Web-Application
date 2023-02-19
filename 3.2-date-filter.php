@@ -533,9 +533,25 @@
 				//SUMMARY DOWNLOAD AND MAIL
 				$localSD = $_GET['start_date'];
 				$localED = $_GET['end_date'];
-				$_SESSION['sd_copy'] = $localSD;
-				$_SESSION['ed_copy'] = $localED;
-				$_SESSION['array_s_copy'] = $array_s;
+				
+				$conn = new mysqli("localhost", "root", "", "temp");
+				// Check connection
+				if ($conn->connect_error) {
+					die("Connection failed: " . $conn->connect_error);
+				}
+				$sql = "INSERT INTO temptb (varname, val) VALUES ('sd_copy', '$localSD')";
+				if (mysqli_query($conn, $sql)) {
+					$sql = "INSERT INTO temptb (varname, val) VALUES ('ed_copy', '$localED')";
+					if (mysqli_query($conn, $sql)) {
+						$sql = "INSERT INTO temptb (varname, val) VALUES ('array_s_copy', '$array_s')";
+						if (mysqli_query($conn, $sql)) {
+							mysqli_close($conn);
+						}
+					}
+				}
+				//$_SESSION['sd_copy'] = $localSD;
+				//$_SESSION['ed_copy'] = $localED;
+				//$_SESSION['array_s_copy'] = $array_s;
 				if(isset($_GET['download_s_csv'])){
 					// filename = download path/filename
                     // NOTE: CHANGE FILEPATH ON THE SERVER PC
@@ -722,9 +738,25 @@
 				}
 				$localSD = $_GET['start_date'];
 				$localED = $_GET['end_date'];
-				$_SESSION['sd_copy'] = $localSD;
-				$_SESSION['ed_copy'] = $localED;
-				$_SESSION['array_copy'] = $array;
+				
+				$conn = new mysqli("localhost", "root", "", "temp");
+				// Check connection
+				if ($conn->connect_error) {
+					die("Connection failed: " . $conn->connect_error);
+				}
+				$sql = "INSERT INTO temptb (varname, val) VALUES ('sd_copy', '$localSD')";
+				if (mysqli_query($conn, $sql)) {
+					$sql = "INSERT INTO temptb (varname, val) VALUES ('ed_copy', '$localED')";
+					if (mysqli_query($conn, $sql)) {
+						$sql = "INSERT INTO temptb (varname, val) VALUES ('array_copy', '$array')";
+						if (mysqli_query($conn, $sql)) {
+							mysqli_close($conn);
+						}
+					}
+				}
+				//$_SESSION['sd_copy'] = $localSD;
+				//$_SESSION['ed_copy'] = $localED;
+				//$_SESSION['array_copy'] = $array;
 				if(isset($_GET['download_csv'])){
 				// filename = download path/filename
                 // NOTE: CHANGE FILEPATH ON THE SERVER PC

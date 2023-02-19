@@ -20,6 +20,38 @@
 		mysqli_close($conn);
 	}
 	$table = $tv2;
+	
+	$sql = "SELECT val FROM temptb WHERE varname = 'sd_copy' ORDER BY id DESC LIMIT 1";
+	$result = mysqli_query($conn, $sql);
+	if (mysqli_num_rows($result) > 0) {
+		$row = mysqli_fetch_assoc($result);
+		$tempvar3 = $row["val"];
+		$ds = $tempvar3;
+	}
+	else
+		$ds = '';
+	
+	$sql = "SELECT val FROM temptb WHERE varname = 'ed_copy' ORDER BY id DESC LIMIT 1";
+	$result = mysqli_query($conn, $sql);
+	if (mysqli_num_rows($result) > 0) {
+		$row = mysqli_fetch_assoc($result);
+		$tempvar4 = $row["val"];
+		$de = $tempvar4;
+	}
+	else
+		$de = '';
+	
+	$sql = "SELECT val FROM temptb WHERE varname = 'array_copy' ORDER BY id DESC LIMIT 1";
+	$result = mysqli_query($conn, $sql);
+	if (mysqli_num_rows($result) > 0) {
+		$row = mysqli_fetch_assoc($result);
+		$tempvar5 = $row["val"];
+		mysqli_close($conn);
+		$scopy = $tempvar5;
+	}
+	else
+		$scopy = '';
+	
 require('TCPDF/tcpdf.php');
 //TAGS: CHANGE FILE ADDRESS, SERVER PC
 //teacher name_course group.csv
@@ -28,10 +60,10 @@ $filename = "D:/Downloads/". $teacher . "_" . $table . ".csv";
 
 if ( !file_exists( $filename ) && !is_dir( $filename ) ) {
     //Creates .csv file if .csv doesn't exist
-    $sd = $_SESSION['sd_copy'];
-    $ed = $_SESSION['ed_copy'];
-    $array = $_SESSION['array_copy'];
-    $filename = "C:/Users/Kath/Downloads/". strtoupper($teacher_name) . "_" . $cg . ".csv";
+    $sd = $ds;
+    $ed = $de;
+    $array = $scopy;
+    $filename = "D:/Downloads/". strtoupper($teacher_name) . "_" . $cg . ".csv";
 	$file = fopen($filename,"w");
 	fputcsv($file, array("Start date: ", "$sd", "End date: ", "$ed"));
 	fputcsv($file, array("ID#","Lastname","Name","Date","Status","Time-in"));

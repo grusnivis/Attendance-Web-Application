@@ -25,16 +25,20 @@
     if (mysqli_num_rows($result) > 0) {
         $row = mysqli_fetch_assoc($result);
         $tempvar3 = $row["val"];
+        $ds = $tempvar3;
     }
-    $ds = $tempvar3;
+    else
+        $ds = '';
     
     $sql = "SELECT val FROM temptb WHERE varname = 'ed_copy' ORDER BY id DESC LIMIT 1";
     $result = mysqli_query($conn, $sql);
     if (mysqli_num_rows($result) > 0) {
         $row = mysqli_fetch_assoc($result);
         $tempvar4 = $row["val"];
+        $de = $tempvar4;
     }
-    $de = $tempvar4;
+    else
+        $de = '';
     
     $sql = "SELECT val FROM temptb WHERE varname = 'array_s_copy' ORDER BY id DESC LIMIT 1";
     $result = mysqli_query($conn, $sql);
@@ -42,11 +46,12 @@
         $row = mysqli_fetch_assoc($result);
         $tempvar5 = $row["val"];
         mysqli_close($conn);
+        $scopy = $tempvar5;
     }
-    $scopy = $tempvar5;
+    else
+        $scopy = '';
     
-    require('tcpdf/tcpdf.php');
-
+require('tcpdf/tcpdf.php');
 //TAGS: CHANGE FILE ADDRESS, SERVER PC
 //teacher name_course group.csv
 //teacher name is found at 2-create-table.php. $_session["table"] is found at 3-display-selection.php
