@@ -411,6 +411,9 @@ if (isset($_POST['update'])) {
                 <?php
                 // if Download button was clicked
                 if (array_key_exists('download', $_GET)) {
+                    $_SESSION['array_copy'] = $array;
+                    $_SESSION['sd_copy'] = "Not Applicable";
+                    $_SESSION['ed_copy'] = "Not Applicable";
                     dl($array, $teacher_name, $cg);
                 }
 
@@ -481,7 +484,7 @@ if (isset($_POST['update'])) {
                     $sentMailResult = mail($to, "Exported Attendance Log", $body, $headers);
 
                     if ($sentMailResult) {
-                        echo "<h3 style=text-align:center>Attendance report sent successfully!<h3>";
+                        echo "<h3 style=text-align:center>Attendance report sent successfully!</h3>";
                         unlink($filename); // delete the file after attachment sent.
                     } else {
                         die("Sorry but the email could not be sent.

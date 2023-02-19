@@ -343,7 +343,7 @@ if (isset($_GET['download_pdf'])) {
             function dl($array, $teacher_name, $cg)
             {
                 // filename = download path/filename
-                $tempname = strtoupper($teacher_name) . "_" . $cg . ".csv";
+                $tempname = strtoupper($teacher_name) . "_" . $cg . "_Detailed" . ".csv";
                 $file = fopen($tempname, "w");
                 fputcsv($file, array("ID#", "Lastname", "Name", "Date", "Status", "Time-in"));
 
@@ -388,6 +388,9 @@ if (isset($_GET['download_pdf'])) {
             <?php
             //jump
             if (array_key_exists('Dl', $_GET)) {
+                $_SESSION['array_copy'] = $array;
+                $_SESSION['sd_copy'] = "Not Applicable";
+                $_SESSION['ed_copy'] = "Not Applicable";
                 dl($array, $teacher_name, $cg);
             }
 
@@ -395,7 +398,7 @@ if (isset($_GET['download_pdf'])) {
             if (isset($_GET['download_csv'])) {
                 // filename = download path/filename
                 // NOTE: CHANGE THE FILE PATH FOR THE SERVER PC
-                $filename = "C:/Users/Kath/Downloads/" . strtoupper($teacher_name) . "_" . $cg . ".csv";
+                $filename = "C:/Users/Kath/Downloads/" . strtoupper($teacher_name) . "_" . $cg . "_Detailed" . ".csv";
                 $file = fopen($filename, "w");
                 fputcsv($file, array("ID#", "Lastname", "Name", "Date", "Status", "Time-in"));
 
@@ -410,7 +413,7 @@ if (isset($_GET['download_pdf'])) {
             if (isset($_POST['send_email'])) {
                 // filename = download path/filename
                 //$filename = "C:/Users/Amber/Downloads/". strtoupper($teacher_name) . "_" . $cg . ".csv";
-                $filename = "C:/Users/Kath/Downloads/" . strtoupper($teacher_name) . "_" . $cg . ".csv";
+                $filename = "C:/Users/Kath/Downloads/" . strtoupper($teacher_name) . "_" . $cg . "_Detailed" . ".csv";
                 $file = fopen($filename, "w");
                 fputcsv($file, array("ID#", "Lastname", "Name", "Date", "Status", "Time-in"));
 
@@ -612,7 +615,7 @@ if (isset($_GET['download_pdf'])) {
             function dl_s($array_s, $teacher_name, $cg)
             {
                 // filename = download path/filename
-                $tempname = strtoupper($teacher_name) . "_" . $cg . ".csv";
+                $tempname = strtoupper($teacher_name) . "_" . $cg . "_Summary" . ".csv";
                 $_SESSION['file'] = $tempname;
                 $file = fopen($tempname, "w");
                 fputcsv($file, array("Name", "Present", "Late", "Excused", "Absent", "Attendance Days", "% Presence"));
@@ -657,13 +660,16 @@ if (isset($_GET['download_pdf'])) {
             //jump
             // if Download button was clicked
             if (array_key_exists('Dl_s', $_GET)) {
+                $_SESSION['array_s_copy'] = $array_s;
+                $_SESSION['sd_copy'] = "Not Applicable";
+                $_SESSION['ed_copy'] = "Not Applicable";
                 dl_s($array_s, $teacher_name, $cg);
             }
             //SUMMARY DOWNLOAD AND MAIL
             if (isset($_GET['download_s_csv'])) {
                 // filename = download path/filename
                 // NOTE: CHANGE THE FILEPATH FOR THE SERVER PC
-                $filename = "C:/Users/Kath/Downloads/" . strtoupper($teacher_name) . "_" . $cg . ".csv";
+                $filename = "C:/Users/Kath/Downloads/" . strtoupper($teacher_name) . "_" . $cg . "_Summary" . ".csv";
                 $file = fopen($filename, "w");
                 fputcsv($file, array("Name", "Present", "Late", "Excused", "Absent", "Attendance Days", "% Presence"));
 
@@ -679,7 +685,7 @@ if (isset($_GET['download_pdf'])) {
             if (isset($_POST['send_email_s'])) {
 
                 // filename = download path/filename
-                $filename = "C:/Users/Kath/Downloads/" . strtoupper($teacher_name) . "_" . $cg . ".csv";
+                $filename = "C:/Users/Kath/Downloads/" . strtoupper($teacher_name) . "_" . $cg . "_Summary" . ".csv";
                 $file = fopen($filename, "w");
                 fputcsv($file, array("Name", "Present", "Late", "Excused", "Absent", "Attendance Days", "% Presence"));
 
@@ -727,7 +733,7 @@ if (isset($_GET['download_pdf'])) {
                 $sentMailResult = mail($to, "Exported Attendance Log", $body, $headers);
 
                 if ($sentMailResult) {
-                    echo "<h3 style=text-align:center>Attendance report sent successfully!<h3>";
+                    echo "<h3 style=text-align:center>Attendance report sent successfully!</h3>";
                     //unlink($tempname); // delete the file after attachment sent.
                 } else {
                     die("Sorry, but the attendance log file could not be sent. Please try again!");

@@ -159,7 +159,7 @@
 								if(isset($_GET['download'])){
 								// filename = download path/filename
                                 //NOTE: CHANGE FILEPATH ON THE SERVER PC
-								$filename = "C:/Users/Kath/Downloads/". strtoupper($teacher_name) . "_" . $cg . ".csv";
+								$filename = "C:/Users/Kath/Downloads/". strtoupper($teacher_name) . "_" . $cg . "_Detailed" . ".csv";
 								$file = fopen($filename,"w");
 								fputcsv($file, array("ID#","Lastname","Name","Date","Status","Time-in"));
 																	
@@ -174,7 +174,7 @@
 								if(isset($_POST['send_email'])){
 									// filename = download path/filename
                                     // NOTE: CHANGE FILEPATH ON THE SERVER PC
-									$filename = "C:/Users/Kath/Downloads/". strtoupper($teacher_name) . "_" . $cg . ".csv";
+									$filename = "C:/Users/Kath/Downloads/". strtoupper($teacher_name) . "_" . $cg . "_Detailed" . ".csv";
 									$file = fopen($filename,"w");
 									fputcsv($file, array("ID#","Lastname","Name","Date","Status","Time-in"));
 																	
@@ -419,7 +419,7 @@
 				
 				function dl($array, $teacher_name, $cg){
 					// filename = download path/filename            
-					$tempname = strtoupper($teacher_name) . "_" . $cg . ".csv";
+					$tempname = strtoupper($teacher_name) . "_" . $cg . "_Detailed" . ".csv";
 					$file = fopen($tempname,"w");
 					fputcsv($file, array("Start date:",$_GET['start_date']," ","End date:",$_GET['end_date']));
 					fputcsv($file, array("ID#","Lastname","Name","Date","Status","Time-in"));
@@ -437,7 +437,7 @@
 
 				function dl_s($array_s, $teacher_name, $cg){
 					// filename = download path/filename            
-					$tempname = strtoupper($teacher_name) . "_" . $cg . ".csv";
+					$tempname = strtoupper($teacher_name) . "_" . $cg . "_Summary" . ".csv";
 					$_SESSION['file'] = $tempname;
 					$file = fopen($tempname,"w");
 					fputcsv($file, array("Start date:",$_GET['start_date']," ","End date:",$_GET['end_date']));
@@ -494,7 +494,7 @@
 				if(isset($_GET['download_s_csv'])){
 					// filename = download path/filename
                     // NOTE: CHANGE FILEPATH ON THE SERVER PC
-					$filename = "C:/Users/Kath/Downloads/". strtoupper($teacher_name) . "_" . $cg . ".csv";
+					$filename = "C:/Users/Kath/Downloads/". strtoupper($teacher_name) . "_" . $cg . "_Summary" . ".csv";
 					$file = fopen($filename,"w");
 					fputcsv($file, array("Start date:",$_GET['start_date']," ","End date:",$_GET['end_date']));
 					fputcsv($file, array("Name","Present","Late","Excused","Absent","Attendance Days","% Presence"));
@@ -512,7 +512,7 @@
 
 					// filename = download path/filename
                     // NOTE: CHANGE FILEPATH ON THE SERVER PC
-					$filename = "C:/Users/Kath/Downloads/". strtoupper($teacher_name) . "_" . $cg . ".csv";
+					$filename = "C:/Users/Kath/Downloads/". strtoupper($teacher_name) . "_" . $cg . "_Summary". ".csv";
 					$file = fopen($filename,"w");
 					fputcsv($file, array("Name","Present","Late","Excused","Absent","Attendance Days","% Presence"));
 											
@@ -561,7 +561,7 @@
 					$sentMailResult = mail($to, "Exported Attendance Log", $body, $headers);
 	
 					if($sentMailResult ){
-						echo "<h3 style=text-align:center>File Sent Successfully<h3>";
+                        echo "<h3 style=text-align:center>Attendance report sent successfully!</h3>";
 						unlink($filename); // delete the file after attachment sent.
 					}
 					else{
@@ -683,7 +683,7 @@
 				if(isset($_GET['download_csv'])){
 				// filename = download path/filename
                 // NOTE: CHANGE FILEPATH ON THE SERVER PC
-				$filename = "C:/Users/Kath/Downloads/". strtoupper($teacher_name) . "_" . $cg . ".csv";
+				$filename = "C:/Users/Kath/Downloads/". strtoupper($teacher_name) . "_" . $cg . "_Detailed" . ".csv";
 				$file = fopen($filename,"w");
 				fputcsv($file, array("Start date:",$_GET['start_date']," ","End date:",$_GET['end_date']));
 				fputcsv($file, array("ID#","Lastname","Name","Date","Status","Time-in"));
@@ -699,7 +699,7 @@
 				if(isset($_POST['send_email'])){
 					// filename = download path/filename
                     // NOTE: CHANGE FILEPATH ON THE SERVER PC
-					$filename = "C:/Users/Kath/Downloads/". strtoupper($teacher_name) . "_" . $cg . ".csv";
+					$filename = "C:/Users/Kath/Downloads/". strtoupper($teacher_name) . "_" . $cg . "_Detailed" . ".csv";
 					$file = fopen($filename,"w");
 					fputcsv($file, array("ID#","Lastname","Name","Date","Status","Time-in"));
 																	
