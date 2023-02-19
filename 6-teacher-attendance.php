@@ -1,5 +1,12 @@
 <html>
 
+<?php
+if (isset($_GET['return-to-admin-menu']) && $_GET['return-to-admin-menu'] == 'Return to Administrator Menu') {
+    header("location: admin-main.php");
+}
+
+?>
+
 <style>
 	@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;1,100;1,300;1,400;1,700&display=swap');
 
@@ -175,4 +182,9 @@ function display_table($chosen_course){
     }
 
     echo "</table>";
+    echo "<br/>";
+    echo "<form method = 'GET' enctype='multipart/form-data'>";
+    echo "<input type='submit' name='return-to-admin-menu' class='btn btn-info'
+               style='color: white; background: #dc3545;' value='Return to Administrator Menu' formnovalidate/>";
+    echo "</form>";
 }

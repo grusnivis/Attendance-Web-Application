@@ -3,14 +3,16 @@ require('tcpdf/tcpdf.php');
 //TAGS: CHANGE FILE ADDRESS, SERVER PC
 //teacher name_course group.csv
 //teacher name is found at 2-create-table.php. $_session["table"] is found at 3-display-selection.php
-$filename = "C:/Users/Quin/Downloads/". $_SESSION['teacherName'] . "_" . $_SESSION["table"] . ".csv";
+$filename = "C:/Users/Kath/Downloads/". $_SESSION['teacherName'] . "_" . $_SESSION["table"] . ".csv";
 
 if ( !file_exists( $filename ) && !is_dir( $filename ) ) {
     //Creates .csv file if .csv doesn't exist
+    $sd = $_SESSION['sd_copy'];
+    $ed = $_SESSION['ed_copy'];
     $array = $_SESSION['array_copy'];
-    $filename = "C:/Users/Quin/Downloads/". strtoupper($teacher_name) . "_" . $cg . ".csv";
+    $filename = "C:/Users/Kath/Downloads/". strtoupper($teacher_name) . "_" . $cg . ".csv";
 	$file = fopen($filename,"w");
-	fputcsv($file, array("Start date:",$_GET['start_date']," ","End date:",$_GET['end_date']));
+	fputcsv($file, array("Start date: ", "$sd", "End date: ", "$ed"));
 	fputcsv($file, array("ID#","Lastname","Name","Date","Status","Time-in"));
 																	
 	if (count($array) > 0) {
@@ -23,7 +25,7 @@ if ( !file_exists( $filename ) && !is_dir( $filename ) ) {
 }
 else{
     //Clones a temporary .csv file if .csv exists
-    $tempFileName = "C:/Users/Quin/Downloads/". strtoupper($teacher_name) . "_TEMP_" . $cg . ".csv";
+    $tempFileName = "C:/Users/Kath/Downloads/". strtoupper($teacher_name) . "_TEMP_" . $cg . ".csv";
     copy($filename, $tempFileName);
     $filename = $tempFileName;
 }

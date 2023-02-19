@@ -74,7 +74,8 @@ if (isset($_POST['update'])) {
 ?>
 
 <nav class="topnav">
-    <a href="../2-create-table.php" style="color: #f2f2f2;"><i class="fa fa-home" style="font-size: 27px;text-align:center"></i></a>
+    <a href="../2-create-table.php" style="color: #f2f2f2;"><i class="fa fa-home"
+                                                               style="font-size: 27px;text-align:center"></i></a>
     <a href="../3-display-selection.php" style="color: #f2f2f2">Overall Attendance</a>
     <a href="../3.1-class-list.php" style="color: #f2f2f2">Class List</a>
     <a href="../3.2-date-filter.php" style="color: #f2f2f2">Date Filter</a>
@@ -301,13 +302,15 @@ if (isset($_POST['update'])) {
     </div>
 
     <!-- added this bit from here-->
-    <div class="tab" style="float:right; width:45%;height:fit-content;margin-left:0;margin-bottom:50px;padding:20px 0">
+    <div class="tab" style="float:right; width:45%;height:fit-content;margin-left:0;margin-bottom:20px; padding:34px 0">
         <h1 style=color:#4f6d7a;font-size:22px;> Total Attendance Days</h1>
         <h1 style=color:black;font-size:45px;font-weight:600;><?php echo $total ?></h1>
         <!-- to here -->
+    </div>
 
+    <div class="tab" style="float:right; width:45%;height:fit-content;margin-left:0;margin-bottom:50px">
         <h1 style=color:#4f6d7a;font-size:22px;>Overall Attendance Percentage</h1>
-        <div class="piechart">
+        <div class="piechart" style = "margin-left:16%">
             <div class="legend">
                 <div class="entry">
                     <div id="present-color" class="entry-color"></div>
@@ -359,6 +362,7 @@ if (isset($_POST['update'])) {
                 }
 
                 echo "</table>";
+                echo "<br/><h5><center>You can send a copy of the attendance report via email or you can download it in CSV or PDF format.</center></h5>";
 
                 function dl($array, $teacher_name, $cg)
                 {
@@ -477,7 +481,7 @@ if (isset($_POST['update'])) {
                     $sentMailResult = mail($to, "Exported Attendance Log", $body, $headers);
 
                     if ($sentMailResult) {
-                        echo "<h3 style=text-align:center>File Sent Successfully<h3>";
+                        echo "<h3 style=text-align:center>Attendance report sent successfully!<h3>";
                         unlink($filename); // delete the file after attachment sent.
                     } else {
                         die("Sorry but the email could not be sent.
@@ -493,6 +497,8 @@ if (isset($_POST['update'])) {
 <div id="dl_options" class="overlay">
     <div class="popup" style="width:40%; margin:10% 30%; padding: 15px; text-align: center;">
         <h2 style="font-size: 28px;">Download Options:</h2>
+        <h5>Select a file format to download. For CSV format, the attendance report will be placed in the computer's
+            Downloads folder.</h5>
         <a class="close" href="#">&times;</a>
         <form method="GET">
             <div class="form-group">

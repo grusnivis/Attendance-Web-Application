@@ -338,6 +338,7 @@ if (isset($_GET['download_pdf'])) {
             }
 
             echo "</table>";
+            echo "<br/><h5>You can send a copy of the attendance report via email or you can download it in CSV or PDF format.</h5>";
 
             function dl($array, $teacher_name, $cg)
             {
@@ -366,9 +367,8 @@ if (isset($_GET['download_pdf'])) {
                       style="margin-top:20px; margin-left:25%; display:flex; text-align:center">
 
                     <div class="form-group">
-                        <input class="form-control" type="email" name="email" placeholder="Email Address"
-                               value="<?php echo $_SESSION["teacherEmail"] ?>" required
-                               style="margin-top:20px; padding:15px 80px;text-align:center"/>
+                        <input class="form-control" type="email" name="email" placeholder="Email Address" required
+                               style="margin-top:20px; padding:15px 80px;text-align:center" value = "<?php echo $_SESSION["teacherEmail"]?>"/>
                     </div>
 
                     <div class="form-group">
@@ -459,7 +459,7 @@ if (isset($_GET['download_pdf'])) {
                 $sentMailResult = mail($to, "Exported Attendance Log", $body, $headers);
 
                 if ($sentMailResult) {
-                    echo "<h3 style=text-align:center>Attendance log file sent successfully!<h3>";
+                    echo "<h3 style=text-align:center>Attendance report sent successfully!<h3>";
                     unlink($filename); // delete the file after attachment sent.
                 } else {
                     die("Sorry, but the attendance log file could not be sent. Please try again!");
@@ -474,6 +474,7 @@ if (isset($_GET['download_pdf'])) {
 <div id="dl_options_s" class="overlay">
     <div class="popup" style="width:40%; margin:10% 30%">
         <h2>Download Options:</h2>
+        <h5>Select a file format to download. For CSV format, the attendance report will be placed in the computer's Downloads folder.</h5>
         <a class="close" href="3.1-class-list.php#">&times;</a>
         <form method="GET">
             <div class="form-group">
@@ -489,6 +490,7 @@ if (isset($_GET['download_pdf'])) {
 <div id="dl_options" class="overlay">
     <div class="popup" style="width:40%; margin:10% 30%">
         <h2>Download Options:</h2>
+        <h5>Select a file format to download. For CSV format, the attendance report will be placed in the computer's Downloads folder.</h5>
         <a class="close" href="3.1-class-list.php#">&times;</a>
         <form method="GET">
             <div class="form-group">
@@ -623,14 +625,14 @@ if (isset($_GET['download_pdf'])) {
                 fclose($file);
             }
 
+            echo "<br/><h5>You can send a copy of the attendance report via email or you can download it in CSV or PDF format.</h5>";
             ?>
 
             <div style="display:flex">
                 <form enctype="multipart/form-data" method="POST" action=""
                       style="margin-top:20px; margin-left:25%; display:flex; text-align:center">
                     <div class="form-group">
-                        <input class="form-control" type="email" name="email" placeholder="Email Address"
-                               value="<?php echo $_SESSION["teacherEmail"] ?>" required
+                        <input class="form-control" type="email" name="email" placeholder="Email Address" value="<?php echo $_SESSION["teacherEmail"]?>" required
                                style="margin-top:20px; padding:15px 80px;text-align:center"/>
                     </div>
 
@@ -725,7 +727,7 @@ if (isset($_GET['download_pdf'])) {
                 $sentMailResult = mail($to, "Exported Attendance Log", $body, $headers);
 
                 if ($sentMailResult) {
-                    echo "<h3 style=text-align:center>Attendance log file sent successfully!<h3>";
+                    echo "<h3 style=text-align:center>Attendance report sent successfully!<h3>";
                     //unlink($tempname); // delete the file after attachment sent.
                 } else {
                     die("Sorry, but the attendance log file could not be sent. Please try again!");
