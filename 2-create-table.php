@@ -41,7 +41,7 @@ if (file_exists('./Student Masterlist/StudentMasterlist.csv')) {
     }
     mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
-    $sqlStatement = $creatingMasterlistDB->prepare("CREATE DATABASE IF NOT EXISTS masterlist");
+    $sqlStatement = $creatingMasterlistDB->prepare("CREATE DATABASE IF NOT EXISTS masterlist DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
     $sqlStatement->execute();
     $sqlStatement->close();
     mysqli_close($creatingMasterlistDB);
@@ -82,6 +82,50 @@ if (file_exists('./Student Masterlist/StudentMasterlist.csv')) {
     //close the connection to the student masterlist database
     mysqli_close($studentMasterlistDB);
 }
+
+?>
+
+<!--- UPDATE THE AUTHORIZED USERS DATABASE FOR THE RFID COLUMN -->
+<?php
+$handle = fopen("./Authorized User Masterlist/AuthorizedUsers.csv", "r");
+$AuthorizedUsersArr = array();
+
+//skips the first reading of the first line from csv file (first line is the header (rfid, idnumber, last name, first name)
+//https://stackoverflow.com/questions/10901113/php-dynamically-create-csv-skip-the-first-line-of-a-csv-file
+fgetcsv($handle);
+//continue to read the authorized users csv to put them into the array
+while (($data = fgetcsv($handle, 1000, ',')) !== FALSE) {
+    $AuthorizedUsersArr[] = $data;
+}
+fclose($handle);
+
+//connect to masterlist database
+$authorizedUsersDB = mysqli_connect('localhost', 'root', '','authorized users');
+
+//check the connection to the database
+if ($authorizedUsersDB->connect_error) {
+    //die() kinda functions like an exit() function
+    exit('Error connecting to the authorized users database in the server.');
+}
+mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+
+//prepare the query to update the rfid column in the student table using the primary key ID
+$sqlStatement = $authorizedUsersDB->prepare("UPDATE users SET RFID = ? WHERE IDNumber = ?");
+$sqlStatement->bind_param("ss", $rfidTeacher, $idnumTeacher);
+
+//update the authorized users database using the authorized users csv array
+//insert multidimensional array to mysql https://stackoverflow.com/questions/7746720/inserting-a-multi-dimensional-php-array-into-a-mysql-database
+//try: https://stackoverflow.com/questions/39818418/using-php-to-insert-array-into-mysql-database
+foreach ($AuthorizedUsersArr as $row) {
+    //rfid, id
+    $rfidTeacher = $row[0];
+    $idnumTeacher = $row[1];
+    $sqlStatement->execute();
+}
+$sqlStatement->close();
+
+//close the connection to the student masterlist database
+mysqli_close($authorizedUsersDB);
 
 ?>
 
@@ -189,7 +233,7 @@ function connect_to_db($date, $dir, $file_name, $cg, $teacher)
         mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
         //create the "teacher attendance" database if it does not exist
-        $sqlStatement = $databaseConn->prepare("CREATE DATABASE IF NOT EXISTS `teacher attendance`");
+        $sqlStatement = $databaseConn->prepare("CREATE DATABASE IF NOT EXISTS `teacher attendance` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
         $sqlStatement->execute();
         $sqlStatement->close();
         mysqli_close($databaseConn);

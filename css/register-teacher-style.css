@@ -83,7 +83,16 @@ div.upload-wrapper {
 /** for the modify teacher password**/
 .selectLoginCon{
     width: 400px;
-    height: 220px;
+    height: 280px;
+    border-radius: 5%;
+    text-align: center;
+    padding: 7px;
+    background-color: white;
+}
+
+.selectTeacherPasswordCon{
+    width: 400px;
+    height: 290px;
     border-radius: 5%;
     text-align: center;
     padding: 7px;
@@ -131,7 +140,7 @@ table, th, td{
     border: 1px solid black;
     border-collapse: collapse;
     padding: 10px;
-    border-color: #e8dab2;
+    border-color: #4f6d7a;
     align-content: center;
     margin: 0px auto;
 }

@@ -48,18 +48,23 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Modify Teacher Passwor
         mysqli_close($teacherLoginDB);
     }
 }
+
+//returns to administrator menu
+if (isset($_POST['return-to-admin-main']) && $_POST['return-to-admin-main'] == 'Return to Administrator Menu'){
+    header("location: admin-main.php");
+}
 ?>
 
 <html lang = "en">
 <head>
-    <title> Modify Teacher Details</title>
+    <title> Change Teacher Password</title>
     <link type = "text/css" rel="stylesheet" href ="css/register-teacher-style.css"/>
 </head>
 
 <body>
 <div class = "modifyLoginCon">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"></script>
 
     <form method = "POST" action = "teacher-login-update.php">
         <p class = "instructions">

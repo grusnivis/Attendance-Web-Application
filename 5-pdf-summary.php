@@ -13,7 +13,7 @@ if ( !file_exists( $filename ) && !is_dir( $filename ) ) {
     $array_s = $_SESSION['array_s_copy'];
     $filename = "C:/Users/Kath/Downloads/". strtoupper($teacher_name) . "_" . $cg . ".csv";
 	$file = fopen($filename,"w");
-	fputcsv($file, array("Start date: ", "$sd", "End date: ", "$ed"));
+	fputcsv($file, array("Start date: ", $sd, "End date: ", $ed));
 	fputcsv($file, array("Name","Present","Late","Excused","Absent","Attendance Days","% Presence"));
 															
 		if (count($array_s) > 0) {
@@ -43,19 +43,25 @@ $pdf->Ln();
 //$row=file('ANTONIETTE M CAñETE_G2-CPE 3101L(T - 0900 AM - 1200 PM).csv');
 $row = file($filename);
 
-for ($c = 0; $c < 1; $c++) {
+// for the table headers
+for ($c = 0; $c < 2; $c++) {
+    if ($c==1){
+        $pdf->SetFont('Times', '', 10);
+    }
     $html = '<table border="0" cellspacing="0" cellpadding="5" style="border:1px solid #e1e1e1">' . '<tr>';
     $data = explode(',', trim($row[$c], '\'"',));
 
     for ($i = 0; $i < count($data); $i++) {
-        $html .= '<td width="77">' . trim($data[$i], '\'"') . '</td>';
+        $html .= '<td>' . trim($data[$i], '\'"') . '</td>';
     }
+
     $html .= '</tr>' . '</table>';
     $pdf->writeHTML(trim($html), false, false, false, false, '');
 }
 
 $pdf->SetFont('Times', '', 10);
-for ($c = 1; $c < count($row); $c++) {
+//skip immediately to the first student row
+for ($c = 2; $c < count($row); $c++) {
     $html = '<table border="0" cellspacing="0" cellpadding="5" style="border:1px solid #e1e1e1">' . '<tr>';
     $data = explode(',', trim($row[$c], '\'"',));
 
@@ -71,5 +77,5 @@ for ($c = 1; $c < count($row); $c++) {
 }
 unlink($filename);
 ob_end_clean();
-$pdf->Output(utf8_encode(strtoupper($teacher_name)) . "_" . $cg . ".pdf", 'D', TRUE);
+$pdf->Output(utf8_encode(strtoupper($teacher_name)) . "_" . $cg . "_Summary" . ".pdf", 'D', TRUE);
 ?>

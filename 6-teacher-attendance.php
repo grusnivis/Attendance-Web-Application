@@ -1,10 +1,27 @@
 <html>
 
 <?php
+session_start();
+
 if (isset($_GET['return-to-admin-menu']) && $_GET['return-to-admin-menu'] == 'Return to Administrator Menu') {
     header("location: admin-main.php");
 }
 
+$checkTeacherAttendanceDB = mysqli_connect("localhost", "root", "");
+$dbName = "teacher attendance";
+
+$query = "SHOW DATABASES LIKE '$dbName'";
+$sqlStatement = $checkTeacherAttendanceDB->query($query);
+
+if (!($sqlStatement->num_rows == 1)){ //if there are no databases with "teacher attendance" in the name
+    $_SESSION["checkTeacherAttendanceDB"] = "There are no attendance logs in the local server.";
+    mysqli_close($checkTeacherAttendanceDB);
+    header("location: admin-main.php");
+}
+else{
+    //proceed with the next processes. close the current database connection
+    mysqli_close($checkTeacherAttendanceDB);
+}
 ?>
 
 <style>
@@ -81,6 +98,8 @@ if (isset($_GET['return-to-admin-menu']) && $_GET['return-to-admin-menu'] == 'Re
 	<link rel="stylesheet"
 		href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
+    <link type = "text/css" rel="stylesheet" href = "css/register-teacher-style.css">
+
 </head>
 
 <body style="background-color: #eaeaea">
@@ -130,6 +149,7 @@ if (isset($_GET['return-to-admin-menu']) && $_GET['return-to-admin-menu'] == 'Re
                     where Course='$tab_course' order by Surname";
                     
                     $chosen_course = mysqli_query($db,$display);
+                    echo "<h1>Teacher Attendance</h1>";
                     display_table($chosen_course);
 				?>
 				</div>

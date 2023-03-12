@@ -13,6 +13,7 @@ $array_s = array();
 
 ?>
 
+<!--this part is for storing the email address-->
 <?php
 //database credentials, running MySQL with default setting (user 'root' with no password)
 //attempt to connect to MySQL "teacher" database
