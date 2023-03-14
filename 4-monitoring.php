@@ -310,7 +310,7 @@ if (isset($_POST['update'])) {
 
     <div class="tab" style="float:right; width:45%;height:fit-content;margin-left:0;margin-bottom:50px">
         <h1 style=color:#4f6d7a;font-size:22px;>Overall Attendance Percentage</h1>
-        <div class="piechart" style = "margin-left:16%">
+        <div class="piechart" style="margin-left:16%">
             <div class="legend">
                 <div class="entry">
                     <div id="present-color" class="entry-color"></div>

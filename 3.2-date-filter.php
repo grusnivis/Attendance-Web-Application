@@ -113,7 +113,10 @@ mysqli_close($teacherEmailDB);
         $append_date = array();
         $headers = array("ID#", "Name", "Date", "Status", "Time");
         $date = $_GET['start_date'];
-        $date2 = $_GET['end_date'];
+        $_SESSION['sd_copy'] = $_GET['start_date'];
+        //the @ sign suppresses warnings for "no end date set"
+        @$date2 = $_GET['end_date'];
+        @$_SESSION['ed_copy'] = $_GET['end_date'];
 
         // if start date field is empty and end date field is not empty
         if ($date == "" && !($date2 == "")) {
@@ -132,14 +135,18 @@ mysqli_close($teacherEmailDB);
         $get_date = mysqli_query($db, $d);
 
         ?>
+        <!--This part will show if the FROM date field is only inputted-->
         <div>
             <?php
             if ($date2 == "" && !($date == "")){
             ?>
             <div style="display:inline-flex;">
                 <h5> <?php echo "Checking attendance on:</br>" . $date; ?> </h5>
-                <a class="btn btn-danger" href="#date" title="Export"
-                   style="border-radius: 7px; padding: 13px 15px 10px 15px; margin: 0 20px;">
+                <a class="btn btn-danger"
+                href="#exportFromDateInputOnly" title="Export Attendance Log From the Set Date"
+                   style="border-radius: 7px; padding: 6px 15px; margin: 10 5px 0 20px;
+									width:fit-content; text-align: center;
+">
                     Export
                 </a>
             </div>
@@ -147,7 +154,8 @@ mysqli_close($teacherEmailDB);
 							    margin:50px 15%; padding:50px">
                 <?php
                 $array = array();
-                $show_col = $db->query("SELECT * FROM `$cg` 
+                unset($array);
+                $show_col = $db->query("SELECT ID,Surname,Name,Date,Status,Time FROM `$cg` 
 												where Date='$date'  order by Surname");
 
                 if ($show_col->num_rows > 0) {
@@ -155,12 +163,16 @@ mysqli_close($teacherEmailDB);
                     while ($row = $show_col->fetch_assoc()) {
                         $array[] = $row;
                     }
+                    $_SESSION['array_copy'] = $array;
                 }
 
                 display_table($db, $cg, $headers, $check_date, $date);
                 ?>
-                <div id="date" class="overlay">
+
+                <!--This part will show if the FROM date field is only inputted-->
+                <div id="exportFromDateInputOnly" class="overlay">
                     <div class="popup" style="width:83%;">
+                        <h2 style="font-size:28px;">ATTENDANCE REPORT (SPECIFIC DATE)</h2>
                         <a class="close" href="#">&times;</a>
 
                         <div class="content" style="padding-top:50px">
@@ -168,6 +180,8 @@ mysqli_close($teacherEmailDB);
                             //NOTE FOR EMAIL PART
                             //https://www.geeksforgeeks.org/how-to-configure-xampp-to-send-mail-from-localhost-using-php/
                             //https://myaccount.google.com/lesssecureapps
+
+                            echo "<br/><h5>You can send a copy of the attendance report via email or you can download it in CSV or PDF format.</h5>";
                             ?>
 
                             <div style="display:flex">
@@ -183,26 +197,43 @@ mysqli_close($teacherEmailDB);
                                     <div class="form-group">
                                         <input type="hidden" name="start_date"
                                                value="<?php echo $_GET['start_date'] ?>"/>
-                                        <input type="hidden" name="end_date" value="<?php echo $_GET['end_date'] ?>"/>
+                                        <input type="hidden" name="end_date" value="<?php //echo $_GET['end_date'] ?>"/>
                                         <input type="hidden" name="btn" value="filter"/>
+
 
                                         <input class="btn btn-danger" type="submit" name="send_email" value="Send"
                                                style="margin:15px 20px; padding:10px 17px; border-radius:18px;"/>
                                     </div>
                                 </form>
 
-                                <form method="post">
-                                    <input type="submit" name="download" value="Download" class="btn btn-danger"
-                                           style="border-radius:18px; margin-top:35px; padding:10px 17px;"/>
+                                <form method="GET" action="#dl_options_specificDate">
+                                    <div class="form-group">
+                                        <input type="hidden" name="start_date" value="<?php echo $_GET['start_date'] ?>"/>
+                                        <input type="hidden" name="btn" value="filter"/>
+                                        <p></p>
+
+
+                                        <input class="btn btn-danger" type="submit" name="Dl" value="Download"
+                                               style="margin:19 20px; padding:10px 17px; border-radius:18px;"/>
+
+                                        <!--
+                                            <a class="btn" onclick="location.href='#dl_options';" title="Download"
+                                                style="margin:0 20px; padding:10px 17px; border-radius:18px;
+                                                background-color:white;color:#dc3545;border-color:#dc3545;border-width:2px; width:fit-content">
+                                                Download
+                                            </a>
+                                        -->
+                                    </div>
                                 </form>
                             </div>
                         </div>
+
 
                         <?php
                         if (isset($_GET['download'])) {
                             // filename = download path/filename
                             //NOTE: CHANGE FILEPATH ON THE SERVER PC
-                            $filename = "C:/Users/Kath/Downloads/" . strtoupper($teacher_name) . "_" . $cg . "_Detailed" . ".csv";
+                            $filename = "C:/Users/Kath/Downloads/" . strtoupper($teacher_name) . "_" . $cg . "_SpecificDate" . ".csv";
                             $file = fopen($filename, "w");
                             fputcsv($file, array("ID#", "Lastname", "Name", "Date", "Status", "Time-in"));
 
@@ -217,7 +248,7 @@ mysqli_close($teacherEmailDB);
                         if (isset($_POST['send_email'])) {
                             // filename = download path/filename
                             // NOTE: CHANGE FILEPATH ON THE SERVER PC
-                            $filename = "C:/Users/Kath/Downloads/" . strtoupper($teacher_name) . "_" . $cg . "_Detailed" . ".csv";
+                            $filename = "C:/Users/Kath/Downloads/" . strtoupper($teacher_name) . "_" . $cg . "_SpecificDate" . ".csv";
                             $file = fopen($filename, "w");
                             fputcsv($file, array("ID#", "Lastname", "Name", "Date", "Status", "Time-in"));
 
@@ -276,6 +307,28 @@ mysqli_close($teacherEmailDB);
                         ?>
                     </div>
                 </div>
+            </div>
+        </div>
+
+    <!--jump-->
+        <div id="dl_options_specificDate" class="overlay">
+            <div class="popup" style="width:40%; margin:10% 30%">
+                <h2>Download Options:</h2>
+                <h5>Select a file format to download. For CSV format, the attendance report will be placed in the computer's
+                    Downloads folder.</h5>
+                <a class="close" href="#">&times;</a>
+                <form method="GET">
+                    <div class="form-group">
+                        <input type="hidden" name="start_date" value="<?php echo $_GET['start_date'] ?>"/>
+                        <!--<input type="hidden" name="end_date" value="<?php //echo $_GET['end_date'] ?>"/>-->
+                        <input type="hidden" name="btn" value="filter"/>
+
+                        <input type="submit" name="download_pdf" value="PDF" class="btn btn-danger"
+                               style="border-radius:18px; margin-top:35px; padding:10px 17px;"/>
+                        <input type="submit" name="download" value="CSV" class="btn btn-danger"
+                               style="border-radius:18px; margin-top:35px; padding:10px 17px;"/>
+                    </div>
+                </form>
             </div>
         </div>
 
@@ -525,6 +578,7 @@ mysqli_close($teacherEmailDB);
                         <input type="hidden" name="end_date" value="<?php echo $_GET['end_date'] ?>"/>
                         <input type="hidden" name="btn" value="filter"/>
 
+                        <!-- automatically creates the csv file for the download option to function -->
                         <input class="btn btn-danger" type="submit" name="Dl_s" value="Download"
                                style="margin:35px 20px; padding:10px 17px; border-radius:18px;"/>
                     </form>
@@ -671,7 +725,7 @@ mysqli_close($teacherEmailDB);
         </div>
     </div>
 
-    <!-- JUMP -->
+    <!-- This is used for export (detailed) options -->
     <div id="date" class="overlay">
         <div class="popup" style="width:83%;">
             <h2 style="margin-top:90px; font-size:28px;">ATTENDANCE REPORT (DETAILED)</h2>

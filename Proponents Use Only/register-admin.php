@@ -23,7 +23,8 @@ session_start();
             <h1> Register Teacher </h1>
             <p><b><u>FOR PROPONENTS USE ONLY</u></b></p>
             <p class="instructions">
-                Fill up all the text fields below for registering <br/> the administrator into the Attendance Monitoring System.</a>
+                Fill up all the text fields below for registering <br/> the administrator into the Attendance Monitoring
+                System.</a>
             </p>
 
             <?php
@@ -34,7 +35,7 @@ session_start();
             <div class="form-group">
                 <tr>
                     <td>
-                        <p class="teacherInfo"> <b>USERNAME</b></p>
+                        <p class="teacherInfo"><b>USERNAME</b></p>
                     </td>
                     <td>
                         <!-- retain type = "text" due to teachers having letters in their ID number -->
@@ -70,8 +71,10 @@ session_start();
     <!--the double period brings back 1 level of the directory
     https://stackoverflow.com/questions/18862482/php-header-move-up-one-directory
     -->
-    <input type="submit" name="change-admin-password" class="btn btn-info" style="color:300px; color: white; background: #dc3545;" value="Change Administrator Password" formnovalidate/>
-    <p class = "instructions">Go back to the administrator menu <a href="../admin-main.php">here</a>.</p>
+    <input type="submit" name="change-admin-password" class="btn btn-info"
+           style="color:300px; color: white; background: #dc3545;" value="Change Administrator Password"
+           formnovalidate/>
+    <p class="instructions">Go back to the administrator menu <a href="../admin-main.php">here</a>.</p>
     <!-- THIS PART IS FOR DISPLAYING IF THE PUSHING TO LOGIN TABLE AND CREATING USER DATABASE IS SUCCESSFUL -->
     <?php
     if (isset($_SESSION['registerAdminMsg']) && $_SESSION['registerAdminMsg']) {

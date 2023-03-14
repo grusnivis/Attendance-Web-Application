@@ -45,7 +45,9 @@
                            value="Change Administrator Password"/></center>
             <hr/>
 
-            <input type="submit" name="return-to-register-admin" class="btn btn-info" style="color:300px; color: white; background: #dc3545;" value="Return to Register Administrator" formnovalidate/>
+            <input type="submit" name="return-to-register-admin" class="btn btn-info"
+                   style="color:300px; color: white; background: #dc3545;" value="Return to Register Administrator"
+                   formnovalidate/>
 
         </div>
     </form>

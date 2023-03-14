@@ -68,7 +68,7 @@ $result = $sql->get_result();
 
 //check first if the id number exists in the database
 if ($result->num_rows == 0){
-    $_SESSION["teacherLoginMsg"] = "Invalid username!";
+    $_SESSION["adminLoginMsg"] = "Invalid username!";
     header("location: admin-login.php");
 }
 //if the username exists in the database, check if the passwords match
@@ -83,7 +83,7 @@ else{
         header("location: admin-main.php");
     }
     else{
-        $_SESSION['adminLoginMsg'] = "Invalid password!";
+        $_SESSION["adminLoginMsg"] = "Invalid password!";
         header("location: admin-login.php");
     }
 }
