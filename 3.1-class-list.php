@@ -515,21 +515,22 @@ if (isset($_GET['download_pdf'])) {
         <!-- THIS PART IS FOR THE WEB APP POPUP-->
         <div class="content">
             <?php
-            $d = array();
-            $date = array();
+            //$d[] = array();
+            //$date[] = array();
             //$array_s = array();
+
+            echo "<table id='test' style=margin-left:auto;margin-right:auto;text-align:center>";
+            echo "<th> Name </th>" .
+                "<th> Present </th>" .
+                "<th> Late </th>" .
+                "<th> Excused </th>" .
+                "<th> Absent </th>" .
+                "<th> Attendance Days </th>" .
+                "<th> % Presence </th>";
 
             $show_col = $db->query("SELECT Name,Surname,Date FROM `$cg` WHERE NOT ID = '' AND NOT Name = '' order by Surname");
 
             if ($show_col->num_rows > 0) {
-                echo "<table id='test' style=margin-left:auto;margin-right:auto;text-align:center>";
-                echo "<th> Name </th>" .
-                    "<th> Present </th>" .
-                    "<th> Late </th>" .
-                    "<th> Excused </th>" .
-                    "<th> Absent </th>" .
-                    "<th> Attendance Days </th>" .
-                    "<th> % Presence </th>";
 
                 // fetches this data if database is not empty
                 while ($row = $show_col->fetch_assoc()) {

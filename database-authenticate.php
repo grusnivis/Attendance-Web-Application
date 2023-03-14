@@ -7,6 +7,7 @@
 -->
 
 <?php
+ob_start();
 session_start();
 //include('database-config.php');
 
@@ -61,21 +62,36 @@ $username = mysqli_real_escape_string($teacherDB, $username); //$link can be loc
 $password = mysqli_real_escape_string($teacherDB, $password);
 
 //on the 'login' table in phpmyadmin, search for the username and password inputted
-$sql = "SELECT *FROM login WHERE IDNumber = '$IDNum' AND password = '$password'";
-$result = mysqli_query($teacherDB, $sql);
-$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
-$countLogin = mysqli_num_rows($result);
+$sql = $teacherDB->prepare("SELECT * FROM login WHERE IDNumber = ?");
+$sql->bind_param("s", $IDNum);
+$sql->execute();
+//$result = mysqli_query($teacherDB, $sql);
+//$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+//$countLogin = mysqli_num_rows($result);
 
-//if username and password
-if ($countLogin == 1) {
-    //see solution here for sessions: https://www.simplilearn.com/tutorials/php-tutorial/php-login-form
-    //$_SESSION['currentUser'] = $IDNum;
-    $_SESSION['currentUser'] = $IDNum;
-    header("location: 2-create-table.php");
-} else {
-    $_SESSION["teacherLoginMsg"] = "Invalid ID number or password!";
+$result = $sql->get_result();
+
+//check first if the id number exists in the database
+if ($result->num_rows == 0){
+    $_SESSION["teacherLoginMsg"] = "Invalid ID number!";
     header("location: teacher-login.php");
 }
+//if the id number exists in the database, check if the passwords match
+else{
+    //fetch the password from the db
+    while ($row = $result->fetch_assoc()){
+        $verifyPassword = $row["password"];
+    }
 
+    if (password_verify($password, $verifyPassword)){
+        $_SESSION['currentUser'] = $IDNum;
+        header("location: 2-create-table.php");
+    }
+    else{
+        $_SESSION["teacherLoginMsg"] = "Invalid password!";
+        header("location: teacher-login.php");
+    }
+}
 mysqli_close($teacherDB);
+ob_end_clean();
 ?>

@@ -20,6 +20,9 @@ if (isset ($_POST["register"])) {
     $password = $_POST["password"];
     $email = $_POST["email"]; //already validated if its in email format through bootstrap
 
+    //turns the password into a hash for security
+    $hashedPassWord = password_hash($password, PASSWORD_BCRYPT);
+
     //<--- PART 1: insert username and password fields into database. Database: Teacher. Table: login --->
     //(from admin-database-config.php)
 
@@ -82,7 +85,7 @@ if (isset ($_POST["register"])) {
     //if there is NO duplicate id number, then you insert the teacher data to the login table
     else{
         $statementInsert = $teacherDB->prepare("INSERT INTO `login` (IDNumber, password, firstName, lastName, email) VALUES (?,?,?,?,?)");
-        $statementInsert->bind_param("sssss", $IDNum, $password, $firstName, $lastName, $email);
+        $statementInsert->bind_param("sssss", $IDNum, $hashedPassWord, $firstName, $lastName, $email);
         $statementInsert->execute();
         $statementInsert->close();
 

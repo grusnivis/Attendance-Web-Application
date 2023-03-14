@@ -7,6 +7,7 @@
 -->
 
 <?php
+ob_start();
 session_start();
 //include('admin-database-config.php');
 
@@ -55,20 +56,40 @@ $password = stripcslashes($password);
 $username = mysqli_real_escape_string($link, $username);
 $password = mysqli_real_escape_string($link, $password);
 
-//on the 'credentials' table in phpmyadmin, search for the username and password inputted
-$sql = "SELECT *FROM credentials WHERE username = '$username' AND password = '$password'";
-$result = mysqli_query($link, $sql);
-$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
-$count = mysqli_num_rows($result);
+//on the 'login' table in phpmyadmin, search for the username and password inputted
+$sql = $link->prepare("SELECT * FROM credentials WHERE username = ?");
+$sql->bind_param("s", $username);
+$sql->execute();
+//$result = mysqli_query($teacherDB, $sql);
+//$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+//$countLogin = mysqli_num_rows($result);
 
-//if username and password
-if ($count == 1) {
-    $_SESSION["adminCurrentUser"] = $username;
-    mysqli_close($link);
-    header("location: admin-main.php");
-} else {
-    $_SESSION["adminLoginMsg"] = "Invalid username or password!";
-    mysqli_close($link);
+$result = $sql->get_result();
+
+//check first if the id number exists in the database
+if ($result->num_rows == 0){
+    $_SESSION["teacherLoginMsg"] = "Invalid username!";
     header("location: admin-login.php");
 }
+//if the username exists in the database, check if the passwords match
+else{
+    //fetch the password from the db
+    while ($row = $result->fetch_assoc()){
+        $verifyPassword = $row["password"];
+    }
+
+    if (password_verify($password, $verifyPassword)){
+        $_SESSION['currentUser'] = $username;
+        header("location: admin-main.php");
+    }
+    else{
+        $_SESSION['adminLoginMsg'] = "Invalid password!";
+        header("location: admin-login.php");
+    }
+}
+
+$sql->close();
+
+mysqli_close($link);
+ob_end_clean();
 ?>

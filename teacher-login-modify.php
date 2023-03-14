@@ -71,7 +71,7 @@ if (isset($_POST['return-to-admin-main']) && $_POST['return-to-admin-main'] == '
             <center>
                 <div class = "form-group">
                     <h1> Input New Teacher Password </h1>
-                    <p class = "notification"> Enter the new password below for <?php echo $teacherFName . " ". $teacherLname?>.</p>
+                    <p class = "notification"> Enter the new password below for <b><?php echo $teacherFName . " ". $teacherLname?></b>.</p>
                     <input type="password" class = "password" name = "password" placeholder="Enter new password" required/>
                 </div>
         <br/>

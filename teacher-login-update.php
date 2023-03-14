@@ -7,12 +7,12 @@ session_start();
 
 if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Update to New Teacher Password'){
     //$newIDNum = $_POST["IDNum"];
-    $newPassword = $_POST["password"];
+    $newPassword = password_hash($_POST["password"], PASSWORD_BCRYPT);
 
     $teacherLoginDB = mysqli_connect('localhost','root','', 'teacher');
 
     if ($teacherLoginDB->connect_error){
-        exit('Error connecting to the server.');
+        exit('Error connecting to the teacher server.');
     }
     mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
