@@ -5,7 +5,7 @@ session_start();
 <html lang = 'en'>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title> Drop and Export Databases </title>
+    <title> Delete and Export Teacher Databases </title>
     <link type="text/css" rel="stylesheet" href="css/database-export-drop-style.css"/>
 </head>
 
@@ -14,7 +14,7 @@ session_start();
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-    <h1> Database Exporting and Deletion</h1>
+    <h1> Delete and Export Teacher Databases</h1>
     <form method="POST" action="database-actions.php" enctype="multipart/form-data">
         <h3><u>EXPORT TEACHER'S DATABASE</u></h3>
         <!-- THIS IS FOR EXPORTING DATABASES -->

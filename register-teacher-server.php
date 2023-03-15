@@ -1,23 +1,36 @@
 <?php
+ob_start();
+
 header('Content-Encoding: utf-8');
 header('Content-Type: text/csv; charset=utf-8mb4');
-
-//session_start();
 
 $firstName = '';
 $lastName = '';
 $IDNum = '';
 $password = '';
 $email = '';
+    $conn = new mysqli("localhost", "root", "", "temp");
+    // Check connection
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+    $sql = "INSERT INTO temptb (varname, val) VALUES ('registerTeacherMsg', '')";
+    
+    if (mysqli_query($conn, $sql)) {
+        mysqli_close($conn);
+    }
+//unset($_SESSION['registerTeacherMsg']);
 
 if (isset ($_POST["register"])) {
     //ucfirst - returns the first character of the string capitalized (https://www.php.net/manual/en/function.ucfirst.php)
     $firstName = strtoupper($_POST["first-name"]);
     $lastName = strtoupper($_POST["last-name"]);
-    $IDNum = $_POST["IDNum"];
+    $IDNum = strtoupper($_POST["IDNum"]); //retains the numbers
     $password = $_POST["password"];
-    //check for email input validity?
-    $email = $_POST["email"];
+    $email = $_POST["email"]; //already validated if its in email format through bootstrap
+
+    //turns the password into a hash for security
+    $hashedPassWord = password_hash($password, PASSWORD_BCRYPT);
 
     //<--- PART 1: insert username and password fields into database. Database: Teacher. Table: login --->
     //(from admin-database-config.php)
@@ -33,9 +46,10 @@ if (isset ($_POST["register"])) {
     mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
     //create the "teacher" database if it does not exist
-    $sqlStatement = $dbConnect->prepare("CREATE DATABASE IF NOT EXISTS teacher");
+    $sqlStatement = $dbConnect->prepare("CREATE DATABASE IF NOT EXISTS teacher DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
     $sqlStatement->execute();
     $sqlStatement->close();
+
     mysqli_close($dbConnect);
 
     //connect to teacher database
@@ -51,11 +65,11 @@ if (isset ($_POST["register"])) {
     //columns are: IDNumber, password, firstName, lastName, email
     //character is set to utf8mb4_unicode_ci on default
     $createLoginTableStmt = $teacherDB->prepare("CREATE TABLE IF NOT EXISTS login(
-            IDNumber VARCHAR(255) PRIMARY KEY,
-            password VARCHAR(255),
-            firstName VARCHAR(255),
-            lastName VARCHAR(255),
-            email VARCHAR(255))
+            IDNumber VARCHAR(255) PRIMARY KEY NOT NULL,
+            password VARCHAR(255) NOT NULL,
+            firstName VARCHAR(255) NOT NULL,
+            lastName VARCHAR(255) NOT NULL,
+            email VARCHAR(255) NOT NULL)
             DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
     $createLoginTableStmt->execute();
     $createLoginTableStmt->close();
@@ -66,28 +80,31 @@ if (isset ($_POST["register"])) {
     $statementDuplicate = mysqli_query($teacherDB, $checkTeacherDBDuplicate);
     $rowResults = mysqli_fetch_array($statementDuplicate, MYSQLI_ASSOC);
     $countDup = mysqli_num_rows($statementDuplicate);
+    //$countDup = $statementDuplicate->num_rows;
+
 
     //if there is a duplicate id number
-    if($countDup == 1){
+    if($countDup >= 1){
         $conn = new mysqli("localhost", "root", "", "temp");
         // Check connection
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
         }
-        $sql = "INSERT INTO temptb (varname, val) VALUES ('registerTeacherMsg', 'The ID Number inputted is already registered in the database.')";
+        $sql = "INSERT INTO temptb (varname, val) VALUES ('registerTeacherMsg', 'The ID Number is already registered in the database.')";
     
         if (mysqli_query($conn, $sql)) {
             mysqli_close($conn);
         }
-        //$_SESSION['registerTeacherMsg'] = "The ID Number inputted is already registered in the database.";
+        $_SESSION['registerTeacherMsg'] = "The ID number is already registered in the database.";
         mysqli_close($teacherDB);
         //returns to the register teacher page. it "aborts" the rest of the process
-        header("location:register-teacher.php");
+        header("Location: register-teacher.php");
+        ob_end_flush();
     }
     //if there is NO duplicate id number, then you insert the teacher data to the login table
     else{
         $statementInsert = $teacherDB->prepare("INSERT INTO `login` (IDNumber, password, firstName, lastName, email) VALUES (?,?,?,?,?)");
-        $statementInsert->bind_param("sssss", $IDNum, $password, $firstName, $lastName, $email);
+        $statementInsert->bind_param("sssss", $IDNum, $hashedPassWord, $firstName, $lastName, $email);
         $statementInsert->execute();
         $statementInsert->close();
 
@@ -117,7 +134,7 @@ if (isset ($_POST["register"])) {
         }
         mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
-        $sqlStatement = $dbConnect->prepare("CREATE DATABASE IF NOT EXISTS `$dbName`");
+        $sqlStatement = $dbConnect->prepare("CREATE DATABASE IF NOT EXISTS `$dbName` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
         $sqlStatement->execute();
         $sqlStatement->close();
         mysqli_close($dbConnect);
@@ -167,7 +184,7 @@ if (isset ($_POST["register"])) {
             //prepare the array for inserting to the authorized users csv file. RFID is empty by default
             $teacher_csv[0] = array("", $IDNum, $lastName, $firstName);
             //\r is moving the cursor to the leftmost position. \n is new line
-            fwrite($authorizedUsersCSV, utf8_encode(implode(",", $teacher_csv[0])) . "\r\n");
+            fwrite($authorizedUsersCSV, utf8_decode(implode(",", $teacher_csv[0])) . "\r\n");
             fclose($authorizedUsersCSV);
         }
         //<-- THIS PART WILL EXECUTE IF THE AUTHORIZEDUSERS.CSV FILE EXISTS -->
@@ -206,36 +223,35 @@ if (isset ($_POST["register"])) {
             fclose($authorizedUsersCSV);
         }
         mysqli_close($authorizedUsersDB);
-    }
 
-    //<--- PART 2: make the folder of the corresponding teacher that registered --->
-    //folder name should be "./firstName lastName/". take note of the slashes and the period
-    $teacherFolderName = "./" . $firstName . " " . $lastName . "/";
+        //<--- PART 2: make the folder of the corresponding teacher that registered --->
+        //folder name should be "./firstName lastName/". take note of the slashes and the period
+        $teacherFolderName = "./" . $firstName . " " . $lastName . "/";
 
-    if (file_exists($teacherFolderName)) {
-        //do nothing
-    } else {
-        //https://www.php.net/manual/en/function.mkdir.php
-        mkdir($teacherFolderName, 0777, true);
-    }
+        if (file_exists($teacherFolderName)) {
+            //do nothing
+        } else {
+            //https://www.php.net/manual/en/function.mkdir.php
+            mkdir($teacherFolderName, 0777, true);
+        }
 
-    //<--- PART 3: Creating the registered teacher's database --->
-    //connect to server
-    $creatingTeacherDB = mysqli_connect("localhost", "root", "");
+        //<--- PART 3: Creating the registered teacher's database --->
+        //connect to server
+        $creatingTeacherDB = mysqli_connect("localhost", "root", "");
 
-    if ($creatingTeacherDB->connect_error) {
-        //die() kinda functions like an exit() function
-        exit('Error connecting to the server.');
-    }
-    mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+        if ($creatingTeacherDB->connect_error) {
+            //die() kinda functions like an exit() function
+            exit('Error connecting to the server.');
+        }
+        mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
-    //create the registered teacher database if it does not exist
-    $registeredTeacher = $firstName . " " . $lastName;
-    //take note of the small quotations! use the symbol before the 1 key on keyboard (`)
-    //solution: https://stackoverflow.com/questions/21032122/how-to-name-a-mysql-database-after-user-input
-    $sqlStatement = $creatingTeacherDB->prepare("CREATE DATABASE IF NOT EXISTS `$registeredTeacher`");
-    $sqlStatement->execute();
-    $sqlStatement->close();
+        //create the registered teacher database if it does not exist
+        $registeredTeacher = $firstName . " " . $lastName;
+        //take note of the small quotations! use the symbol before the 1 key on keyboard (`)
+        //solution: https://stackoverflow.com/questions/21032122/how-to-name-a-mysql-database-after-user-input
+        $sqlStatement = $creatingTeacherDB->prepare("CREATE DATABASE IF NOT EXISTS `$registeredTeacher` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+        $sqlStatement->execute();
+        $sqlStatement->close();
 
     mysqli_close($creatingTeacherDB);
     
@@ -256,4 +272,6 @@ if (isset ($_POST["register"])) {
 if (isset ($_POST["return-to-admin-main"])){
     header("location: admin-main.php");
 }
+
+ob_end_flush();
 ?>

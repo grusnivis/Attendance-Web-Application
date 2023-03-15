@@ -1,18 +1,4 @@
 <?php
-/*
-    error_reporting(E_ALL & ~E_NOTICE);
-    ini_set("display_errors", 1);
-  
-    require_once 'ims-blti/blti.php';
-    $lti = new BLTI("secret", false, false);
-
-    ob_start();
-    session_start();
-    header('Content-Type: text/html; charset=utf-8'); 
-    */
-?>
-
-<?php
 //You only assign a session variable once, so page 1 is correct,
 //then it is available for the whole session, uses session_start()
 //at the top of each page.
@@ -38,7 +24,7 @@
 
 <html>
 <head>
-    <title>Group H - Attendance Monitoring System</title>
+    <title>Attendance Monitoring System</title>
     <link type="text/css" rel="stylesheet" href="css/teacher-login-style.css"/>
 </head>
 <body>
@@ -64,7 +50,7 @@
 
     <div class="con-form">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"></script>
 
         <form class="form-signin" role="form" action="database-authenticate.php" method="post">
             <h4 class="form-signin-heading"><?php echo $msg = ''; ?></h4>

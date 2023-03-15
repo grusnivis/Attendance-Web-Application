@@ -1,4 +1,3 @@
-<!-- how did this work -->
 <?php
     //session_start();
     //session_unset();
@@ -16,6 +15,7 @@
 	
 	if (mysqli_query($conn, $sql)) {
 		mysqli_close($conn);
+		ob_end_clean();
 		header('location:teacher-login.php');
 	}
 ?>

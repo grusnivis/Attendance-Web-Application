@@ -4,17 +4,36 @@ After selecting the teacher to be updated, it will
 redirect to teacher-login-modify.php
 -->
 
+<?php
+
+$checkTeacherLoginDB = mysqli_connect("localhost", "root", "");
+$dbName = "teacher";
+
+$query = "SHOW DATABASES LIKE '$dbName'";
+$sqlStatement = $checkTeacherLoginDB->query($query);
+
+if (!($sqlStatement->num_rows == 1)){ //if there are no databases with "teacher attendance" in the name
+    $_SESSION["checkTeacherAttendanceDB"] = "There are no registered teachers in the web application.";
+    mysqli_close($checkTeacherLoginDB);
+    header("location: admin-main.php");
+}
+else{
+    //proceed with the next processes. close the current database connection
+    mysqli_close($checkTeacherLoginDB);
+}
+?>
+
 <!-- HTML START -->
 <html lang = 'en'>
 <head>
-    <title> Modify Teacher Credentials </title>
+    <title> Change Teacher Password </title>
     <link type = "text/css" rel="stylesheet" href ="css/register-teacher-style.css"/>
 </head>
 
 <body>
-<div class ="selectLoginCon">
+<div class = "selectTeacherPasswordCon">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"></script>
 
     <form method = "POST" action = "teacher-login-modify.php">
         <h1>Change Teacher Password</h1>
@@ -35,7 +54,7 @@ redirect to teacher-login-modify.php
             $sqlQuery = "SELECT IDNumber, firstName, lastName FROM login ORDER BY lastName ASC";
             $result = mysqli_query($loginTableCon, $sqlQuery);
 
-            echo "<select name = 'teacherSelect' class='dropup center-block' style='margin-left: 0%'>";
+            echo "<select name = 'teacherSelect' class='dropup center-block' style='margin-left: 0%;padding: 5px;font-size:17px' required>";
             echo "<option disabled value = '0'>Select a Teacher</option>";
             while ($row = mysqli_fetch_array($result)){
                 echo "<option value = '". $row['IDNumber'] ."'>". $row['firstName'] . " " . $row['lastName'] ."</option>";
@@ -47,6 +66,8 @@ redirect to teacher-login-modify.php
         <div class="form-group">
             <!-- change button text through the value attribute -->
             <center><input type="submit" name="uploadBtn" class="btn btn-info" value="Modify Teacher Password"/></center>
+            <hr/>
+            <input type="submit" name="return-to-admin-main" class="btn btn-info" style="color:300px; color: white; background: #dc3545;" value="Return to Administrator Menu" formnovalidate/>
         </div>
         <?php
 	        $conn = new mysqli('localhost', 'root', '', 'temp');

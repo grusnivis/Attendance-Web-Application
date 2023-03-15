@@ -6,7 +6,7 @@
 <body>
 <div class="adminMaincon">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"></script>
 
     <form method="POST" action="admin-main-redirect.php" enctype="multipart/form-data">
 
@@ -21,7 +21,7 @@
                value="View Teacher Attendance"/>
         <br/>
         <input type="submit" name="drop-export-tables" class="btn btn-info" style="width:300px"
-               value="Delete and Export Databases"/>
+               value="Delete and Export Teacher Databases"/>
         <br/>
         <input type="submit" name="download-manual" class="btn btn-info" style="width:300px"
                value="Download User Manual"/>
@@ -29,6 +29,14 @@
         <hr/>
         <input type="submit" name="admin-logout" class="btn btn-info" style="width:300px" value="Log out"/>
     </form>
+    <?php
+    if (isset($_SESSION["checkTeacherAttendanceDB"]) && $_SESSION["checkTeacherAttendanceDB"]) {
+        echo '<p class = "notification">';
+        echo '<b><u>'. $_SESSION["checkTeacherAttendanceDB"] .'</u></b>';
+        echo '</p>';
+        unset ($_SESSION["checkTeacherAttendanceDB"]);
+    }
+    ?>
 </div>
 </body>
 </html>

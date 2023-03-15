@@ -49,6 +49,7 @@
 
 ?>
 
+<!--this part is for storing the email address-->
 <?php
 //database credentials, running MySQL with default setting (user 'root' with no password)
 //attempt to connect to MySQL "teacher" database
@@ -62,7 +63,7 @@ mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
 //on the "teacher" database, "login" table, search for the currently logged in user's IDNumber
 $sqlStatement = $teacherEmailDB->prepare("SELECT * FROM login WHERE IDNumber = ?");
-$sqlStatement->bind_param("s", $tv3); //currentUser is the IDNumber of the logged-in teacher
+$sqlStatement->bind_param("s", $IDNum); //currentUser is the IDNumber of the logged-in teacher
 $sqlStatement->execute();
 
 $result = $sqlStatement->get_result();
@@ -390,7 +391,7 @@ if (isset($_GET['download_pdf'])) {
             function dl($array, $teacher_name, $cg)
             {
                 // filename = download path/filename
-                $tempname = strtoupper($teacher_name) . "_" . $cg . ".csv";
+                $tempname = strtoupper($teacher_name) . "_" . $cg . "_Detailed" . ".csv";
                 $file = fopen($tempname, "w");
                 fputcsv($file, array("ID#", "Lastname", "Name", "Date", "Status", "Time-in"));
 
@@ -448,6 +449,24 @@ if (isset($_GET['download_pdf'])) {
             <?php
             //jump
             if (array_key_exists('Dl', $_GET)) {
+	            $conn = new mysqli("localhost", "root", "", "temp");
+	            // Check connection
+	            if ($conn->connect_error) {
+		            die("Connection failed: " . $conn->connect_error);
+	            }
+	            $sql = "INSERT INTO temptb (varname, val) VALUES ('array_copy', '$array')";
+	
+	            if (mysqli_query($conn, $sql)) {
+		            $sql = "INSERT INTO temptb (varname, val) VALUES ('sd_copy', 'Not Applicable')";
+		
+		            if (mysqli_query($conn, $sql)) {
+			            $sql = "INSERT INTO temptb (varname, val) VALUES ('ed_copy', 'Not Applicable')";
+			
+			            if (mysqli_query($conn, $sql)) {
+				            mysqli_close($conn);
+			            }
+		            }
+	            }
                 dl($array, $teacher_name, $cg);
             }
 
@@ -455,7 +474,7 @@ if (isset($_GET['download_pdf'])) {
             if (isset($_GET['download_csv'])) {
                 // filename = download path/filename
                 // NOTE: CHANGE THE FILE PATH FOR THE SERVER PC
-                $filename = "D:/Downloads/" . strtoupper($teacher_name) . "_" . $cg . ".csv";
+                $filename = "D:/Downloads/" . strtoupper($teacher_name) . "_" . $cg . "_Detailed" . ".csv";
                 $file = fopen($filename, "w");
                 fputcsv($file, array("ID#", "Lastname", "Name", "Date", "Status", "Time-in"));
 
@@ -470,7 +489,7 @@ if (isset($_GET['download_pdf'])) {
             if (isset($_POST['send_email'])) {
                 // filename = download path/filename
                 //$filename = "C:/Users/Amber/Downloads/". strtoupper($teacher_name) . "_" . $cg . ".csv";
-                $filename = "D:/Downloads/" . strtoupper($teacher_name) . "_" . $cg . ".csv";
+                $filename = "D:/Downloads/" . strtoupper($teacher_name) . "_" . $cg . "_Detailed" . ".csv";
                 $file = fopen($filename, "w");
                 fputcsv($file, array("ID#", "Lastname", "Name", "Date", "Status", "Time-in"));
 
@@ -571,21 +590,22 @@ if (isset($_GET['download_pdf'])) {
         <!-- THIS PART IS FOR THE WEB APP POPUP-->
         <div class="content">
             <?php
-            $d = array();
-            $date = array();
+            //$d[] = array();
+            //$date[] = array();
             //$array_s = array();
+
+            echo "<table id='test' style=margin-left:auto;margin-right:auto;text-align:center>";
+            echo "<th> Name </th>" .
+                "<th> Present </th>" .
+                "<th> Late </th>" .
+                "<th> Excused </th>" .
+                "<th> Absent </th>" .
+                "<th> Attendance Days </th>" .
+                "<th> % Presence </th>";
 
             $show_col = $db->query("SELECT Name,Surname,Date FROM `$cg` WHERE NOT ID = '' AND NOT Name = '' order by Surname");
 
             if ($show_col->num_rows > 0) {
-                echo "<table id='test' style=margin-left:auto;margin-right:auto;text-align:center>";
-                echo "<th> Name </th>" .
-                    "<th> Present </th>" .
-                    "<th> Late </th>" .
-                    "<th> Excused </th>" .
-                    "<th> Absent </th>" .
-                    "<th> Attendance Days </th>" .
-                    "<th> % Presence </th>";
 
                 // fetches this data if database is not empty
                 while ($row = $show_col->fetch_assoc()) {
@@ -672,7 +692,7 @@ if (isset($_GET['download_pdf'])) {
             function dl_s($array_s, $teacher_name, $cg)
             {
                 // filename = download path/filename
-                $tempname = strtoupper($teacher_name) . "_" . $cg . ".csv";
+                $tempname = strtoupper($teacher_name) . "_" . $cg . "_Summary" . ".csv";
 	            // Create connection directly to specific database
 	            $conn = new mysqli('localhost', 'root', '', 'temp');
 	            $sql = "INSERT INTO temptb (varname, val) VALUES ('file', '$tempname')";
@@ -698,7 +718,7 @@ if (isset($_GET['download_pdf'])) {
                 <form enctype="multipart/form-data" method="POST" action=""
                       style="margin-top:20px; margin-left:25%; display:flex; text-align:center">
                     <div class="form-group">
-                        <input class="form-control" type="email" name="email" placeholder="<?php echo $tempvar1?>" required
+                        <input class="form-control" type="email" name="email" placeholder="Email Address" value="<?php echo $tempvar1?>" required
                                style="margin-top:20px; padding:15px 80px;text-align:center"/>
                     </div>
 
@@ -723,6 +743,24 @@ if (isset($_GET['download_pdf'])) {
             //jump
             // if Download button was clicked
             if (array_key_exists('Dl_s', $_GET)) {
+	            $conn = new mysqli("localhost", "root", "", "temp");
+	            // Check connection
+	            if ($conn->connect_error) {
+		            die("Connection failed: " . $conn->connect_error);
+	            }
+	            $sql = "INSERT INTO temptb (varname, val) VALUES ('array_s_copy', '$array_s')";
+	
+	            if (mysqli_query($conn, $sql)) {
+		            $sql = "INSERT INTO temptb (varname, val) VALUES ('sd_copy', 'Not Applicable')";
+		
+		            if (mysqli_query($conn, $sql)) {
+			            $sql = "INSERT INTO temptb (varname, val) VALUES ('ed_copy', 'Not Applicable')";
+			
+			            if (mysqli_query($conn, $sql)) {
+				            mysqli_close($conn);
+			            }
+		            }
+	            }
                 dl_s($array_s, $teacher_name, $cg);
             }
             //SUMMARY DOWNLOAD AND MAIL
@@ -745,7 +783,7 @@ if (isset($_GET['download_pdf'])) {
             if (isset($_POST['send_email_s'])) {
 
                 // filename = download path/filename
-                $filename = "D:/Downloads/" . strtoupper($teacher_name) . "_" . $cg . ".csv";
+                $filename = "D:/Downloads/" . strtoupper($teacher_name) . "_" . $cg . "_Summary" . ".csv";
                 $file = fopen($filename, "w");
                 fputcsv($file, array("Name", "Present", "Late", "Excused", "Absent", "Attendance Days", "% Presence"));
 
@@ -793,7 +831,7 @@ if (isset($_GET['download_pdf'])) {
                 $sentMailResult = mail($to, "Exported Attendance Log", $body, $headers);
 
                 if ($sentMailResult) {
-                    echo "<h3 style=text-align:center>Attendance report sent successfully!<h3>";
+                    echo "<h3 style=text-align:center>Attendance report sent successfully!</h3>";
                     //unlink($tempname); // delete the file after attachment sent.
                 } else {
                     die("Sorry, but the attendance log file could not be sent. Please try again!");

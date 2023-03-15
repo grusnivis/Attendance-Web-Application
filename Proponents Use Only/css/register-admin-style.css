@@ -1,0 +1,91 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;1,100;1,300;1,400;1,700&display=swap');
+
+body{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    font-family: "Lato", sans-serif;
+    background-color: #eaeaea;
+}
+
+/** for the register admin**/
+.registerAdminCon{
+    width: 400px;
+    height: 460px;
+    border-radius: 5%;
+    text-align: center;
+    padding: 7px;
+    background-color: white;
+}
+
+.modifyAdminCon{
+    width: 400px;
+    height: 250px;
+    border-radius: 5%;
+    text-align: center;
+    padding: 7px;
+    background-color: white;
+}
+
+.selectAdminCon{
+    width: 400px;
+    height: 370px;
+    border-radius: 5%;
+    text-align: center;
+    padding: 7px;
+    background-color: white;
+}
+
+select{
+    font-size: 20px;
+}
+
+p{
+    color: #dd6e42;
+}
+
+h1{
+    color:#4f6d7a;
+    font-family: "Lato", sans-serif;
+    font-size: 30px;
+}
+
+table, th, td{
+    border: 1px solid black;
+    border-collapse: collapse;
+    padding: 10px;
+    border-color: #4f6d7a;
+    align-content: center;
+    margin: 0px auto;
+}
+
+.instructions{
+    color: #dd6e42;
+    font-family: "Lato", sans-serif;
+    font-weight: 400;
+    text-align: center;
+}
+
+
+input[type="file"] {
+    position: absolute;
+    left: -9999px;
+}
+
+/*browse button*/
+input[type="submit"] { /*upload button */
+    border: 0px;
+    color: white;
+    background: #dc3545;
+    margin: 10px 0;
+    border-radius: 5px;
+    font-weight: bold;
+    padding: 5px 20px;
+    cursor: pointer;
+}
+
+/*browse button*/
+input[type="submit"]:hover {
+    background: #555;
+}

@@ -1,4 +1,5 @@
 <?php
+ob_start();
 
 //goes to Register-Teacher page
 if (isset($_POST['register-teacher']) && $_POST['register-teacher'] == 'Register Teacher'){
@@ -13,7 +14,7 @@ else if (isset($_POST['teacher-attendance']) && $_POST['teacher-attendance'] == 
     header("location: 6-teacher-attendance.php");
 }
 //goes to drop-export-tables.php
-else if (isset($_POST['drop-export-tables']) && $_POST['drop-export-tables'] == 'Delete and Export Databases') {
+else if (isset($_POST['drop-export-tables']) && $_POST['drop-export-tables'] == 'Delete and Export Teacher Databases') {
     header("location: database-export-drop.php");
 }
 //goes to user-manual-download-admin.php
@@ -24,4 +25,6 @@ else if (isset($_POST['download-manual']) && $_POST['download-manual'] == 'Downl
 else{
     header("location: admin-logout.php");
 }
+
+ob_end_flush();
 ?>

@@ -1,4 +1,3 @@
-<!-- how did this work -->
 <?php
 	$conn = new mysqli('localhost', 'root', '', 'temp');
 	
@@ -13,6 +12,7 @@
 	
 	if (mysqli_query($conn, $sql)) {
 		mysqli_close($conn);
+		ob_end_clean();
 		header('location:admin-login.php');
 	}
 ?>
