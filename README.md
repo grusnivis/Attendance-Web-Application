@@ -2,6 +2,8 @@
 This is the thesis of Group H 2022-2023's <b>Development of an Attendance Monitoring System with a Portable RFID-Based Logging Device</b>, in fulfillment for the bachelor's degree in computer engineering at University of San Carlos.</br></br>
 The web application should be used in tandem with the portable attendance device developed with Raspberry Pi. The web server used is XAMPP. Users can access the web application on any computer if the computer has XAMPP installed, and is in LAN.
 
+Alpha Testing cases for the web application can be found <a href = "https://docs.google.com/spreadsheets/d/1Um_i__vagtg8pD9HuRssXADdYC0kXuq-DAEUPDDeT34/edit?usp=sharing">here</a> (only for USC email access).
+
 <hr> <b>Helpful Tutorials </b></hr>
 <br/>
 <ol>
