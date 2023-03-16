@@ -14,7 +14,13 @@ $query = "SHOW DATABASES LIKE '$dbName'";
 $sqlStatement = $checkTeacherAttendanceDB->query($query);
 
 if (!($sqlStatement->num_rows == 1)){ //if there are no databases with "teacher attendance" in the name
-    $_SESSION["checkTeacherAttendanceDB"] = "There are no attendance logs in the local server.";
+	// Create connection directly to specific database
+	$conn = new mysqli('localhost', 'root', '', 'temp');
+	$sql = "INSERT INTO temptb (varname, val) VALUES ('checkTeacherAttendanceDB', 'There are no attendance logs in the local server.')";
+	if (mysqli_query($conn, $sql)) {
+		mysqli_close($conn);
+	}
+//    $_SESSION["checkTeacherAttendanceDB"] = "There are no attendance logs in the local server.";
     mysqli_close($checkTeacherAttendanceDB);
     header("location: admin-main.php");
 }

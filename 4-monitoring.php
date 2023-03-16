@@ -441,9 +441,21 @@ if (isset($_POST['update'])) {
                 <?php
                 // if Download button was clicked
                 if (array_key_exists('download', $_GET)) {
-                    $_SESSION['array_copy'] = $array;
-                    $_SESSION['sd_copy'] = "Not Applicable";
-                    $_SESSION['ed_copy'] = "Not Applicable";
+	                // Create connection directly to specific database
+	                $conn = new mysqli('localhost', 'root', '', 'temp');
+	                $sql = "INSERT INTO temptb (varname, val) VALUES ('array_copy', '$array')";
+	                if (mysqli_query($conn, $sql)) {
+		                $sql = "INSERT INTO temptb (varname, val) VALUES ('sd_copy', 'Not Applicable')";
+		                if (mysqli_query($conn, $sql)) {
+			                $sql = "INSERT INTO temptb (varname, val) VALUES ('ed_copy', 'Not Applicable')";
+			                if (mysqli_query($conn, $sql)) {
+				                mysqli_close($conn);
+			                }
+		                }
+	                }
+//                    $_SESSION['array_copy'] = $array;
+//                    $_SESSION['sd_copy'] = "Not Applicable";
+//                    $_SESSION['ed_copy'] = "Not Applicable";
                     dl($array, $teacher_name, $cg);
                 }
 

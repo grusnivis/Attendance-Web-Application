@@ -30,12 +30,28 @@
         <input type="submit" name="admin-logout" class="btn btn-info" style="width:300px" value="Log out"/>
     </form>
     <?php
-    if (isset($_SESSION["checkTeacherAttendanceDB"]) && $_SESSION["checkTeacherAttendanceDB"]) {
+	    // Create connection directly to specific database
+	    $conn = new mysqli('localhost', 'root', '', 'temp');
+	    // Obtain last value of variable user as 1 row
+	    // format goes "SELECT value column FROM temptb table WHERE variable is user ORDER BY last input of id in descending with 1 row
+	    $sql = "SELECT val FROM temptb WHERE varname = 'checkTeacherAttendanceDB' ORDER BY id DESC LIMIT 1";
+	    $result = mysqli_query($conn, $sql);
+	    if (mysqli_num_rows($result) > 0) {
+		    $row = mysqli_fetch_assoc($result);
+		    $tempvar1 = $row["val"];
+	    }
+    if (isset($tempvar1) && $tempvar1) {
         echo '<p class = "notification">';
-        echo '<b><u>'. $_SESSION["checkTeacherAttendanceDB"] .'</u></b>';
+        echo '<b><u>'. $tempvar1 .'</u></b>';
         echo '</p>';
-        unset ($_SESSION["checkTeacherAttendanceDB"]);
+        unset ($tempvar1);
     }
+	
+	    $sql = "INSERT INTO temptb (varname, val) VALUES ('checkTeacherAttendanceDB', '')";
+	
+	    if (mysqli_query($conn, $sql)) {
+		    mysqli_close($conn);
+	    }
     ?>
 </div>
 </body>

@@ -34,10 +34,26 @@ session_start();
     </form>
     <!-- text prompt if updating the password is successful or not -->
     <?php
-    if (isset($_SESSION["teacherPasswordMsg"]) && $_SESSION["teacherPasswordMsg"]) {
-        echo '<p class = "notification">' . $_SESSION["teacherPasswordMsg"] . '</p>';
-        unset($_SESSION["teacherPasswordMsg"]);
+	    // Create connection directly to specific database
+	    $conn = new mysqli('localhost', 'root', '', 'temp');
+	    // Obtain last value of variable user as 1 row
+	    // format goes "SELECT value column FROM temptb table WHERE variable is user ORDER BY last input of id in descending with 1 row
+	    $sql = "SELECT val FROM temptb WHERE varname = 'teacherPasswordMsg' ORDER BY id DESC LIMIT 1";
+	    $result = mysqli_query($conn, $sql);
+	    if (mysqli_num_rows($result) > 0) {
+		    $row = mysqli_fetch_assoc($result);
+		    $tempvar1 = $row["val"];
+	    }
+    if (isset($tempvar1) && $tempvar1) {
+        echo '<p class = "notification">' . $tempvar1 . '</p>';
+        unset($tempvar1);
     }
+	
+	    $sql = "INSERT INTO temptb (varname, val) VALUES ('checkTeacherAttendanceDB', '')";
+	
+	    if (mysqli_query($conn, $sql)) {
+		    mysqli_close($conn);
+	    }
     ?>
 </div>
 </body>

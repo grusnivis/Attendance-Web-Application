@@ -13,7 +13,14 @@ $query = "SHOW DATABASES LIKE '$dbName'";
 $sqlStatement = $checkTeacherLoginDB->query($query);
 
 if (!($sqlStatement->num_rows == 1)){ //if there are no databases with "teacher attendance" in the name
-    $_SESSION["checkTeacherAttendanceDB"] = "There are no registered teachers in the web application.";
+	$conn = new mysqli('localhost', 'root', '', 'temp');
+	// Obtain last value of variable user as 1 row
+	// format goes "SELECT value column FROM temptb table WHERE variable is user ORDER BY last input of id in descending with 1 row
+	$sql = "INSERT INTO temptb (varname, val) VALUES ('checkTeacherAttendanceDB', 'There are no registered teachers in the web application.')";
+	if (mysqli_query($conn, $sql)) {
+		mysqli_close($conn);
+	}
+//    $_SESSION["checkTeacherAttendanceDB"] = "There are no registered teachers in the web application.";
     mysqli_close($checkTeacherLoginDB);
     header("location: admin-main.php");
 }
