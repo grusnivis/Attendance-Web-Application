@@ -33,13 +33,13 @@
 		$teacherEmail = '';
     }
 	
-	$sql = "SELECT val FROM temptb WHERE varname = 'IDNum' ORDER BY id DESC LIMIT 1";
+	$sql = "SELECT val FROM temptb WHERE varname = 'currentUser' ORDER BY id DESC LIMIT 1";
 	$result = mysqli_query($conn, $sql);
 	if (mysqli_num_rows($result) > 0) {
 		$row = mysqli_fetch_assoc($result);
 		$tempvar4 = $row["val"];
 	}
-	$IDNum = $tempvar4;
+	$currentUser = $tempvar4;
  
 	$sql = "INSERT INTO temptb (varname, val) VALUES ('table', '$cg')";
 	
@@ -75,7 +75,7 @@ mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
 //on the "teacher" database, "login" table, search for the currently logged in user's IDNumber
 $sqlStatement = $teacherEmailDB->prepare("SELECT * FROM login WHERE IDNumber = ?");
-$sqlStatement->bind_param("s", $IDNum); //currentUser is the IDNumber of the logged-in teacher
+$sqlStatement->bind_param("s", $currentUser); //currentUser is the IDNumber of the logged-in teacher
 $sqlStatement->execute();
 
 $result = $sqlStatement->get_result();
@@ -340,10 +340,10 @@ mysqli_close($teacherEmailDB);
 
                             fclose($file);
 
-									// the necessary email addresses
-                                    // NOTE: CHANGE EMAIL ADDRESS ON SERVER PC IF NECESSARY
-									$from = '17100948@usc.edu.ph';
-									$to = $_POST["email"]; 
+                            // the necessary email addresses
+                            // NOTE: CHANGE EMAIL ADDRESS ON SERVER PC IF NECESSARY
+                            $from = '19102579@usc.edu.ph';
+                            $to = $_POST["email"];
 
                             //read from the uploaded file & base64_encode content
                             $handle = fopen($filename, "r");
@@ -744,7 +744,7 @@ mysqli_close($teacherEmailDB);
 	
 					// the necessary email addresses
                     // NOTE: CHANGE EMAIL ADDRESS ON SERVER PC IF NECESSARY
-                    $from = '17100948@usc.edu.ph';
+                    $from = '19102579@usc.edu.ph';
                     $to = $_POST["email"];
 
                     //read from the uploaded file & base64_encode content
@@ -948,8 +948,8 @@ mysqli_close($teacherEmailDB);
 
                     // the necessary email addresses
                     // NOTE: CHANGE EMAIL ADDRESS ON SERVER PC IF NECESSARY
-					$from = '17100948@usc.edu.ph';
-					$to = $_POST["email"]; 
+                    $from = '19102579@usc.edu.ph';
+                    $to = $_POST["email"];
 
                     //read from the uploaded file & base64_encode content
                     $handle = fopen($filename, "r");

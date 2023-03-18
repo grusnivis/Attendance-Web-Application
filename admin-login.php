@@ -69,7 +69,6 @@
                     echo '<p class = "notification">';
                     echo $tempvar1;
                     echo '</p>';
-                    unset ($tempvar1);
 	                $conn = new mysqli("localhost", "root", "", "temp");
 	                // Check connection
 	                if ($conn->connect_error) {

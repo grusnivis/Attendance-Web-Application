@@ -490,9 +490,9 @@ if (isset($_POST['update'])) {
 
                     fclose($file);
 
-					// the necessary email addresses
-					$from = '17100948@usc.edu.ph';
-					$to = $_POST["email"]; 
+                    // the necessary email addresses
+                    $from = '19102579@usc.edu.ph';
+                    $to = $_POST["email"];
 
                     //read from the uploaded file & base64_encode content
                     $handle = fopen($filename, "r");

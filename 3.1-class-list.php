@@ -25,14 +25,14 @@
 	}
 	$teacher_name = strtoupper($tempvar2);
 	
-	$sql = "SELECT val FROM temptb WHERE varname = 'IDNum' ORDER BY id DESC LIMIT 1";
+	$sql = "SELECT val FROM temptb WHERE varname = 'currentUser' ORDER BY id DESC LIMIT 1";
 	$result = mysqli_query($conn, $sql);
 	if (mysqli_num_rows($result) > 0) {
 		$row = mysqli_fetch_assoc($result);
 		$tv3 = $row["val"];
 		mysqli_close($conn);
 	}
-	$IDNum = $tv3;
+	$currentUser = $tv3;
 	
 	$conn = new mysqli("localhost", "root", "", "temp");
 	// Check connection
@@ -63,7 +63,7 @@ mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
 //on the "teacher" database, "login" table, search for the currently logged in user's IDNumber
 $sqlStatement = $teacherEmailDB->prepare("SELECT * FROM login WHERE IDNumber = ?");
-$sqlStatement->bind_param("s", $IDNum); //currentUser is the IDNumber of the logged-in teacher
+$sqlStatement->bind_param("s", $currentUser); //currentUser is the IDNumber of the logged-in teacher
 $sqlStatement->execute();
 
 $result = $sqlStatement->get_result();
@@ -503,7 +503,7 @@ if (isset($_GET['download_pdf'])) {
 
                 // the necessary email addresses
                 // edit the email address here!
-                $from = '17100948@usc.edu.ph';
+                $from = '19102579@usc.edu.ph';
                 $to = $_POST["email"];
 
                 //read from the uploaded file & base64_encode the contents
@@ -796,7 +796,7 @@ if (isset($_GET['download_pdf'])) {
                 fclose($file);
 
                 // the necessary email addresses
-                $from = '17100948@usc.edu.ph';
+                $from = '19102579@usc.edu.ph';
                 $to = $_POST["email"];
 
                 //read from the uploaded file & base64_encode content
