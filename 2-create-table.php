@@ -440,7 +440,7 @@ function connect_to_db($date, $dir, $file_name, $cg, $teacher){
 	$conn = new mysqli('localhost', 'root', '', 'temp');
 	// Obtain last value of variable user as 1 row
 	// format goes "SELECT value column FROM temptb table WHERE variable is user ORDER BY last input of id in descending with 1 row
-	$sql = "SELECT val FROM temptb WHERE varname = 'IDNum' ORDER BY id DESC LIMIT 1";
+	$sql = "SELECT val FROM temptb WHERE varname = 'currentUser' ORDER BY id DESC LIMIT 1";
 	$result = mysqli_query($conn, $sql);
 	if (mysqli_num_rows($result) > 0) {
 		$row = mysqli_fetch_assoc($result);

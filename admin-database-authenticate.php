@@ -93,7 +93,7 @@ else{
 	    if ($conn->connect_error) {
 		    die("Connection failed: " . $conn->connect_error);
 	    }
-	    $sql = "INSERT INTO temptb (varname, val) VALUES ('IDNum', '$username')";
+	    $sql = "INSERT INTO temptb (varname, val) VALUES ('currentUser', '$username')";
 	
 	    if (mysqli_query($conn, $sql)) {
 		    mysqli_close($conn);
