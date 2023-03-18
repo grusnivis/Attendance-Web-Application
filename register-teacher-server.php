@@ -270,7 +270,8 @@ if (isset ($_POST["register"])) {
     }
     
     if (isset ($_POST["return-to-admin-main"])) {
-        header("location: /admin-main.php");
+        header("Location: admin-main.php");
+        exit();
     }
 }
 
