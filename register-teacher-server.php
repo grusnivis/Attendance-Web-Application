@@ -269,7 +269,7 @@ if (isset ($_POST["register"])) {
         header("Location: register-teacher.php");
     }
     
-    if (isset ($_POST["return-to-admin-main"])) {
+    if (isset($_POST["return-to-admin-main"])) {
         header("Location: admin-main.php");
         exit();
     }
