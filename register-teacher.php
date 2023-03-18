@@ -112,7 +112,6 @@
 	    echo '<p class = "notification">';
 	    echo $tempvar1;
 	    echo '</p>';
-	    unset ($tempvar1);
 	    
 	    $sql = "INSERT INTO temptb (varname, val) VALUES ('registerTeacherMsg', '')";
 	
