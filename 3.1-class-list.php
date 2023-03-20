@@ -30,17 +30,10 @@
 	if (mysqli_num_rows($result) > 0) {
 		$row = mysqli_fetch_assoc($result);
 		$tv3 = $row["val"];
-		mysqli_close($conn);
 	}
 	$currentUser = $tv3;
 	
-	$conn = new mysqli("localhost", "root", "", "temp");
-	// Check connection
-	if ($conn->connect_error) {
-		die("Connection failed: " . $conn->connect_error);
-	}
 	$sql = "INSERT INTO temptb (varname, val) VALUES ('table', '$tempvar1')";
-	
 	if (mysqli_query($conn, $sql)) {
 		mysqli_close($conn);
 	}
@@ -85,7 +78,6 @@ else {
 		    die("Connection failed: " . $conn->connect_error);
 	    }
 	    $sql = "INSERT INTO temptb (varname, val) VALUES ('teacherEmail', '$tv4')";
-	
 	    if (mysqli_query($conn, $sql)) {
 		    mysqli_close($conn);
 	    }
@@ -425,11 +417,11 @@ if (isset($_GET['download_pdf'])) {
 	                        $result = mysqli_query($conn, $sql);
 	                        if (mysqli_num_rows($result) > 0) {
 		                        $row = mysqli_fetch_assoc($result);
-		                        $tempvar1 = $row["val"];
+		                        $tEmail = $row["val"];
 	                        }
                         ?>
                         <input class="form-control" type="email" name="email" placeholder="Email Address" required
-                               style="margin-top:20px; padding:15px 80px;text-align:center" value = "<?php echo $tempvar1?>"/>
+                               style="margin-top:20px; padding:15px 80px;text-align:center" value = "<?php echo $tEmail?>"/>
                     </div>
 
                     <div class="form-group">
@@ -719,7 +711,7 @@ if (isset($_GET['download_pdf'])) {
                 <form enctype="multipart/form-data" method="POST" action=""
                       style="margin-top:20px; margin-left:25%; display:flex; text-align:center">
                     <div class="form-group">
-                        <input class="form-control" type="email" name="email" placeholder="Email Address" value="<?php echo $tempvar1?>" required
+                        <input class="form-control" type="email" name="email" placeholder="Email Address" value="<?php echo $tEmail?>" required
                                style="margin-top:20px; padding:15px 80px;text-align:center"/>
                     </div>
 
@@ -770,7 +762,7 @@ if (isset($_GET['download_pdf'])) {
             if (isset($_GET['download_s_csv'])) {
                 // filename = download path/filename
                 // NOTE: CHANGE THE FILEPATH FOR THE SERVER PC
-                $filename = "D:/Downloads/" . strtoupper($teacher_name) . "_" . $cg . ".csv";
+                $filename = "D:/Downloads/" . strtoupper($teacher_name) . "_" . $cg . "_Summary" . ".csv";
                 $file = fopen($filename, "w");
                 fputcsv($file, array("Name", "Present", "Late", "Excused", "Absent", "Attendance Days", "% Presence"));
 

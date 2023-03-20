@@ -7,7 +7,7 @@
 	$result = mysqli_query($conn, $sql);
 	if (mysqli_num_rows($result) > 0) {
 		$row = mysqli_fetch_assoc($result);
-		$tempvar1 = $row["val"];
+		$currentUser = $row["val"];
 		mysqli_close($conn);
 	}
 	
@@ -30,7 +30,7 @@ if (isset($_POST['change-teacher-password']) && $_POST['change-teacher-password'
 
     $updateTeacherStmt = $teacherLoginDB->prepare("UPDATE login SET password = ? WHERE IDNumber = ?");
     //$_SESSION['currentUser'] is the logged in user's ID number. this is found at database-authenticate.php
-    $updateTeacherStmt->bind_param("ss", $hashedPassWord, $tempvar1);
+    $updateTeacherStmt->bind_param("ss", $hashedPassWord, $currentUser);
     $updateTeacherStmt->execute();
     $updateTeacherStmt->close();
 

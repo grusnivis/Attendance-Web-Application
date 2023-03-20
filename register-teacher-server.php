@@ -268,11 +268,10 @@ if (isset ($_POST["register"])) {
         //$_SESSION["registerTeacherMsg"] = "Teacher registration successful!";
         header("Location: register-teacher.php");
     }
-    
-    if (isset($_POST['return-to-admin-main']) && $_POST['return-to-admin-main'] == 'Return to Administrator Menu'){
-        header("Location: admin-main.php");
-        exit();
-    }
+}
+
+if (isset ($_POST["return-to-admin-main"])){
+    header("location: admin-main.php");
 }
 
 ob_end_flush();

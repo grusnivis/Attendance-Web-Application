@@ -44,7 +44,6 @@
         echo '<p class = "notification">';
         echo '<b><u>'. $tempvar1 .'</u></b>';
         echo '</p>';
-        unset ($tempvar1);
     }
 	
 	    $sql = "INSERT INTO temptb (varname, val) VALUES ('checkTeacherAttendanceDB', '')";

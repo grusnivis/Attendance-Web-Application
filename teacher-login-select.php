@@ -85,18 +85,11 @@ else{
 	        if (mysqli_num_rows($result) > 0) {
 		        $row = mysqli_fetch_assoc($result);
 		        $tempvar1 = $row["val"];
-		        mysqli_close($conn);
 	        }
 	        if (isset($tempvar1) && $tempvar1) {
 	        echo '<p class = "notification">';
 	        echo $tempvar1;
 	        echo '</p>';
-	        unset ($tempvar1);
-	        $conn = new mysqli("localhost", "root", "", "temp");
-	        // Check connection
-	        if ($conn->connect_error) {
-		        die("Connection failed: " . $conn->connect_error);
-	        }
 	        $sql = "INSERT INTO temptb (varname, val) VALUES ('modifyLoginMsg', '')";
 	
 	        if (mysqli_query($conn, $sql)) {

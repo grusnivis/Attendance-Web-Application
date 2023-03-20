@@ -58,7 +58,7 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Modify Teacher Passwor
 	    if ($conn->connect_error) {
 		    die("Connection failed: " . $conn->connect_error);
 	    }
-	    $sql = "INSERT INTO temptb (varname, val) VALUES ('rederenceIDNum', '$teacherIDNum')";
+	    $sql = "INSERT INTO temptb (varname, val) VALUES ('referenceIDNum', '$teacherIDNum')";
 	
 	    if (mysqli_query($conn, $sql)) {
 		    mysqli_close($conn);

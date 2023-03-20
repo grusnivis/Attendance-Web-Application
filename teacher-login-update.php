@@ -3,7 +3,6 @@ THIS PAGE IS FOR UPDATING THE SELECTED TEACHER'S LOGIN CREDENTIALS.
 after updating the credentials, it will go back to teacher-login-select.php
 -->
 <?php
-//session_start();
 	$conn = new mysqli('localhost', 'root', '', 'temp');
 	// Obtain last value of variable user as 1 row
 	// format goes "SELECT value column FROM temptb table WHERE variable is user ORDER BY last input of id in descending with 1 row
@@ -52,7 +51,7 @@ else{
 	if ($conn->connect_error) {
 		die("Connection failed: " . $conn->connect_error);
 	}
-	$str = "Updating teacher's password failed.";
+	$str = "Updating teacher\'s password failed.";
 	$sql = "INSERT INTO temptb (varname, val) VALUES ('modifyLoginMsg', '$str')";
 	
 	if (mysqli_query($conn, $sql)) {

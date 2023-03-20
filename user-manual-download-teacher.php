@@ -1,5 +1,5 @@
 <?php
-$file_url = 'User Manuel.pdf';
+$file_url = 'User Manual.pdf';
 header("Cache-Control: public");
 header("Content-Description: File Transfer");
 header('Content-Type: application/octet-stream');

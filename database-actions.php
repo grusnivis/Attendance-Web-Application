@@ -1,6 +1,4 @@
 <?php
-//session_start();
-
 //THIS PART WILL EXECUTE IF "Export Selected Teacher Database" IS SELECTED
 if (isset($_POST['database-export']) && $_POST['database-export'] == 'Export Selected Teacher Database') {
     //the selected teacher found on database-export-drop.php
@@ -147,16 +145,16 @@ if (isset($_POST['database-drop']) && $_POST['database-drop'] == 'Delete All Dat
 
     //returns to the database-export-drop.php
     $conn = new mysqli("localhost", "root", "");
-    $create = $conn->query("CREATE Database IF NOT EXISTS `temp`");
+    $create = $conn->query("CREATE Database IF NOT EXISTS `temp` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
     }
     mysqli_close($conn);
     $conn = new mysqli("localhost", "root", "", "temp");
     $create = $conn->query("CREATE TABLE IF NOT EXISTS temptb (id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-            varname VARCHAR(255) NOT NULL, val VARCHAR(255) NOT NULL)");
-    $sql = "INSERT INTO temptb (varname, val) VALUES ('dropTeacherDBMsg', 'Teacher databases deleted successfully!')";
+            varname VARCHAR(255) NOT NULL, val VARCHAR(255) NOT NULL) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
     
+    $sql = "INSERT INTO temptb (varname, val) VALUES ('dropTeacherDBMsg', 'Teacher databases deleted successfully!')";
     if (mysqli_query($conn, $sql)) {
         mysqli_close($conn);
     }

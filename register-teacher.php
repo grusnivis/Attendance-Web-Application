@@ -114,7 +114,6 @@
 	    echo '</p>';
 	    
 	    $sql = "INSERT INTO temptb (varname, val) VALUES ('registerTeacherMsg', '')";
-	
 	    if (mysqli_query($conn, $sql)) {
 		    mysqli_close($conn);
 	    }

@@ -3,7 +3,6 @@
 //then it is available for the whole session, uses session_start()
 //at the top of each page.
 // https://stackoverflow.com/questions/9571125/cant-pass-php-session-variables-to-multiple-pages
-//session_start();
 	// Create connection
 	$conn = new mysqli('localhost', 'root', '');
 	$create = $conn->query("CREATE Database IF NOT EXISTS `temp`
@@ -16,7 +15,7 @@
 	// Create connection with database in server to create table
 	$conn = new mysqli('localhost', 'root', '', 'temp');
 	$create = $conn->query("CREATE TABLE IF NOT EXISTS temptb (id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-            varname VARCHAR(255) NOT NULL, val VARCHAR(255) NOT NULL)
+            varname VARCHAR(255) NOT NULL, val VARCHAR(1000) NOT NULL)
             DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
 	if ($conn->connect_error) {
 		die("Connection failed: " . $conn->connect_error);
@@ -78,7 +77,6 @@
 	            echo '<p class = "notification">';
 	            echo $tempvar1;
 	            echo '</p>';
-	            unset ($tempvar1);
 	            $conn = new mysqli("localhost", "root", "", "temp");
 	            // Check connection
 	            if ($conn->connect_error) {

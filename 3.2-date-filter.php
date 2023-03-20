@@ -272,7 +272,7 @@ mysqli_close($teacherEmailDB);
                                     <div class="form-group">
                                         <input class="form-control" type="email" name="email"
                                                placeholder="Email Address"
-                                               value="<?php echo $tv3 ?>" required
+                                               value="<?php echo $teacherEmail ?>" required
                                                style="margin-top:20px; padding:15px 80px;text-align:center"/>
                                     </div>
 
@@ -309,35 +309,35 @@ mysqli_close($teacherEmailDB);
                                 </form>
                             </div>
                         </div>
+                        
+                        <?php
+                        if (isset($_GET['download'])) {
+                            // filename = download path/filename
+                            //NOTE: CHANGE FILEPATH ON THE SERVER PC
+                            $filename = "D:/Downloads/" . strtoupper($teacher_name) . "_" . $cg . "_SpecificDate" . ".csv";
+                            $file = fopen($filename, "w");
+                            fputcsv($file, array("ID#", "Lastname", "Name", "Date", "Status", "Time-in"));
 
-							<?php
-								if(isset($_GET['download'])){
-								// filename = download path/filename
-                                //NOTE: CHANGE FILEPATH ON THE SERVER PC
-								$filename = "D:/Downloads/". strtoupper($teacher_name) . "_" . $cg . "_SpecificDate" . ".csv";
-								$file = fopen($filename,"w");
-								fputcsv($file, array("ID#","Lastname","Name","Date","Status","Time-in"));
-																	
-								if (count($array) > 0) {
-									foreach ($array as $row) {
-										fputcsv($file, $row);
-									}
-								}
-								fclose($file);
-								}
+                            if (count($array) > 0) {
+                                foreach ($array as $row) {
+                                    fputcsv($file, $row);
+                                }
+                            }
+                            fclose($file);
+                        }
 
-								if(isset($_POST['send_email'])){
-									// filename = download path/filename
-                                    // NOTE: CHANGE FILEPATH ON THE SERVER PC
-									$filename = "D:/Downloads/". strtoupper($teacher_name) . "_" . $cg . "_SpecificDate" . ".csv";
-									$file = fopen($filename,"w");
-									fputcsv($file, array("ID#","Lastname","Name","Date","Status","Time-in"));
-																	
-									if (count($array) > 0) {
-										foreach ($array as $row) {
-											fputcsv($file, $row);
-										}
-									}
+                        if (isset($_POST['send_email'])) {
+                            // filename = download path/filename
+                            // NOTE: CHANGE FILEPATH ON THE SERVER PC
+                            $filename = "D:/Downloads/" . strtoupper($teacher_name) . "_" . $cg . "_SpecificDate" . ".csv";
+                            $file = fopen($filename, "w");
+                            fputcsv($file, array("ID#", "Lastname", "Name", "Date", "Status", "Time-in"));
+
+                            if (count($array) > 0) {
+                                foreach ($array as $row) {
+                                    fputcsv($file, $row);
+                                }
+                            }
 
                             fclose($file);
 
@@ -626,7 +626,7 @@ mysqli_close($teacherEmailDB);
                 echo "<br/><h5>You can send a copy of the attendance report via email or you can download it in CSV or PDF format.</h5>";
 
 
-				function dl_s($array_s, $teacher_name, $cg){
+				function dl_s($array_s, $teacher_name, $cg) {
 					// filename = download path/filename            
 					$tempname = strtoupper($teacher_name) . "_" . $cg . "_Summary" . ".csv";
 					
@@ -657,7 +657,7 @@ mysqli_close($teacherEmailDB);
 				<form enctype="multipart/form-data" method="POST" action=""
 						style="margin-top:20px; margin-left:25%; display:flex; text-align:center">
 					<div class="form-group">
-						<input class="form-control" type="email" name="email" placeholder="Email Address" value = "<?php echo $tv3?>" required
+						<input class="form-control" type="email" name="email" placeholder="Email Address" value = "<?php echo $teacherEmail?>" required
 								style = "margin-top:20px; padding:15px 80px;text-align:center"/>
 					</div>
 
@@ -857,7 +857,7 @@ mysqli_close($teacherEmailDB);
 				<form enctype="multipart/form-data" method="POST" action="" 
 						style="margin-left:25%; display:flex; text-align:center">
 					<div class="form-group">
-						<input class="form-control" type="email" name="email" placeholder="Email Address" value = "<?php echo $tv3?>" required
+						<input class="form-control" type="email" name="email" placeholder="Email Address" value = "<?php echo $teacherEmail?>" required
 								style = "padding:15px 80px;text-align:center"/>
 					</div>
 

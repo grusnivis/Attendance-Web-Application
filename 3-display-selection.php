@@ -1,6 +1,4 @@
 <?php
-    //session_start();
-
 include('0-connect.php');
 
 //refer to 2-create-table.php

@@ -46,11 +46,8 @@ session_start();
 	    }
     if (isset($tempvar1) && $tempvar1) {
         echo '<p class = "notification">' . $tempvar1 . '</p>';
-        unset($tempvar1);
     }
-	
-	    $sql = "INSERT INTO temptb (varname, val) VALUES ('checkTeacherAttendanceDB', '')";
-	
+	    $sql = "INSERT INTO temptb (varname, val) VALUES ('teacherPasswordMsg', '')";
 	    if (mysqli_query($conn, $sql)) {
 		    mysqli_close($conn);
 	    }

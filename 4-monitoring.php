@@ -31,7 +31,6 @@
 	$teacherEmail = $tempvar3;
 	
 	$sql = "INSERT INTO temptb (varname, val) VALUES ('table', '$tempvar1')";
-	
 	if (mysqli_query($conn, $sql)) {
 		mysqli_close($conn);
 	}

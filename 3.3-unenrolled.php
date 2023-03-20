@@ -1,5 +1,4 @@
 <?php
-//session_start();
 ob_start(); //important to retain the inputs in the textboxes
 
 	include '0-connect.php';
@@ -26,8 +25,7 @@ ob_start(); //important to retain the inputs in the textboxes
     else{
         $findStudentRFID = '';
     }
-	
- 
+    
 	$sql = "INSERT INTO temptb (varname, val) VALUES ('table', '$tempvar1')";
 	
 	if (mysqli_query($conn, $sql)) {
@@ -308,7 +306,6 @@ ob_start(); //important to retain the inputs in the textboxes
 	                        }
 	                        if (isset($tp5) && $tp5) {
                             echo '<p class = "notification">' . $tp5 . '</p>';
-                            unset($$tp5);
 		                        $conn = new mysqli("localhost", "root", "", "temp");
 		                        // Check connection
 		                        if ($conn->connect_error) {
@@ -333,7 +330,6 @@ ob_start(); //important to retain the inputs in the textboxes
 	                        }
 	                        if (isset($tp5) && $tp5) {
 		                        echo '<p class = "notification">' . $tp5 . '</p>';
-		                        unset($tp5);
 		                        $conn = new mysqli("localhost", "root", "", "temp");
 		                        // Check connection
 		                        if ($conn->connect_error) {

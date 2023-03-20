@@ -4,7 +4,6 @@
 //https://stackoverflow.com/questions/9571125/cant-pass-php-session-variables-to-multiple-pages
 
 //important for part 2
-//session_start();
 	$conn = new mysqli("localhost", "root", "", "temp");
 	// Check connection
 	if ($conn->connect_error) {
@@ -20,7 +19,7 @@
 	$result = mysqli_query($conn, $sql);
 	if (mysqli_num_rows($result) > 0) {
 		$row = mysqli_fetch_assoc($result);
-		$tv2 = $row["val"];
+		$currentUser = $row["val"];
 		mysqli_close($conn);
 	}
 //header("Cache-Control: no-cache, must-revalidate");
@@ -176,7 +175,7 @@ https://code.tutsplus.com/tutorials/how-to-upload-a-file-in-php-with-example--cm
                         echo "<option value = '0'>NOT A TEAM TEACH CLASS</option>";
                         while ($row = mysqli_fetch_array($result)) {
                             //exclude current user in display: https://stackoverflow.com/questions/1248641/php-how-to-exclude-data-from-mysql
-                            if ($row['IDNumber'] == $tv2) {
+                            if ($row['IDNumber'] == $currentUser) {
                                 continue;
                             };
                             //echo "<option value = '" . $row['IDNumber'] . "'>" . $row['IDNumber'] . " - " . $row['firstName'] . " " . $row['lastName'] . "</option>";
@@ -210,14 +209,12 @@ https://code.tutsplus.com/tutorials/how-to-upload-a-file-in-php-with-example--cm
 	                    echo '<p class = "notification">';
 	                    echo $tempvar1;
 	                    echo '</p>';
-	                    unset ($tempvar1);
 	                    $conn = new mysqli("localhost", "root", "", "temp");
 	                    // Check connection
 	                    if ($conn->connect_error) {
 		                    die("Connection failed: " . $conn->connect_error);
 	                    }
 	                    $sql = "INSERT INTO temptb (varname, val) VALUES ('classListServerMsg', '')";
-	
 	                    if (mysqli_query($conn, $sql)) {
 		                    mysqli_close($conn);
 	                    }
