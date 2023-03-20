@@ -443,7 +443,8 @@ if (isset($_POST['update'])) {
                 if (array_key_exists('download', $_GET)) {
 	                // Create connection directly to specific database
 	                $conn = new mysqli('localhost', 'root', '', 'temp');
-	                $sql = "INSERT INTO temptb (varname, val) VALUES ('array_copy', '$array')";
+                    $array_str = serialize($array);
+	                $sql = "INSERT INTO temptb (varname, val) VALUES ('array_copy', '$array_str')";
 	                if (mysqli_query($conn, $sql)) {
 		                $sql = "INSERT INTO temptb (varname, val) VALUES ('sd_copy', 'Not Applicable')";
 		                if (mysqli_query($conn, $sql)) {

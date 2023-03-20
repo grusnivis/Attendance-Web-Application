@@ -38,7 +38,7 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Update to New Teacher 
 	if ($conn->connect_error) {
 		die("Connection failed: " . $conn->connect_error);
 	}
-    $str = "The selected teacher's password is now updated!";
+    $str = "The selected teacher\'s password is now updated!";
 	$sql = "INSERT INTO temptb (varname, val) VALUES ('modifyLoginMsg', '$str')";
 	
 	if (mysqli_query($conn, $sql)) {

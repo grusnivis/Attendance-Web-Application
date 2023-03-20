@@ -46,7 +46,7 @@
         $row = mysqli_fetch_assoc($result);
         $tempvar5 = $row["val"];
         mysqli_close($conn);
-        $scopy = $tempvar5;
+        $scopy = unserialize($tempvar5);
     }
     else
         $scopy = '';

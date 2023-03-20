@@ -240,7 +240,8 @@ mysqli_close($teacherEmailDB);
 	                if ($conn->connect_error) {
 		                die("Connection failed: " . $conn->connect_error);
 	                }
-	                $sql = "INSERT INTO temptb (varname, val) VALUES ('array_copy', '$array')";
+                    $array_str = serialize($array);
+	                $sql = "INSERT INTO temptb (varname, val) VALUES ('array_copy', '$array_str')";
 	
 	                if (mysqli_query($conn, $sql)) {
 		                mysqli_close($conn);
@@ -700,7 +701,8 @@ mysqli_close($teacherEmailDB);
 				if (mysqli_query($conn, $sql)) {
 					$sql = "INSERT INTO temptb (varname, val) VALUES ('ed_copy', '$localED')";
 					if (mysqli_query($conn, $sql)) {
-						$sql = "INSERT INTO temptb (varname, val) VALUES ('array_s_copy', '$array_s')";
+                        $array_s_str = serialize($array_s);
+						$sql = "INSERT INTO temptb (varname, val) VALUES ('array_s_copy', '$array_s_str')";
 						if (mysqli_query($conn, $sql)) {
 							mysqli_close($conn);
 						}
@@ -906,7 +908,8 @@ mysqli_close($teacherEmailDB);
 				if (mysqli_query($conn, $sql)) {
 					$sql = "INSERT INTO temptb (varname, val) VALUES ('ed_copy', '$localED')";
 					if (mysqli_query($conn, $sql)) {
-						$sql = "INSERT INTO temptb (varname, val) VALUES ('array_copy', '$array')";
+                        $array_str = serialize($array);
+						$sql = "INSERT INTO temptb (varname, val) VALUES ('array_copy', '$array_str')";
 						if (mysqli_query($conn, $sql)) {
 							mysqli_close($conn);
 						}
