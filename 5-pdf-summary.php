@@ -56,41 +56,41 @@ require('tcpdf/tcpdf.php');
 //TAGS: CHANGE FILE ADDRESS, SERVER PC
 //teacher name_course group.csv
 //teacher name is found at 2-create-table.php. $_session["table"] is found at 3-display-selection.php
-    $filename = $teacher . "_" . $table . ".csv";
-    
-    if ( !file_exists( $filename ) && !is_dir( $filename ) ) {
-        //Creates .csv file if .csv doesn't exist
-        $sd = $ds;
-        $ed = $de;
-        $array_s = $scopy;
-        $filename = strtoupper($teacher_name) . "_" . $cg . ".csv";
-        $file = fopen($filename,"w");
-        fputcsv($file, array("Start date: ", "$sd", "End date: ", "$ed"));
-        fputcsv($file, array("Name","Present","Late","Excused","Absent","Attendance Days","% Presence"));
-        
-        if (count($array_s) > 0) {
-            foreach ($array_s as $row) {
-                fputcsv($file, $row);
-            }
-        }
-        
-        fclose($file);
-    }
-    else{
-        //Clones a temporary .csv file if .csv exists
-        $tempFileName = strtoupper($teacher_name) . "_TEMP_" . $cg . ".csv";
-        copy($filename, $tempFileName);
-        $filename = $tempFileName;
-    }
-    
-    $pdf = new TCPDF('P', 'mm', 'Letter', true, 'UTF-8');
-    $pdf->AddPage();
-    $pdf->setAutoPageBreak(1, 23);
-    //$pdf->SetMargins(14,14,14);
-    $pdf->SetFont('Times', 'B', 11);
-    $pdf->Ln();
-    $pdf->Write(10, utf8_encode(strtoupper($teacher)) . "\n" . utf8_encode(strtoupper($table)), '', false, 'L', true);
-    $pdf->Ln();
+$filename = "D:/Downloads/". $teacher . "_" . $table . ".csv";
+
+if ( !file_exists( $filename ) && !is_dir( $filename ) ) {
+    //Creates .csv file if .csv doesn't exist
+    $sd = $ds;
+    $ed = $de;
+    $array_s = $scopy;
+    $filename = "D:/Downloads/". strtoupper($teacher) . "_" . $table . ".csv";
+	$file = fopen($filename,"w");
+	fputcsv($file, array("Start date: ", $sd, "End date: ", $ed));
+	fputcsv($file, array("Name","Present","Late","Excused","Absent","Attendance Days","% Presence"));
+															
+		if (count($array_s) > 0) {
+			foreach ($array_s as $row) {
+				fputcsv($file, $row);
+			}
+		}
+
+	fclose($file);       
+}
+else{
+    //Clones a temporary .csv file if .csv exists
+    $tempFileName = "D:/Downloads/". strtoupper($teacher) . "_TEMP_" . $table . ".csv";
+    copy($filename, $tempFileName);
+    $filename = $tempFileName;
+}
+
+$pdf = new TCPDF('P', 'mm', 'Letter', true, 'UTF-8');
+$pdf->AddPage();
+$pdf->setAutoPageBreak(1, 23);
+//$pdf->SetMargins(14,14,14);
+$pdf->SetFont('Times', 'B', 11);
+$pdf->Ln();
+$pdf->Write(10, utf8_encode(strtoupper($teacher)) . "\n" . utf8_encode(strtoupper($table)), '', false, 'L', true);
+$pdf->Ln();
 
 //$row=file('ANTONIETTE M CAñETE_G2-CPE 3101L(T - 0900 AM - 1200 PM).csv');
 $row = file($filename);
@@ -129,5 +129,5 @@ for ($c = 2; $c < count($row); $c++) {
 }
 unlink($filename);
 ob_end_clean();
-$pdf->Output(utf8_encode(strtoupper($teacher_name)) . "_" . $cg . "_Summary" . ".pdf", 'D', TRUE);
+$pdf->Output(utf8_encode(strtoupper($teacher)) . "_" . $table . "_Summary" . ".pdf", 'D', TRUE);
 ?>

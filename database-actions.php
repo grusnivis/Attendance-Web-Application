@@ -1,4 +1,6 @@
 <?php
+ob_start();
+
 //THIS PART WILL EXECUTE IF "Export Selected Teacher Database" IS SELECTED
 if (isset($_POST['database-export']) && $_POST['database-export'] == 'Export Selected Teacher Database') {
     //the selected teacher found on database-export-drop.php
@@ -96,7 +98,6 @@ if (isset($_POST['database-export']) && $_POST['database-export'] == 'Export Sel
         if (mysqli_query($conn, $sql)) {
             mysqli_close($conn);
         }
-        //$_SESSION["exportTeacherDBMsg"] = "No Teacher selected!";
     }
     //returns to the database-export-drop.php
     header("location: database-export-drop.php");
@@ -158,7 +159,6 @@ if (isset($_POST['database-drop']) && $_POST['database-drop'] == 'Delete All Dat
     if (mysqli_query($conn, $sql)) {
         mysqli_close($conn);
     }
-    //$_SESSION["dropTeacherDBMsg"] = "Teacher databases deleted successfully!";
     header("location: database-export-drop.php");
 }
 
@@ -166,4 +166,5 @@ if (isset($_POST['database-drop']) && $_POST['database-drop'] == 'Delete All Dat
 if (isset($_POST['return-to-admin-main']) && $_POST['return-to-admin-main'] == 'Return to Administrator Menu') {
     header("location: admin-main.php");
 }
+ob_end_clean();
 ?>

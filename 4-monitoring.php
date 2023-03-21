@@ -388,6 +388,17 @@ if (isset($_POST['update'])) {
                         }
                         echo "</tr>";
                     }
+	                $conn = new mysqli("localhost", "root", "", "temp");
+	                // Check connection
+	                if ($conn->connect_error) {
+		                die("Connection failed: " . $conn->connect_error);
+	                }
+                    $array_str = serialize($array);
+	                $sql = "INSERT INTO temptb (varname, val) VALUES ('array_student', '$array_str')";
+	                if (mysqli_query($conn, $sql)) {
+                        mysqli_close($conn);
+	                }
+                    $_SESSION['array_student'] = $array;
                 }
 
                 echo "</table>";
@@ -453,40 +464,22 @@ if (isset($_POST['update'])) {
 			                }
 		                }
 	                }
-//                    $_SESSION['array_copy'] = $array;
-//                    $_SESSION['sd_copy'] = "Not Applicable";
-//                    $_SESSION['ed_copy'] = "Not Applicable";
                     dl($array, $teacher_name, $cg);
                 }
-
-				if(isset($_GET['download_csv'])){
-				// filename = download path/filename
-                // NOTE: CHANGE FILEPATH ON THE SERVER PC
-				$filename = strtoupper($teacher_name) . "_" . $cg . ".csv";
-				$file = fopen($filename,"w");
-				fputcsv($file, array("ID#","Lastname","Name","Date","Status","Time-in"));
-											
-				if (count($array) > 0) {
-					foreach ($array as $row) {
-						fputcsv($file, $row);
-					}
-				}
-				fclose($file);
-				}
 
                 if (isset($_POST['send_email'])) {
 
                     // filename = download path/filename
                     // NOTE: CHANGE FILEPATH ON THE SERVER PC
-					$filename = strtoupper($teacher_name) . "_" . $cg . ".csv";
-					$file = fopen($filename,"w");
-					fputcsv($file, array("ID#","Lastname","Name","Date","Status","Time-in"));
-											
-					if (count($array) > 0) {
-						foreach ($array as $row) {
-							fputcsv($file, $row);
-						}
-					}
+                    $filename = "D:/Downloads/" . strtoupper($teacher_name) . "_" . $cg . ".csv";
+                    $file = fopen($filename, "w");
+                    fputcsv($file, array("ID#", "Lastname", "Name", "Date", "Status", "Time-in"));
+
+                    if (count($array) > 0) {
+                        foreach ($array as $row) {
+                            fputcsv($file, $row);
+                        }
+                    }
 
                     fclose($file);
 
@@ -545,7 +538,7 @@ if (isset($_POST['update'])) {
         <h5>Select a file format to download. For CSV format, the attendance report will be placed in the computer's
             Downloads folder.</h5>
         <a class="close" href="#">&times;</a>
-        <form method="GET">
+        <form method="POST" action="/4-monitoring-download.php">
             <div class="form-group">
                 <input type="hidden" name="name" value="<?php echo $fullname ?>"/>
 

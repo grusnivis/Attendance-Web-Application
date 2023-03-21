@@ -1,6 +1,7 @@
 <!-- reference page: https://code.tutsplus.com/tutorials/how-to-upload-a-file-in-php-with-example--cms-31763 -->
 
 <?php
+ob_start();
 header('Content-Encoding: utf-8');
 header('Content-Type: text/csv; charset=utf-8mb4');
 
@@ -215,7 +216,8 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
                 }
 
                 // directory in which the uploaded file will be moved
-                $uploadFileDir = './' . $firstName . " " . $lastName . '/';
+                //TAGS: FILE ADDRESS, DIRECTORY, FOLDER
+                $uploadFileDir = './ALS_SHARED/' . $firstName . " " . $lastName . '/';
 
                 //concatenate file directory to file name. i.e. ./firstName lastName/filename.csv
                 $dest_path_temp = $uploadFileDir . $newFileName . ".csv";
@@ -412,7 +414,8 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
                         $sqlStatement->close();
                         mysqli_close($databaseLink);
 
-                        if (!copy($dest_path_temp, './' . $partnerFirstName . " " . $partnerLastName . '/' . $newFileName . ".csv")) {
+                        //TAGS: FILE ADDRESS, DIRECTORY, FOLDER
+                        if (!copy($dest_path_temp, './ALS_SHARED/' . $partnerFirstName . " " . $partnerLastName . '/' . $newFileName . ".csv")) {
                             die("Copying to the selected partner's folder failed.");
                         }
                         else {
@@ -432,7 +435,7 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
 
                         //create the "teamteach" database if it does not exist
                         //mysql and sessions (use curly braces) https://stackoverflow.com/questions/5746614/session-variable-in-mysql-query
-                        $sqlStatement = $teamTeachDB->prepare("CREATE DATABASE IF NOT EXISTS " . $dbName);
+                        $sqlStatement = $teamTeachDB->prepare("CREATE DATABASE IF NOT EXISTS " . $dbName . " DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
                         $sqlStatement->execute();
                         $sqlStatement->close();
                         mysqli_close($teamTeachDB);
@@ -473,14 +476,17 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
                     //check if file exists: https://www.w3schools.com/php/func_filesystem_file_exists.asp
 
                     //<!--- CREATE THE STUDENT MASTERLIST DIRECTORY IF IT DOES NOT EXIST --->
-                    if (!file_exists("./Student Masterlist/")){
-                        mkdir("./Student Masterlist/", 0777, true);
+                    //TAGS: FILE ADDRESS, DIRECTORY, FOLDER
+                    if (!file_exists("./ALS_SHARED/Student Masterlist/")){
+                        //TAGS: FILE ADDRESS, DIRECTORY, FOLDER
+                        mkdir("./ALS_SHARED/Student Masterlist/", 0777, true);
                     }
 
                     //<!--- THIS PART CREATES THE STUDENT MASTERLIST CSV FILE IF IT DOES NOT EXIST AND INSERTS THE CLASS LIST ARRAY --->
                     //if the studentMasterlist.csv does not exist, make the masterlist database with student table,
                     //insert the first class list contents to the database, and create the csv file
-                    if (!file_exists('./Student Masterlist/StudentMasterlist.csv')) {
+                    //TAGS: FILE ADDRESS, DIRECTORY, FOLDER
+                    if (!file_exists('./ALS_SHARED/Student Masterlist/StudentMasterlist.csv')) {
                         $studentMasterlistDB = mysqli_connect('localhost', 'root', '');
                         $dbName = "masterlist";
 
@@ -492,7 +498,7 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
                         mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
                         //create the database "masterlist"
-                        $sqlStatement = $studentMasterlistDB->prepare("CREATE DATABASE IF NOT EXISTS " . $dbName);
+                        $sqlStatement = $studentMasterlistDB->prepare("CREATE DATABASE IF NOT EXISTS " . $dbName . " DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
                         $sqlStatement->execute();
                         $sqlStatement->close();
 
@@ -544,7 +550,8 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
                         //echo "Done inserting to masterlist database!" . "<br/>";
 
                         //opens the StudentMasterlist.csv file. it will create it if it does not exist. puts pointer to the start of the file
-                        $handle = fopen("./Student Masterlist/StudentMasterlist.csv", "w");
+                        //TAGS: FILE ADDRESS, DIRECTORY, FOLDER
+                        $handle = fopen("./ALS_SHARED/Student Masterlist/StudentMasterlist.csv", "w");
                         //put utf-8 byte order mark to set the csv file as csv utf-8
                         $BOM = chr(0xEF) . chr(0xBB) . chr(0xBF);
                         fputs($handle, $BOM);
@@ -567,7 +574,8 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
 
                     else {
                         //getting the current masterlist contents to update the masterlist database with the rfid column
-                        $handle = fopen("./Student Masterlist/StudentMasterlist.csv", "r");
+                        //TAGS: FILE ADDRESS, DIRECTORY, FOLDER
+                        $handle = fopen("./ALS_SHARED/Student Masterlist/StudentMasterlist.csv", "r");
                         $masterlistCSVArr = array();
 
                         //skips the first reading of the first line from csv file (first line is the header (rfid, id, last name, first name)
@@ -639,7 +647,8 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
                         }
 
                         //open the student masterlist csv file
-                        $handle = fopen("./Student Masterlist/StudentMasterlist.csv", "w");
+                        //TAGS: FILE ADDRESS, DIRECTORY, FOLDER
+                        $handle = fopen("./ALS_SHARED/Student Masterlist/StudentMasterlist.csv", "w");
                         //write the utf-8 byte order mark
                         $BOM = chr(0xEF) . chr(0xBB) . chr(0xBF);
                         fputs($handle, $BOM);
@@ -711,10 +720,12 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
                     fclose($file_open);
 
                     //move the file to the logged-in user's folder
-                    rename($configFile, "./" . $firstName . " " . $lastName . "/" . $configFile);
+                    //TAGS: FILE ADDRESS, DIRECTORY, FOLDER
+                    rename($configFile, "./ALS_SHARED/" . $firstName . " " . $lastName . "/" . $configFile);
 
                     if ($teamTeachPartner != '0'){
-                        if (!copy($dest_path_temp, './' . $partnerFirstName . " " . $partnerLastName . '/' . $configFile)) {
+                        //TAGS: FILE ADDRESS, DIRECTORY, FOLDER
+                        if (!copy($dest_path_temp, './ALS_SHARED/' . $partnerFirstName . " " . $partnerLastName . '/' . $configFile)) {
                             die("Copying the configuration file to the selected partner's folder failed.");
                         }
                         else {
@@ -752,4 +763,5 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
 //$_SESSION['classListServerMsg'] = $classListServerMsg;
 
 header("Location: class-list-upload.php");
+ob_end_clean();
 ?>
