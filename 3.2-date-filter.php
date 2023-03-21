@@ -314,7 +314,7 @@ mysqli_close($teacherEmailDB);
                         if (isset($_GET['download'])) {
                             // filename = download path/filename
                             //NOTE: CHANGE FILEPATH ON THE SERVER PC
-                            $filename = "D:/Downloads/" . strtoupper($teacher_name) . "_" . $cg . "_SpecificDate" . ".csv";
+                            $filename = strtoupper($teacher_name) . "_" . $cg . "_SpecificDate" . ".csv";
                             $file = fopen($filename, "w");
                             fputcsv($file, array("ID#", "Lastname", "Name", "Date", "Status", "Time-in"));
 
@@ -329,7 +329,7 @@ mysqli_close($teacherEmailDB);
                         if (isset($_POST['send_email'])) {
                             // filename = download path/filename
                             // NOTE: CHANGE FILEPATH ON THE SERVER PC
-                            $filename = "D:/Downloads/" . strtoupper($teacher_name) . "_" . $cg . "_SpecificDate" . ".csv";
+                            $filename = strtoupper($teacher_name) . "_" . $cg . "_SpecificDate" . ".csv";
                             $file = fopen($filename, "w");
                             fputcsv($file, array("ID#", "Lastname", "Name", "Date", "Status", "Time-in"));
 
@@ -714,7 +714,7 @@ mysqli_close($teacherEmailDB);
 				if(isset($_GET['download_s_csv'])){
 					// filename = download path/filename
                     // NOTE: CHANGE FILEPATH ON THE SERVER PC
-					$filename = "D:/Downloads/". strtoupper($teacher_name) . "_" . $cg . "_Summary" . ".csv";
+					$filename = strtoupper($teacher_name) . "_" . $cg . "_Summary" . ".csv";
 					$file = fopen($filename,"w");
 					fputcsv($file, array("Start date:",$_GET['start_date']," ","End date:",$_GET['end_date']));
 					fputcsv($file, array("Name","Present","Late","Excused","Absent","Attendance Days","% Presence"));
@@ -732,7 +732,7 @@ mysqli_close($teacherEmailDB);
 
                     // filename = download path/filename
                     // NOTE: CHANGE FILEPATH ON THE SERVER PC
-					$filename = "D:/Downloads/". strtoupper($teacher_name) . "_" . $cg . "_Summary" . ".csv";
+					$filename = strtoupper($teacher_name) . "_" . $cg . "_Summary" . ".csv";
 					$file = fopen($filename,"w");
 					fputcsv($file, array("Name","Present","Late","Excused","Absent","Attendance Days","% Presence"));
 											
@@ -921,7 +921,7 @@ mysqli_close($teacherEmailDB);
 				if(isset($_GET['download_csv'])){
 				// filename = download path/filename
                 // NOTE: CHANGE FILEPATH ON THE SERVER PC
-				$filename = "D:/Downloads/". strtoupper($teacher_name) . "_" . $cg . "_Detailed" . ".csv";
+				$filename = strtoupper($teacher_name) . "_" . $cg . "_Detailed" . ".csv";
 				$file = fopen($filename,"w");
 				fputcsv($file, array("Start date:",$_GET['start_date']," ","End date:",$_GET['end_date']));
 				fputcsv($file, array("ID#","Lastname","Name","Date","Status","Time-in"));
@@ -937,7 +937,7 @@ mysqli_close($teacherEmailDB);
                 if (isset($_POST['send_email'])) {
                     // filename = download path/filename
                     // NOTE: CHANGE FILEPATH ON THE SERVER PC
-					$filename = "D:/Downloads/". strtoupper($teacher_name) . "_" . $cg . "_Detailed" . ".csv";
+					$filename = strtoupper($teacher_name) . "_" . $cg . "_Detailed" . ".csv";
 					$file = fopen($filename,"w");
 					fputcsv($file, array("ID#","Lastname","Name","Date","Status","Time-in"));
 																	

@@ -17,7 +17,6 @@
 	if (mysqli_num_rows($result) > 0) {
 		$row = mysqli_fetch_assoc($result);
 		$tv2 = $row["val"];
-		mysqli_close($conn);
 	}
 	$table = $tv2;
 	
@@ -56,14 +55,14 @@ require('TCPDF/tcpdf.php');
 //TAGS: CHANGE FILE ADDRESS, SERVER PC
 //teacher name_course group.csv
 //teacher name is found at 2-create-table.php. $_session["table"] is found at 3-display-selection.php
-$filename = "D:/Downloads/". $teacher . "_" . $table . ".csv";
+$filename = $teacher . "_" . $table . ".csv";
 
 if ( !file_exists( $filename ) && !is_dir( $filename ) ) {
     //Creates .csv file if .csv doesn't exist
     $sd = $ds;
     $ed = $de;
     $array = $scopy;
-    $filename = "D:/Downloads/". strtoupper($teacher_name) . "_" . $cg . ".csv";
+    $filename = strtoupper($teacher_name) . "_" . $cg . ".csv";
 	$file = fopen($filename,"w");
 	fputcsv($file, array("Start date: ", "$sd", "End date: ", "$ed"));
 	fputcsv($file, array("ID#","Lastname","Name","Date","Status","Time-in"));
@@ -78,7 +77,7 @@ if ( !file_exists( $filename ) && !is_dir( $filename ) ) {
 }
 else{
     //Clones a temporary .csv file if .csv exists
-    $tempFileName = "C:/Users/Kath/Downloads/". strtoupper($teacher_name) . "_TEMP_" . $cg . ".csv";
+    $tempFileName = strtoupper($teacher_name) . "_TEMP_" . $cg . ".csv";
     copy($filename, $tempFileName);
     $filename = $tempFileName;
 }

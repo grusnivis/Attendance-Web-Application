@@ -462,7 +462,7 @@ if (isset($_POST['update'])) {
 				if(isset($_GET['download_csv'])){
 				// filename = download path/filename
                 // NOTE: CHANGE FILEPATH ON THE SERVER PC
-				$filename = "D:/Downloads/". strtoupper($teacher_name) . "_" . $cg . ".csv";
+				$filename = strtoupper($teacher_name) . "_" . $cg . ".csv";
 				$file = fopen($filename,"w");
 				fputcsv($file, array("ID#","Lastname","Name","Date","Status","Time-in"));
 											
@@ -478,7 +478,7 @@ if (isset($_POST['update'])) {
 
                     // filename = download path/filename
                     // NOTE: CHANGE FILEPATH ON THE SERVER PC
-					$filename = "D:/Downloads/". strtoupper($teacher_name) . "_" . $cg . ".csv";
+					$filename = strtoupper($teacher_name) . "_" . $cg . ".csv";
 					$file = fopen($filename,"w");
 					fputcsv($file, array("ID#","Lastname","Name","Date","Status","Time-in"));
 											

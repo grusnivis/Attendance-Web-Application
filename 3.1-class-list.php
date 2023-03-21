@@ -467,7 +467,7 @@ if (isset($_GET['download_pdf'])) {
             if (isset($_GET['download_csv'])) {
                 // filename = download path/filename
                 // NOTE: CHANGE THE FILE PATH FOR THE SERVER PC
-                $filename = "D:/Downloads/" . strtoupper($teacher_name) . "_" . $cg . "_Detailed" . ".csv";
+                $filename = strtoupper($teacher_name) . "_" . $cg . "_Detailed" . ".csv";
                 $file = fopen($filename, "w");
                 fputcsv($file, array("ID#", "Lastname", "Name", "Date", "Status", "Time-in"));
 
@@ -482,7 +482,7 @@ if (isset($_GET['download_pdf'])) {
             if (isset($_POST['send_email'])) {
                 // filename = download path/filename
                 //$filename = "C:/Users/Amber/Downloads/". strtoupper($teacher_name) . "_" . $cg . ".csv";
-                $filename = "D:/Downloads/" . strtoupper($teacher_name) . "_" . $cg . "_Detailed" . ".csv";
+                $filename = strtoupper($teacher_name) . "_" . $cg . "_Detailed" . ".csv";
                 $file = fopen($filename, "w");
                 fputcsv($file, array("ID#", "Lastname", "Name", "Date", "Status", "Time-in"));
 
@@ -762,7 +762,7 @@ if (isset($_GET['download_pdf'])) {
             if (isset($_GET['download_s_csv'])) {
                 // filename = download path/filename
                 // NOTE: CHANGE THE FILEPATH FOR THE SERVER PC
-                $filename = "D:/Downloads/" . strtoupper($teacher_name) . "_" . $cg . "_Summary" . ".csv";
+                $filename = strtoupper($teacher_name) . "_" . $cg . "_Summary" . ".csv";
                 $file = fopen($filename, "w");
                 fputcsv($file, array("Name", "Present", "Late", "Excused", "Absent", "Attendance Days", "% Presence"));
 
@@ -778,7 +778,7 @@ if (isset($_GET['download_pdf'])) {
             if (isset($_POST['send_email_s'])) {
 
                 // filename = download path/filename
-                $filename = "D:/Downloads/" . strtoupper($teacher_name) . "_" . $cg . "_Summary" . ".csv";
+                $filename = strtoupper($teacher_name) . "_" . $cg . "_Summary" . ".csv";
                 $file = fopen($filename, "w");
                 fputcsv($file, array("Name", "Present", "Late", "Excused", "Absent", "Attendance Days", "% Presence"));
 
