@@ -156,18 +156,16 @@ mysqli_close($teacherEmailDB);
         if (isset($_GET['btn'])) {
         $append_date = array();
         $headers = array("ID#", "Name", "Date", "Status", "Time");
+        $date = $_GET['start_date'];
         $sdc = $_GET['start_date'];
-        $sd = $_GET['start_date'];
 		$conn = new mysqli("localhost", "root", "", "temp");
 		// Check connection
 	    if ($conn->connect_error) {
 			die("Connection failed: " . $conn->connect_error);
 	    }
-	    $sql = "INSERT INTO temptb (varname, val) VALUES ('dateStart', '$sd')";
-	
+	    $sql = "INSERT INTO temptb (varname, val) VALUES ('dateStart', '$date')";
 		if (mysqli_query($conn, $sql)) {
 			$sql = "INSERT INTO temptb (varname, val) VALUES ('sd_copy', '$sdc')";
-			
 			if (mysqli_query($conn, $sql)) {
 				mysqli_close($conn);
 			}
