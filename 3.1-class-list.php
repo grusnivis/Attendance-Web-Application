@@ -384,7 +384,9 @@ if (isset($_GET['download_pdf'])) {
             {
                 // filename = download path/filename
                 $tempname = strtoupper($teacher_name) . "_" . $cg . "_Detailed" . ".csv";
-                $file = fopen($tempname, "w");
+                header('Content-Type: text/csv');
+                header('Content-Disposition: attachment; filename="' .$tempname. '"');
+                $file = fopen('php://output', "w");
                 fputcsv($file, array("ID#", "Lastname", "Name", "Date", "Status", "Time-in"));
 
                 if (count($array) > 0) {
@@ -468,7 +470,9 @@ if (isset($_GET['download_pdf'])) {
                 // filename = download path/filename
                 // NOTE: CHANGE THE FILE PATH FOR THE SERVER PC
                 $filename = strtoupper($teacher_name) . "_" . $cg . "_Detailed" . ".csv";
-                $file = fopen($filename, "w");
+                header('Content-Type: text/csv');
+                header('Content-Disposition: attachment; filename="' . $filename . '"');
+                $file = fopen('php://output', "w");
                 fputcsv($file, array("ID#", "Lastname", "Name", "Date", "Status", "Time-in"));
 
                 if (count($array) > 0) {
@@ -482,7 +486,7 @@ if (isset($_GET['download_pdf'])) {
             if (isset($_POST['send_email'])) {
                 // filename = download path/filename
                 //$filename = "C:/Users/Amber/Downloads/". strtoupper($teacher_name) . "_" . $cg . ".csv";
-                $filename = strtoupper($teacher_name) . "_" . $cg . "_Detailed" . ".csv";
+                $filename = "D:/Downloads/" . strtoupper($teacher_name) . "_" . $cg . "_Detailed" . ".csv";
                 $file = fopen($filename, "w");
                 fputcsv($file, array("ID#", "Lastname", "Name", "Date", "Status", "Time-in"));
 
@@ -692,8 +696,9 @@ if (isset($_GET['download_pdf'])) {
                 if (mysqli_query($conn, $sql)) {
 		            mysqli_close($conn);
 	            }
-                //$_SESSION['file'] = $tempname;
-                $file = fopen($tempname, "w");
+                header('Content-Type: text/csv');
+                header('Content-Disposition: attachment; filename="' .$tempname. '"');
+                $file = fopen('php://output', "w");
                 fputcsv($file, array("Name", "Present", "Late", "Excused", "Absent", "Attendance Days", "% Presence"));
 
                 if (count($array_s) > 0) {
@@ -763,7 +768,9 @@ if (isset($_GET['download_pdf'])) {
                 // filename = download path/filename
                 // NOTE: CHANGE THE FILEPATH FOR THE SERVER PC
                 $filename = strtoupper($teacher_name) . "_" . $cg . "_Summary" . ".csv";
-                $file = fopen($filename, "w");
+                header('Content-Type: text/csv');
+                header('Content-Disposition: attachment; filename="' . $filename . '"');
+                $file = fopen('php://output', "w");
                 fputcsv($file, array("Name", "Present", "Late", "Excused", "Absent", "Attendance Days", "% Presence"));
 
                 if (count($array_s) > 0) {
@@ -778,7 +785,7 @@ if (isset($_GET['download_pdf'])) {
             if (isset($_POST['send_email_s'])) {
 
                 // filename = download path/filename
-                $filename = strtoupper($teacher_name) . "_" . $cg . "_Summary" . ".csv";
+                $filename = "D:/Downloads/" . strtoupper($teacher_name) . "_" . $cg . "_Summary" . ".csv";
                 $file = fopen($filename, "w");
                 fputcsv($file, array("Name", "Present", "Late", "Excused", "Absent", "Attendance Days", "% Presence"));
 
