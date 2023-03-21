@@ -543,7 +543,7 @@ mysqli_close($teacherEmailDB);
 <div id="dl_options" class="overlay">
     <?php
     //premade file for detailed
-    $filename = "D:/Users/DELL/Desktop/Exporting/" . strtoupper($teacher_name) . "_" . $cg . "_Detailed" . ".csv";
+    $filename = strtoupper($teacher_name) . "_" . $cg . "_Detailed" . ".csv";
     $file = fopen($filename, "w");
     fputcsv($file, array("ID#", "Lastname", "Name", "Date", "Status", "Time-in"));
 
