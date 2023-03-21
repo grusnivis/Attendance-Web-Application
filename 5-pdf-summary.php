@@ -11,7 +11,7 @@ if ( !file_exists( $filename ) && !is_dir( $filename ) ) {
     $sd = $_SESSION['sd_copy'];
     $ed = $_SESSION['ed_copy'];
     $array_s = $_SESSION['array_s_copy'];
-    $filename = "C:/Users/Kath/Downloads/". strtoupper($teacher_name) . "_" . $cg . ".csv";
+    $filename = "C:/Users/Kath/Downloads/". strtoupper($_SESSION['teacherName']) . "_" . $_SESSION["table"] . ".csv";
 	$file = fopen($filename,"w");
 	fputcsv($file, array("Start date: ", $sd, "End date: ", $ed));
 	fputcsv($file, array("Name","Present","Late","Excused","Absent","Attendance Days","% Presence"));
@@ -26,7 +26,7 @@ if ( !file_exists( $filename ) && !is_dir( $filename ) ) {
 }
 else{
     //Clones a temporary .csv file if .csv exists
-    $tempFileName = "C:/Users/Kath/Downloads/". strtoupper($teacher_name) . "_TEMP_" . $cg . ".csv";
+    $tempFileName = "C:/Users/Kath/Downloads/". strtoupper($_SESSION['teacherName']) . "_TEMP_" . $_SESSION["table"] . ".csv";
     copy($filename, $tempFileName);
     $filename = $tempFileName;
 }
@@ -77,5 +77,5 @@ for ($c = 2; $c < count($row); $c++) {
 }
 unlink($filename);
 ob_end_clean();
-$pdf->Output(utf8_encode(strtoupper($teacher_name)) . "_" . $cg . "_Summary" . ".pdf", 'D', TRUE);
+$pdf->Output(utf8_encode(strtoupper($_SESSION['teacherName'])) . "_" . $_SESSION['table'] . "_Summary" . ".pdf", 'D', TRUE);
 ?>

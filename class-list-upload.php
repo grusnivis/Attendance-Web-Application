@@ -92,8 +92,6 @@ session_start();
     <meta http-equiv="Content-Type"
           content="text/html; charset=UTF-8">
 
-    <title>View Attendance</title>
-
     <link rel="stylesheet"
           href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 

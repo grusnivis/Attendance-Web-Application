@@ -2,7 +2,7 @@
 session_start();
 //initializing variables from the 1-scan-directory.php
 $files_arr = array();
-$dir = './Attendance Logs/';
+$dir = './ALS_SHARED/Attendance Logs/';
 
 //THIS PART JUST CALLS THE PHP FILE FOR SCANNING OF ATTENDANCE LOG FOLDER
 include('1-scan-directory.php');
@@ -11,13 +11,14 @@ include('1-scan-directory.php');
 
 //<!--- CREATE THE STUDENT MASTERLIST DIRECTORY IF IT DOES NOT EXIST --->
 //TAGS: CHANGE ADDRESS, DIRECTORY, SERVER PC
-if (!file_exists("./Student Masterlist/")) {
-    mkdir("./Student Masterlist/", 0777, true);
+//TAGS: FILE ADDRESS, DIRECTORY, FOLDER
+if (!file_exists("./ALS_SHARED/Student Masterlist/")) {
+    mkdir("./ALS_SHARED/Student Masterlist/", 0777, true);
 }
-
-if (file_exists('./Student Masterlist/StudentMasterlist.csv')) {
+//TAGS: FILE ADDRESS, DIRECTORY, FOLDER
+if (file_exists('./ALS_SHARED/Student Masterlist/StudentMasterlist.csv')) {
     //getting the current masterlist contents to update the masterlist database with the rfid column
-    $handle = fopen("./Student Masterlist/StudentMasterlist.csv", "r");
+    $handle = fopen("./ALS_SHARED/Student Masterlist/StudentMasterlist.csv", "r");
     $masterlistCSVArr = array();
 
     //skips the first reading of the first line from csv file (first line is the header (rfid, id, last name, first name)
@@ -87,7 +88,8 @@ if (file_exists('./Student Masterlist/StudentMasterlist.csv')) {
 
 <!--- UPDATE THE AUTHORIZED USERS DATABASE FOR THE RFID COLUMN -->
 <?php
-$handle = fopen("./Authorized User Masterlist/AuthorizedUsers.csv", "r");
+//TAGS: FILE ADDRESS, DIRECTORY, FOLDER
+$handle = fopen("./ALS_SHARED/Authorized User Masterlist/AuthorizedUsers.csv", "r");
 $AuthorizedUsersArr = array();
 
 //skips the first reading of the first line from csv file (first line is the header (rfid, idnumber, last name, first name)
@@ -111,6 +113,7 @@ mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
 //prepare the query to update the rfid column in the student table using the primary key ID
 $sqlStatement = $authorizedUsersDB->prepare("UPDATE users SET RFID = ? WHERE IDNumber = ?");
+//$rfidTeacher = $AuthorizedUsersArr[0], $idnumTeacher = $AuthorizedUsersArr[1]
 $sqlStatement->bind_param("ss", $rfidTeacher, $idnumTeacher);
 
 //update the authorized users database using the authorized users csv array

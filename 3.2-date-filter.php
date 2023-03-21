@@ -9,14 +9,6 @@ $_SESSION['table'] = $cg;
 $array = array();
 $array_s = array();
 
-if (isset($_GET['download_s_pdf'])) {
-    include '5-pdf-summary.php';
-}
-
-if (isset($_GET['download_pdf'])) {
-    include '5-pdf-detailed.php';
-}
-
 ?>
 
     <!--this part is for storing the email address-->
@@ -113,6 +105,7 @@ mysqli_close($teacherEmailDB);
         $append_date = array();
         $headers = array("ID#", "Name", "Date", "Status", "Time");
         $date = $_GET['start_date'];
+        $_SESSION['dateStart'] = $date;
         $_SESSION['sd_copy'] = $_GET['start_date'];
         //the @ sign suppresses warnings for "no end date set"
         @$date2 = $_GET['end_date'];
@@ -317,9 +310,9 @@ mysqli_close($teacherEmailDB);
                 <h5>Select a file format to download. For CSV format, the attendance report will be placed in the computer's
                     Downloads folder.</h5>
                 <a class="close" href="#">&times;</a>
-                <form method="GET">
+                <form method="POST" action = "3.2-date-filter-download-log.php">
                     <div class="form-group">
-                        <input type="hidden" name="start_date" value="<?php echo $_GET['start_date'] ?>"/>
+                        <input type="hidden" name="start_date" value="<?php echo $_SESSION['sd_copy'] ?>"/>
                         <!--<input type="hidden" name="end_date" value="<?php //echo $_GET['end_date'] ?>"/>-->
                         <input type="hidden" name="btn" value="filter"/>
 
@@ -514,6 +507,8 @@ mysqli_close($teacherEmailDB);
                     $array_s[$i] = [$name[$keys[$i]], $present, $late, $excused, $absent, $total, $percent];
                     echo "</tr>";
                 }
+
+                $_SESSION["array_date_summary"] = $array_s;
                 echo "</table>";
 
                 function dl($array, $teacher_name, $cg)
@@ -597,22 +592,6 @@ mysqli_close($teacherEmailDB);
                 $_SESSION['sd_copy'] = $localSD;
                 $_SESSION['ed_copy'] = $localED;
                 $_SESSION['array_s_copy'] = $array_s;
-                if (isset($_GET['download_s_csv'])) {
-                    // filename = download path/filename
-                    // NOTE: CHANGE FILEPATH ON THE SERVER PC
-                    $filename = "C:/Users/Kath/Downloads/" . strtoupper($teacher_name) . "_" . $cg . "_Summary" . ".csv";
-                    $file = fopen($filename, "w");
-                    fputcsv($file, array("Start date:", $_GET['start_date'], " ", "End date:", $_GET['end_date']));
-                    fputcsv($file, array("Name", "Present", "Late", "Excused", "Absent", "Attendance Days", "% Presence"));
-
-                    if (count($array_s) > 0) {
-                        foreach ($array_s as $row) {
-                            fputcsv($file, $row);
-                        }
-                    }
-
-                    fclose($file);
-                }
 
                 if (isset($_POST['send_email_s'])) {
 
@@ -689,7 +668,7 @@ mysqli_close($teacherEmailDB);
             <h5>Select a file format to download. For CSV format, the attendance report will be placed in the computer's
                 Downloads folder.</h5>
             <a class="close" href="#">&times;</a>
-            <form method="GET">
+            <form method="POST" action="3.2-date-filter-download-log.php">
                 <div class="form-group">
                     <input type="hidden" name="start_date" value="<?php echo $_GET['start_date'] ?>"/>
                     <input type="hidden" name="end_date" value="<?php echo $_GET['end_date'] ?>"/>
@@ -710,7 +689,7 @@ mysqli_close($teacherEmailDB);
             <h5>Select a file format to download. For CSV format, the attendance report will be placed in the computer's
                 Downloads folder.</h5>
             <a class="close" href="#">&times;</a>
-            <form method="GET">
+            <form method="POST" action = "3.2-date-filter-download-log.php">
                 <div class="form-group">
                     <input type="hidden" name="start_date" value="<?php echo $_GET['start_date'] ?>"/>
                     <input type="hidden" name="end_date" value="<?php echo $_GET['end_date'] ?>"/>

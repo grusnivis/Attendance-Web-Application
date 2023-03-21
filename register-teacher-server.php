@@ -30,7 +30,7 @@ if (isset ($_POST["register"])) {
     $dbConnect = mysqli_connect("localhost", "root", "");
     $dbName = "teacher";
 
-    if ($dbConnect->connect_error){
+    if ($dbConnect->connect_error) {
         //die() kinda functions like an exit() function
         exit('Error connecting to the server.');
     }
@@ -44,7 +44,7 @@ if (isset ($_POST["register"])) {
     mysqli_close($dbConnect);
 
     //connect to teacher database
-    $teacherDB= mysqli_connect("localhost", "root", "", $dbName);
+    $teacherDB = mysqli_connect("localhost", "root", "", $dbName);
 
     if ($teacherDB->connect_error) {
         //die() kinda functions like an exit() function
@@ -75,15 +75,14 @@ if (isset ($_POST["register"])) {
 
 
     //if there is a duplicate id number
-    if($countDup >= 1){
+    if ($countDup >= 1) {
         $_SESSION['registerTeacherMsg'] = "The ID number is already registered in the database.";
         mysqli_close($teacherDB);
         //returns to the register teacher page. it "aborts" the rest of the process
         header("Location: register-teacher.php");
-        ob_end_flush();
-    }
-    //if there is NO duplicate id number, then you insert the teacher data to the login table
-    else{
+        ob_end_clean();
+    } //if there is NO duplicate id number, then you insert the teacher data to the login table
+    else {
         $statementInsert = $teacherDB->prepare("INSERT INTO `login` (IDNumber, password, firstName, lastName, email) VALUES (?,?,?,?,?)");
         $statementInsert->bind_param("sssss", $IDNum, $hashedPassWord, $firstName, $lastName, $email);
         $statementInsert->execute();
@@ -95,9 +94,10 @@ if (isset ($_POST["register"])) {
         //<--- PART 1.1: connect to the authorized users database and insert the registered teacher
         //using the AuthorizedUsers.csv specific format
 
-        //creating the Authorized Users Masterlist folder
+        //creating the Authorized User Masterlist folder
         //take note of the slashes and the period!
-        $authorizedUsersFolder = "./Authorized User Masterlist/";
+        //TAGS: FILE ADDRESS, DIRECTORY, FOLDER
+        $authorizedUsersFolder = "./ALS_SHARED/Authorized User Masterlist/";
         if (file_exists($authorizedUsersFolder)) {
             //do nothing
         } else {
@@ -109,7 +109,7 @@ if (isset ($_POST["register"])) {
         $dbConnect = mysqli_connect("localhost", "root", "");
         $dbName = "authorized users";
 
-        if ($dbConnect->connect_error){
+        if ($dbConnect->connect_error) {
             //die() kinda functions like an exit() function
             exit('Error connecting to the server.');
         }
@@ -148,16 +148,18 @@ if (isset ($_POST["register"])) {
         $sqlStatement->execute();
 
         //<!-- THIS PART WILL EXECUTE IF AUTHORIZEDUSERS.CSV FILE DOES NOT EXIST -->
-        if (!file_exists('./Authorized User Masterlist/AuthorizedUsers.csv')) {
+        //TAGS: FILE ADDRESS, DIRECTORY, FOLDER
+        if (!file_exists('./ALS_SHARED/Authorized User Masterlist/AuthorizedUsers.csv')) {
             //fopen creates the file if it does not exist. mode is set to write
-            $authorizedUsersCSV = fopen("./Authorized User Masterlist/AuthorizedUsers.csv", "w");
+            //TAGS: FILE ADDRESS, DIRECTORY, FOLDER
+            $authorizedUsersCSV = fopen("./ALS_SHARED/Authorized User Masterlist/AuthorizedUsers.csv", "w");
             //put utf-8 byte order mark to set the csv file as csv utf-8
             $BOM = chr(0xEF) . chr(0xBB) . chr(0xBF);
             fputs($authorizedUsersCSV, $BOM);
 
             //write the titles header in the first row of the csv file
             //implode function: array to string
-            $header_csv = array("RFID", "IDNumber", "Lastname", "Firstname");
+            $header_csv = array("RFID", "ID Number", "Surname", "Firstname");
             //\r is moving the cursor to the leftmost position. \n is new line
             fwrite($authorizedUsersCSV, implode(",", $header_csv) . "\r\n");
 
@@ -167,12 +169,12 @@ if (isset ($_POST["register"])) {
             //\r is moving the cursor to the leftmost position. \n is new line
             fwrite($authorizedUsersCSV, utf8_decode(implode(",", $teacher_csv[0])) . "\r\n");
             fclose($authorizedUsersCSV);
-        }
-        //<-- THIS PART WILL EXECUTE IF THE AUTHORIZEDUSERS.CSV FILE EXISTS -->
-        else{
+        } //<-- THIS PART WILL EXECUTE IF THE AUTHORIZEDUSERS.CSV FILE EXISTS -->
+        else {
             //open the file as reading it to get the current contents. "r" mode places
             //file pointer to the start of the file
-            $authorizedUsersCSV = fopen("./Authorized User Masterlist/AuthorizedUsers.csv", "r");
+            //TAGS: FILE ADDRESS, DIRECTORY, FOLDER
+            $authorizedUsersCSV = fopen("./ALS_SHARED/Authorized User Masterlist/AuthorizedUsers.csv", "r");
             $authorizedUsersCSVArr = array();
 
             //skips the first reading of the first line from csv file (first line is the header (rfid, id, last name, first name)
@@ -188,8 +190,8 @@ if (isset ($_POST["register"])) {
             $sqlStatement = $authorizedUsersDB->prepare("UPDATE users SET RFID = ? WHERE IDNumber = ?");
             $sqlStatement->bind_param("ss", $rfidNum, $idNum);
 
-            foreach($authorizedUsersCSVArr as $row){
-                $rfid = $row[0];
+            foreach ($authorizedUsersCSVArr as $row) {
+                $rfidNum = $row[0];
                 $idNum = $row[1];
                 $sqlStatement->execute();
             }
@@ -197,7 +199,8 @@ if (isset ($_POST["register"])) {
 
             //after updating the authorized users database, it will insert the registered teacher
             //"a" mode places file pointer to the END of the file
-            $authorizedUsersCSV = fopen("./Authorized User Masterlist/AuthorizedUsers.csv", "a");
+            //TAGS: FILE ADDRESS, DIRECTORY, FOLDER
+            $authorizedUsersCSV = fopen("./ALS_SHARED/Authorized User Masterlist/AuthorizedUsers.csv", "a");
 
             $teacher_csv[0] = array("", $IDNum, $lastName, $firstName);
             fwrite($authorizedUsersCSV, utf8_encode(implode(",", $teacher_csv[0])) . "\r\n");
@@ -206,8 +209,9 @@ if (isset ($_POST["register"])) {
         mysqli_close($authorizedUsersDB);
 
         //<--- PART 2: make the folder of the corresponding teacher that registered --->
-        //folder name should be "./firstName lastName/". take note of the slashes and the period
-        $teacherFolderName = "./" . $firstName . " " . $lastName . "/";
+        //folder name should be "./ALS_SHARED/firstName lastName/". take note of the slashes and the period
+        //TAGS: FILE ADDRESS, DIRECTORY, FOLDER
+        $teacherFolderName = "./ALS_SHARED/" . $firstName . " " . $lastName . "/";
 
         if (file_exists($teacherFolderName)) {
             //do nothing
@@ -241,9 +245,9 @@ if (isset ($_POST["register"])) {
     }
 }
 
-if (isset ($_POST["return-to-admin-main"])){
+if (isset ($_POST["return-to-admin-main"])) {
     header("location: admin-main.php");
 }
 
-ob_end_flush();
+ob_end_clean();
 ?>

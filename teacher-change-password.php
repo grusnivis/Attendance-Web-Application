@@ -13,7 +13,7 @@ session_start();
 </head>
 
 <body>
-<div class="modifyLoginCon">
+<div class="modifyTeacherPasswordCon">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"></script>
 

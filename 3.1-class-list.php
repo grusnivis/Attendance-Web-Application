@@ -50,21 +50,6 @@ mysqli_close($teacherEmailDB);
 
 ?>
 
-
-<?php
-//jump
-//SUMMARY DOWNLOAD AND MAIL
-//if the Export (Summary) button is clicked, execute the 5-pdf-summary.php file
-if (isset($_GET['download_s_pdf'])) {
-    include '5-pdf-summary.php';
-}
-
-//if the Export (Detailed) button is clicked, execute the 5-pdf-detailed.php file
-if (isset($_GET['download_pdf'])) {
-    include '5-pdf-detailed.php';
-}
-?>
-
 <html>
 
 <!--
@@ -336,6 +321,8 @@ if (isset($_GET['download_pdf'])) {
                     }
                     echo "</tr>";
                 }
+                $_SESSION['array_copy'] = $array;
+
             }
 
             echo "</table>";
@@ -395,21 +382,6 @@ if (isset($_GET['download_pdf'])) {
                 dl($array, $teacher_name, $cg);
             }
 
-            // DETAILED DOWNLOAD AND SEND MAIL
-            if (isset($_GET['download_csv'])) {
-                // filename = download path/filename
-                // NOTE: CHANGE THE FILE PATH FOR THE SERVER PC
-                $filename = "C:/Users/Kath/Downloads/" . strtoupper($teacher_name) . "_" . $cg . "_Detailed" . ".csv";
-                $file = fopen($filename, "w");
-                fputcsv($file, array("ID#", "Lastname", "Name", "Date", "Status", "Time-in"));
-
-                if (count($array) > 0) {
-                    foreach ($array as $row) {
-                        fputcsv($file, $row);
-                    }
-                }
-                fclose($file);
-            }
 
             if (isset($_POST['send_email'])) {
                 // filename = download path/filename
@@ -477,10 +449,11 @@ if (isset($_GET['download_pdf'])) {
 
 <div id="dl_options_s" class="overlay">
     <div class="popup" style="width:40%; margin:10% 30%">
+
         <h2>Download Options:</h2>
         <h5>Select a file format to download. For CSV format, the attendance report will be placed in the computer's Downloads folder.</h5>
         <a class="close" href="3.1-class-list.php#">&times;</a>
-        <form method="GET">
+        <form method="POST" action="3.1-class-list-download-log.php">
             <div class="form-group">
                 <input type="submit" name="download_s_pdf" value="PDF" class="btn btn-danger"
                        style="border-radius:18px; margin-top:35px; padding:10px 17px;"/>
@@ -492,11 +465,25 @@ if (isset($_GET['download_pdf'])) {
 </div>
 
 <div id="dl_options" class="overlay">
+    <?php
+    //premade file for detailed
+    $filename = "C:/Users/Kath/Desktop/Web Application/Exporting/" . strtoupper($teacher_name) . "_" . $cg . "_Detailed" . ".csv";
+    $file = fopen($filename, "w");
+    fputcsv($file, array("ID#", "Lastname", "Name", "Date", "Status", "Time-in"));
+
+    if (count($array) > 0) {
+        foreach ($array as $row) {
+            fputcsv($file, $row);
+        }
+    }
+
+    fclose($file);
+    ?>
     <div class="popup" style="width:40%; margin:10% 30%">
         <h2>Download Options:</h2>
         <h5>Select a file format to download. For CSV format, the attendance report will be placed in the computer's Downloads folder.</h5>
         <a class="close" href="3.1-class-list.php#">&times;</a>
-        <form method="GET">
+        <form method="POST" action = "3.1-class-list-download-log.php">
             <div class="form-group">
                 <input type="submit" name="download_pdf" value="PDF" class="btn btn-danger"
                        style="border-radius:18px; margin-top:35px; padding:10px 17px;"/>
@@ -611,6 +598,7 @@ if (isset($_GET['download_pdf'])) {
                     $array_s[$i] = [$name[$keys[$i]], $present, $late, $excused, $absent, $total, $percent];
                     echo "</tr>";
                 }
+                $_SESSION['array_s_copy'] = $array_s;
                 echo "</table>";
             }
 
@@ -666,22 +654,6 @@ if (isset($_GET['download_pdf'])) {
                 $_SESSION['sd_copy'] = "Not Applicable";
                 $_SESSION['ed_copy'] = "Not Applicable";
                 dl_s($array_s, $teacher_name, $cg);
-            }
-            //SUMMARY DOWNLOAD AND MAIL
-            if (isset($_GET['download_s_csv'])) {
-                // filename = download path/filename
-                // NOTE: CHANGE THE FILEPATH FOR THE SERVER PC
-                $filename = "C:/Users/Kath/Downloads/" . strtoupper($teacher_name) . "_" . $cg . "_Summary" . ".csv";
-                $file = fopen($filename, "w");
-                fputcsv($file, array("Name", "Present", "Late", "Excused", "Absent", "Attendance Days", "% Presence"));
-
-                if (count($array_s) > 0) {
-                    foreach ($array_s as $row) {
-                        fputcsv($file, $row);
-                    }
-                }
-
-                fclose($file);
             }
 
             if (isset($_POST['send_email_s'])) {

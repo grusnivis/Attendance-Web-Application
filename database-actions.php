@@ -1,4 +1,5 @@
 <?php
+ob_start();
 session_start();
 
 //THIS PART WILL EXECUTE IF "Export Selected Teacher Database" IS SELECTED
@@ -144,4 +145,5 @@ if (isset($_POST['database-drop']) && $_POST['database-drop'] == 'Delete All Dat
 if (isset($_POST['return-to-admin-main']) && $_POST['return-to-admin-main'] == 'Return to Administrator Menu') {
     header("location: admin-main.php");
 }
+ob_end_clean();
 ?>
