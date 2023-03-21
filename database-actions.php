@@ -153,7 +153,7 @@ if (isset($_POST['database-drop']) && $_POST['database-drop'] == 'Delete All Dat
     mysqli_close($conn);
     $conn = new mysqli("localhost", "root", "", "temp");
     $create = $conn->query("CREATE TABLE IF NOT EXISTS temptb (id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-            varname VARCHAR(255) NOT NULL, val VARCHAR(1000) NOT NULL) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+            varname VARCHAR(255) NOT NULL, val VARCHAR(20000) NOT NULL) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
     
     $sql = "INSERT INTO temptb (varname, val) VALUES ('dropTeacherDBMsg', 'Teacher databases deleted successfully!')";
     if (mysqli_query($conn, $sql)) {
