@@ -1,4 +1,4 @@
-LAST UPDATE: 2022-07-28
+LAST UPDATE: 2023-03-16
 
 NOTES:
 1.) The DocumentRoot / PHP file display was redirected from the htdocs 
@@ -11,3 +11,5 @@ See Tutorial: https://stackoverflow.com/questions/18667582/run-my-php-files-from
 3.) PHP uploading files tutorial: https://code.tutsplus.com/tutorials/how-to-upload-a-file-in-php-with-example--cms-31763.
 The php.ini file is located at C:\xampp\php\php.ini.
 	- upload_tmp_dir setting is pointed to C:\Desktop\Web Application (Git)\class-list-directory on my PC
+
+4.) Check file addresses of all PHP files before testing. Check also if the ALS_SHARED folder is working
