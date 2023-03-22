@@ -1369,8 +1369,8 @@ def shutdown():
 
 
 root = Tk()
-root.attributes('-zoomed', True)
-#root.attributes('-fullscreen', True)
+#root.attributes('-zoomed', True)
+root.attributes('-fullscreen', True)
 root.title("Group H")
 
 # create a thread
