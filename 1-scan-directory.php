@@ -1,7 +1,7 @@
 <?php
 //$dir = 'C:/Users/Amber/PycharmProjects/ALS_SHARED/Attendance Logs/';
 //
-$dir = './Attendance Logs/';
+$dir = './ALS_SHARED/Attendance Logs/';
 
 // Check if the directory exists and if the path is a directory
 if (file_exists($dir) && is_dir($dir)) {

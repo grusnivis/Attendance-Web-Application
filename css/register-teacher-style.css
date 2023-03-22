@@ -108,6 +108,15 @@ div.upload-wrapper {
     background-color: white;
 }
 
+.modifyTeacherPasswordCon{
+    width: 400px;
+    height: 250px;
+    border-radius: 5%;
+    text-align: center;
+    padding: 7px;
+    background-color: white;
+}
+
 .dropdown-con{
     text-align: center;
     margin: 0px auto;

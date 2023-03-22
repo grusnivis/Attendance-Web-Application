@@ -17,7 +17,6 @@
 	if (mysqli_num_rows($result) > 0) {
 		$row = mysqli_fetch_assoc($result);
 		$tv2 = $row["val"];
-		mysqli_close($conn);
 	}
 	$table = $tv2;
 	
@@ -63,7 +62,7 @@ if ( !file_exists( $filename ) && !is_dir( $filename ) ) {
     $sd = $ds;
     $ed = $de;
     $array = $scopy;
-    $filename = "D:/Downloads/". strtoupper($teacher_name) . "_" . $cg . ".csv";
+    $filename = "D:/Downloads/". strtoupper($teacher) . "_" . $table . ".csv";
 	$file = fopen($filename,"w");
 	fputcsv($file, array("Start date: ", "$sd", "End date: ", "$ed"));
 	fputcsv($file, array("ID#","Lastname","Name","Date","Status","Time-in"));
@@ -78,7 +77,7 @@ if ( !file_exists( $filename ) && !is_dir( $filename ) ) {
 }
 else{
     //Clones a temporary .csv file if .csv exists
-    $tempFileName = "C:/Users/Kath/Downloads/". strtoupper($teacher_name) . "_TEMP_" . $cg . ".csv";
+    $tempFileName = "D:/Downloads/". strtoupper($teacher) . "_TEMP_" . $table . ".csv";
     copy($filename, $tempFileName);
     $filename = $tempFileName;
 }
@@ -125,5 +124,5 @@ for ($c = 1; $c < count($row); $c++) {
 }
 unlink($filename);
 ob_end_clean();
-$pdf->Output(utf8_encode(strtoupper($teacher_name)) . "_" . $cg . "_Detailed". ".pdf", 'D', TRUE);
+$pdf->Output(utf8_encode(strtoupper($teacher)) . "_" . $table . "_Detailed". ".pdf", 'D', TRUE);
 ?>

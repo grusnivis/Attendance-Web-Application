@@ -89,21 +89,6 @@ mysqli_close($teacherEmailDB);
 
 ?>
 
-
-<?php
-//jump
-//SUMMARY DOWNLOAD AND MAIL
-//if the Export (Summary) button is clicked, execute the 5-pdf-summary.php file
-if (isset($_GET['download_s_pdf'])) {
-    include '5-pdf-summary.php';
-}
-
-//if the Export (Detailed) button is clicked, execute the 5-pdf-detailed.php file
-if (isset($_GET['download_pdf'])) {
-    include '5-pdf-detailed.php';
-}
-?>
-
 <html>
 
 <!--
@@ -285,13 +270,13 @@ if (isset($_GET['download_pdf'])) {
 
 <body style="background-color: #eaeaea">
 <nav class="topnav">
-    <a href="/2-create-table.php" style="color: #f2f2f2;"><i class="fa fa-home"
+    <a href="2-create-table.php" style="color: #f2f2f2;"><i class="fa fa-home"
                                                             style="font-size: 27px;text-align:center"></i></a>
-    <a href="/3-display-selection.php" style="color: #f2f2f2">Overall Attendance</a>
-    <a class="active" href="/3.1-class-list.php" style="color: #f2f2f2">Class List</a>
-    <a href="/3.2-date-filter.php" style="color: #f2f2f2">Date Filter</a>
-    <a href="/3.3-unenrolled.php" style="color: #f2f2f2">Unenrolled RFIDs</a>
-    <a href="/logout.php" style="color: #f2f2f2; float:right">Log Out</a>
+    <a href="3-display-selection.php" style="color: #f2f2f2">Overall Attendance</a>
+    <a class="active" href="3.1-class-list.php" style="color: #f2f2f2">Class List</a>
+    <a href="3.2-date-filter.php" style="color: #f2f2f2">Date Filter</a>
+    <a href="3.3-unenrolled.php" style="color: #f2f2f2">Unenrolled RFIDs</a>
+    <a href="logout.php" style="color: #f2f2f2; float:right">Log Out</a>
 </nav>
 
 <div class="container pt-5" style="text-align:center">
@@ -375,6 +360,16 @@ if (isset($_GET['download_pdf'])) {
                     }
                     echo "</tr>";
                 }
+	            $conn = new mysqli("localhost", "root", "", "temp");
+	            // Check connection
+	            if ($conn->connect_error) {
+		            die("Connection failed: " . $conn->connect_error);
+	            }
+                $array_str = serialize($array);
+	            $sql = "INSERT INTO temptb (varname, val) VALUES ('array_copy', '$array_str')";
+	            if (mysqli_query($conn, $sql)) {
+		            mysqli_close($conn);
+	            }
             }
 
             echo "</table>";
@@ -463,21 +458,6 @@ if (isset($_GET['download_pdf'])) {
                 dl($array, $teacher_name, $cg);
             }
 
-            // DETAILED DOWNLOAD AND SEND MAIL
-            if (isset($_GET['download_csv'])) {
-                // filename = download path/filename
-                // NOTE: CHANGE THE FILE PATH FOR THE SERVER PC
-                $filename = "D:/Downloads/" . strtoupper($teacher_name) . "_" . $cg . "_Detailed" . ".csv";
-                $file = fopen($filename, "w");
-                fputcsv($file, array("ID#", "Lastname", "Name", "Date", "Status", "Time-in"));
-
-                if (count($array) > 0) {
-                    foreach ($array as $row) {
-                        fputcsv($file, $row);
-                    }
-                }
-                fclose($file);
-            }
 
             if (isset($_POST['send_email'])) {
                 // filename = download path/filename
@@ -545,10 +525,11 @@ if (isset($_GET['download_pdf'])) {
 
 <div id="dl_options_s" class="overlay">
     <div class="popup" style="width:40%; margin:10% 30%">
+
         <h2>Download Options:</h2>
         <h5>Select a file format to download. For CSV format, the attendance report will be placed in the computer's Downloads folder.</h5>
         <a class="close" href="3.1-class-list.php#">&times;</a>
-        <form method="GET">
+        <form method="POST" action="3.1-class-list-download-log.php">
             <div class="form-group">
                 <input type="submit" name="download_s_pdf" value="PDF" class="btn btn-danger"
                        style="border-radius:18px; margin-top:35px; padding:10px 17px;"/>
@@ -560,11 +541,25 @@ if (isset($_GET['download_pdf'])) {
 </div>
 
 <div id="dl_options" class="overlay">
+    <?php
+    //premade file for detailed
+    $filename = strtoupper($teacher_name) . "_" . $cg . "_Detailed" . ".csv";
+    $file = fopen($filename, "w");
+    fputcsv($file, array("ID#", "Lastname", "Name", "Date", "Status", "Time-in"));
+
+    if (count($array) > 0) {
+        foreach ($array as $row) {
+            fputcsv($file, $row);
+        }
+    }
+
+    fclose($file);
+    ?>
     <div class="popup" style="width:40%; margin:10% 30%">
         <h2>Download Options:</h2>
         <h5>Select a file format to download. For CSV format, the attendance report will be placed in the computer's Downloads folder.</h5>
         <a class="close" href="3.1-class-list.php#">&times;</a>
-        <form method="GET">
+        <form method="POST" action = "3.1-class-list-download-log.php">
             <div class="form-group">
                 <input type="submit" name="download_pdf" value="PDF" class="btn btn-danger"
                        style="border-radius:18px; margin-top:35px; padding:10px 17px;"/>
@@ -679,6 +674,16 @@ if (isset($_GET['download_pdf'])) {
                     $array_s[$i] = [$name[$keys[$i]], $present, $late, $excused, $absent, $total, $percent];
                     echo "</tr>";
                 }
+	            $conn = new mysqli("localhost", "root", "", "temp");
+	            // Check connection
+	            if ($conn->connect_error) {
+		            die("Connection failed: " . $conn->connect_error);
+	            }
+                $array_s_str = serialize($array_s);
+                $sql = "INSERT INTO temptb (varname, val) VALUES ('array_s_copy', '$array_s_str')";
+	            if (mysqli_query($conn, $sql)) {
+		            mysqli_close($conn);
+	            }
                 echo "</table>";
             }
 
@@ -689,10 +694,9 @@ if (isset($_GET['download_pdf'])) {
 	            // Create connection directly to specific database
 	            $conn = new mysqli('localhost', 'root', '', 'temp');
 	            $sql = "INSERT INTO temptb (varname, val) VALUES ('file', '$tempname')";
-                if (mysqli_query($conn, $sql)) {
+	            if (mysqli_query($conn, $sql)) {
 		            mysqli_close($conn);
 	            }
-                //$_SESSION['file'] = $tempname;
                 $file = fopen($tempname, "w");
                 fputcsv($file, array("Name", "Present", "Late", "Excused", "Absent", "Attendance Days", "% Presence"));
 
@@ -757,22 +761,6 @@ if (isset($_GET['download_pdf'])) {
 		            }
 	            }
                 dl_s($array_s, $teacher_name, $cg);
-            }
-            //SUMMARY DOWNLOAD AND MAIL
-            if (isset($_GET['download_s_csv'])) {
-                // filename = download path/filename
-                // NOTE: CHANGE THE FILEPATH FOR THE SERVER PC
-                $filename = "D:/Downloads/" . strtoupper($teacher_name) . "_" . $cg . "_Summary" . ".csv";
-                $file = fopen($filename, "w");
-                fputcsv($file, array("Name", "Present", "Late", "Excused", "Absent", "Attendance Days", "% Presence"));
-
-                if (count($array_s) > 0) {
-                    foreach ($array_s as $row) {
-                        fputcsv($file, $row);
-                    }
-                }
-
-                fclose($file);
             }
 
             if (isset($_POST['send_email_s'])) {

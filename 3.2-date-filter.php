@@ -51,14 +51,6 @@
 $array = array();
 $array_s = array();
 
-if (isset($_GET['download_s_pdf'])) {
-    include '5-pdf-summary.php';
-}
-
-if (isset($_GET['download_pdf'])) {
-    include '5-pdf-detailed.php';
-}
-
 ?>
 
     <!--this part is for storing the email address-->
@@ -165,16 +157,18 @@ mysqli_close($teacherEmailDB);
         $append_date = array();
         $headers = array("ID#", "Name", "Date", "Status", "Time");
         $date = $_GET['start_date'];
-        $sd = $_GET['start_date'];
+        $sdc = $_GET['start_date'];
 		$conn = new mysqli("localhost", "root", "", "temp");
 		// Check connection
 	    if ($conn->connect_error) {
 			die("Connection failed: " . $conn->connect_error);
 	    }
-	    $sql = "INSERT INTO temptb (varname, val) VALUES ('sd_copy', '$sd')";
-	
+	    $sql = "INSERT INTO temptb (varname, val) VALUES ('dateStart', '$date')";
 		if (mysqli_query($conn, $sql)) {
-			mysqli_close($conn);
+			$sql = "INSERT INTO temptb (varname, val) VALUES ('sd_copy', '$sdc')";
+			if (mysqli_query($conn, $sql)) {
+				mysqli_close($conn);
+			}
 		}	
         //the @ sign suppresses warnings for "no end date set"
         @$date2 = $_GET['end_date'];
@@ -398,9 +392,19 @@ mysqli_close($teacherEmailDB);
                 <h5>Select a file format to download. For CSV format, the attendance report will be placed in the computer's
                     Downloads folder.</h5>
                 <a class="close" href="#">&times;</a>
-                <form method="GET">
+                <form method="POST" action = "3.2-date-filter-download-log.php">
                     <div class="form-group">
-                        <input type="hidden" name="start_date" value="<?php echo $_GET['start_date'] ?>"/>
+                        <?php
+	                        // Create connection directly to specific database
+	                        $conn = new mysqli('localhost', 'root', '', 'temp');
+	                        $sql = "SELECT val FROM temptb WHERE varname = 'sd_copy' ORDER BY id DESC LIMIT 1";
+	                        $result = mysqli_query($conn, $sql);
+	                        if (mysqli_num_rows($result) > 0) {
+		                        $row = mysqli_fetch_assoc($result);
+		                        $sd_copy = $row["val"];
+	                        }
+                        ?>
+                        <input type="hidden" name="start_date" value="<?php echo $sd_copy ?>"/>
                         <!--<input type="hidden" name="end_date" value="<?php //echo $_GET['end_date'] ?>"/>-->
                         <input type="hidden" name="btn" value="filter"/>
 
@@ -605,6 +609,13 @@ mysqli_close($teacherEmailDB);
                     $array_s[$i] = [$name[$keys[$i]], $present, $late, $excused, $absent, $total, $percent];
                     echo "</tr>";
                 }
+	                // Create connection directly to specific database
+	                $conn = new mysqli('localhost', 'root', '', 'temp');
+                    $array_s_str = serialize($array_s);
+	                $sql = "INSERT INTO temptb (varname, val) VALUES ('array_date_summary', '$array_s_str')";
+	                if (mysqli_query($conn, $sql)) {
+		                mysqli_close($conn);
+	                }
                 echo "</table>";
 
                 function dl($array, $teacher_name, $cg)
@@ -626,40 +637,42 @@ mysqli_close($teacherEmailDB);
                 echo "<br/><h5>You can send a copy of the attendance report via email or you can download it in CSV or PDF format.</h5>";
 
 
-				function dl_s($array_s, $teacher_name, $cg) {
-					// filename = download path/filename            
-					$tempname = strtoupper($teacher_name) . "_" . $cg . "_Summary" . ".csv";
-					
-					$conn = new mysqli("localhost", "root", "", "temp");
-					// Check connection
-					if ($conn->connect_error) {
-						die("Connection failed: " . $conn->connect_error);
-					}
-					$sql = "INSERT INTO temptb (varname, val) VALUES ('file', '$tempname')";
-					
-					if (mysqli_query($conn, $sql)) {
-						mysqli_close($conn);
-					}
-					//$_SESSION['file'] = $tempname;
-					$file = fopen($tempname,"w");
-					fputcsv($file, array("Start date:",$_GET['start_date']," ","End date:",$_GET['end_date']));
-					fputcsv($file, array("Name","","Present","Late","Excused","Absent","Attendance Days","% Presence"));
-					
-					if (count($array_s) > 0) {
-						foreach ($array_s as $row) {
-							fputcsv($file, $row);
-						}
-					}
-					fclose($file);
-				}
-	?>
-			<div style="display:flex">
-				<form enctype="multipart/form-data" method="POST" action=""
-						style="margin-top:20px; margin-left:25%; display:flex; text-align:center">
-					<div class="form-group">
-						<input class="form-control" type="email" name="email" placeholder="Email Address" value = "<?php echo $teacherEmail?>" required
-								style = "margin-top:20px; padding:15px 80px;text-align:center"/>
-					</div>
+                function dl_s($array_s, $teacher_name, $cg)
+                {
+                    // filename = download path/filename
+                    $tempname = strtoupper($teacher_name) . "_" . $cg . "_Summary" . ".csv";
+	                $conn = new mysqli("localhost", "root", "", "temp");
+	                // Check connection
+	                if ($conn->connect_error) {
+		                die("Connection failed: " . $conn->connect_error);
+	                }
+	                $sql = "INSERT INTO temptb (varname, val) VALUES ('file', '$tempname')";
+	
+	                if (mysqli_query($conn, $sql)) {
+		                mysqli_close($conn);
+	                }
+                    $file = fopen($tempname, "w");
+                    fputcsv($file, array("Start date:", $_GET['start_date'], " ", "End date:", $_GET['end_date']));
+                    fputcsv($file, array("Name", "", "Present", "Late", "Excused", "Absent", "Attendance Days", "% Presence"));
+
+                    if (count($array_s) > 0) {
+                        foreach ($array_s as $row) {
+                            fputcsv($file, $row);
+                        }
+                    }
+                    fclose($file);
+                }
+
+                ?>
+
+                <div style="display:flex">
+                    <form enctype="multipart/form-data" method="POST" action=""
+                          style="margin-top:20px; margin-left:25%; display:flex; text-align:center">
+                        <div class="form-group">
+                            <input class="form-control" type="email" name="email" placeholder="Email Address"
+                                   value="<?php echo $teacherEmail ?>"
+                                   style="margin-top:20px; padding:15px 80px;text-align:center" required/>
+                        </div>
 
                         <div class="form-group">
                             <input type="hidden" name="start_date" value="<?php echo $_GET['start_date'] ?>"/>
@@ -682,69 +695,50 @@ mysqli_close($teacherEmailDB);
                     </form>
                 </div>
 
-			<?php
-				// if Download button was clicked
-				if(array_key_exists('Dl_s',$_GET)){
-					dl_s($array_s, $teacher_name, $cg);
-				}
-				
-				//SUMMARY DOWNLOAD AND MAIL
-				$localSD = $_GET['start_date'];
-				$localED = $_GET['end_date'];
-				
-				$conn = new mysqli("localhost", "root", "", "temp");
-				// Check connection
-				if ($conn->connect_error) {
-					die("Connection failed: " . $conn->connect_error);
-				}
-				$sql = "INSERT INTO temptb (varname, val) VALUES ('sd_copy', '$localSD')";
-				if (mysqli_query($conn, $sql)) {
-					$sql = "INSERT INTO temptb (varname, val) VALUES ('ed_copy', '$localED')";
-					if (mysqli_query($conn, $sql)) {
-                        $array_s_str = serialize($array_s);
-						$sql = "INSERT INTO temptb (varname, val) VALUES ('array_s_copy', '$array_s_str')";
-						if (mysqli_query($conn, $sql)) {
-							mysqli_close($conn);
-						}
-					}
-				}
-				//$_SESSION['sd_copy'] = $localSD;
-				//$_SESSION['ed_copy'] = $localED;
-				//$_SESSION['array_s_copy'] = $array_s;
-				if(isset($_GET['download_s_csv'])){
-					// filename = download path/filename
-                    // NOTE: CHANGE FILEPATH ON THE SERVER PC
-					$filename = "D:/Downloads/". strtoupper($teacher_name) . "_" . $cg . "_Summary" . ".csv";
-					$file = fopen($filename,"w");
-					fputcsv($file, array("Start date:",$_GET['start_date']," ","End date:",$_GET['end_date']));
-					fputcsv($file, array("Name","Present","Late","Excused","Absent","Attendance Days","% Presence"));
-															
-					if (count($array_s) > 0) {
-						foreach ($array_s as $row) {
-							fputcsv($file, $row);
-						}
-					}
 
-                    fclose($file);
+                <?php
+                // if Download button was clicked
+                if (array_key_exists('Dl_s', $_GET)) {
+                    dl_s($array_s, $teacher_name, $cg);
+                }
+
+                //SUMMARY DOWNLOAD AND MAIL
+                $localSD = $_GET['start_date'];
+                $localED = $_GET['end_date'];
+                $conn = new mysqli("localhost", "root", "", "temp");
+                // Check connection
+                if ($conn->connect_error) {
+		            die("Connection failed: " . $conn->connect_error);
+	            }
+	            $sql = "INSERT INTO temptb (varname, val) VALUES ('sd_copy', '$localSD')";
+	            if (mysqli_query($conn, $sql)) {
+                    $sql = "INSERT INTO temptb (varname, val) VALUES ('ed_copy', '$localED')";
+                    if (mysqli_query($conn, $sql)) {
+                        $array_s_str = serialize($array_s);
+                        $sql = "INSERT INTO temptb (varname, val) VALUES ('array_s_copy', '$array_s_str')";
+                        if (mysqli_query($conn, $sql)) {
+                            mysqli_close($conn);
+                        }
+                    }
                 }
 
                 if (isset($_POST['send_email_s'])) {
 
                     // filename = download path/filename
                     // NOTE: CHANGE FILEPATH ON THE SERVER PC
-					$filename = "D:/Downloads/". strtoupper($teacher_name) . "_" . $cg . "_Summary" . ".csv";
-					$file = fopen($filename,"w");
-					fputcsv($file, array("Name","Present","Late","Excused","Absent","Attendance Days","% Presence"));
-											
-					if (count($array_s) > 0) {
-						foreach ($array_s as $row) {
-							fputcsv($file, $row);
-						}
-					}
-	
-					fclose($file);
-	
-					// the necessary email addresses
+                    $filename = "D:/Downloads/" . strtoupper($teacher_name) . "_" . $cg . "_Summary" . ".csv";
+                    $file = fopen($filename, "w");
+                    fputcsv($file, array("Name", "Present", "Late", "Excused", "Absent", "Attendance Days", "% Presence"));
+
+                    if (count($array_s) > 0) {
+                        foreach ($array_s as $row) {
+                            fputcsv($file, $row);
+                        }
+                    }
+
+                    fclose($file);
+
+                    // the necessary email addresses
                     // NOTE: CHANGE EMAIL ADDRESS ON SERVER PC IF NECESSARY
                     $from = '19102579@usc.edu.ph';
                     $to = $_POST["email"];
@@ -803,7 +797,7 @@ mysqli_close($teacherEmailDB);
             <h5>Select a file format to download. For CSV format, the attendance report will be placed in the computer's
                 Downloads folder.</h5>
             <a class="close" href="#">&times;</a>
-            <form method="GET">
+            <form method="POST" action="3.2-date-filter-download-log.php">
                 <div class="form-group">
                     <input type="hidden" name="start_date" value="<?php echo $_GET['start_date'] ?>"/>
                     <input type="hidden" name="end_date" value="<?php echo $_GET['end_date'] ?>"/>
@@ -824,7 +818,7 @@ mysqli_close($teacherEmailDB);
             <h5>Select a file format to download. For CSV format, the attendance report will be placed in the computer's
                 Downloads folder.</h5>
             <a class="close" href="#">&times;</a>
-            <form method="GET">
+            <form method="POST" action = "3.2-date-filter-download-log.php">
                 <div class="form-group">
                     <input type="hidden" name="start_date" value="<?php echo $_GET['start_date'] ?>"/>
                     <input type="hidden" name="end_date" value="<?php echo $_GET['end_date'] ?>"/>
@@ -854,7 +848,7 @@ mysqli_close($teacherEmailDB);
                 ?>
 
 			<div style="display:flex">
-				<form enctype="multipart/form-data" method="POST" action="" 
+				<form enctype="multipart/form-data" method="POST" action=""
 						style="margin-left:25%; display:flex; text-align:center">
 					<div class="form-group">
 						<input class="form-control" type="email" name="email" placeholder="Email Address" value = "<?php echo $teacherEmail?>" required
@@ -891,61 +885,57 @@ mysqli_close($teacherEmailDB);
                     </form>
                 </div>
 
-			<?php
-				//DETAILED DOWNLOAD AND SEND
-				if(array_key_exists('Dl',$_GET)){
-					dl($array, $teacher_name, $cg);
-				}
-				$localSD = $_GET['start_date'];
-				$localED = $_GET['end_date'];
-				
-				$conn = new mysqli("localhost", "root", "", "temp");
-				// Check connection
-				if ($conn->connect_error) {
-					die("Connection failed: " . $conn->connect_error);
-				}
-				$sql = "INSERT INTO temptb (varname, val) VALUES ('sd_copy', '$localSD')";
-				if (mysqli_query($conn, $sql)) {
-					$sql = "INSERT INTO temptb (varname, val) VALUES ('ed_copy', '$localED')";
-					if (mysqli_query($conn, $sql)) {
+                <?php
+                //DETAILED DOWNLOAD AND SEND
+                if (array_key_exists('Dl', $_GET)) {
+                    dl($array, $teacher_name, $cg);
+                }
+                $localSD = $_GET['start_date'];
+                $localED = $_GET['end_date'];
+                $conn = new mysqli("localhost", "root", "", "temp");
+                // Check connection
+	            if ($conn->connect_error) {
+                    die("Connection failed: " . $conn->connect_error);
+                }
+                $sql = "INSERT INTO temptb (varname, val) VALUES ('sd_copy', '$localSD')";
+                if (mysqli_query($conn, $sql)) {
+                    $sql = "INSERT INTO temptb (varname, val) VALUES ('ed_copy', '$localED')";
+                    if (mysqli_query($conn, $sql)) {
                         $array_str = serialize($array);
-						$sql = "INSERT INTO temptb (varname, val) VALUES ('array_copy', '$array_str')";
-						if (mysqli_query($conn, $sql)) {
-							mysqli_close($conn);
-						}
-					}
-				}
-				//$_SESSION['sd_copy'] = $localSD;
-				//$_SESSION['ed_copy'] = $localED;
-				//$_SESSION['array_copy'] = $array;
-				if(isset($_GET['download_csv'])){
-				// filename = download path/filename
-                // NOTE: CHANGE FILEPATH ON THE SERVER PC
-				$filename = "D:/Downloads/". strtoupper($teacher_name) . "_" . $cg . "_Detailed" . ".csv";
-				$file = fopen($filename,"w");
-				fputcsv($file, array("Start date:",$_GET['start_date']," ","End date:",$_GET['end_date']));
-				fputcsv($file, array("ID#","Lastname","Name","Date","Status","Time-in"));
-																	
-				if (count($array) > 0) {
-					foreach ($array as $row) {
-						fputcsv($file, $row);
-					}
-				}
-				fclose($file);
-				}
+                        $sql = "INSERT INTO temptb (varname, val) VALUES ('array_copy', '$array_str')";
+                        if (mysqli_query($conn, $sql)) {
+                            mysqli_close($conn);
+                        }
+                    }
+                }
+                if (isset($_GET['download_csv'])) {
+                    // filename = download path/filename
+                    // NOTE: CHANGE FILEPATH ON THE SERVER PC
+                    $filename = "D:/Downloads/" . strtoupper($teacher_name) . "_" . $cg . "_Detailed" . ".csv";
+                    $file = fopen($filename, "w");
+                    fputcsv($file, array("Start date:", $_GET['start_date'], " ", "End date:", $_GET['end_date']));
+                    fputcsv($file, array("ID#", "Lastname", "Name", "Date", "Status", "Time-in"));
+
+                    if (count($array) > 0) {
+                        foreach ($array as $row) {
+                            fputcsv($file, $row);
+                        }
+                    }
+                    fclose($file);
+                }
 
                 if (isset($_POST['send_email'])) {
                     // filename = download path/filename
                     // NOTE: CHANGE FILEPATH ON THE SERVER PC
-					$filename = "D:/Downloads/". strtoupper($teacher_name) . "_" . $cg . "_Detailed" . ".csv";
-					$file = fopen($filename,"w");
-					fputcsv($file, array("ID#","Lastname","Name","Date","Status","Time-in"));
-																	
-					if (count($array) > 0) {
-						foreach ($array as $row) {
-							fputcsv($file, $row);
-						}
-					}
+                    $filename = "D:/Downloads/" . strtoupper($teacher_name) . "_" . $cg . "_Detailed" . ".csv";
+                    $file = fopen($filename, "w");
+                    fputcsv($file, array("ID#", "Lastname", "Name", "Date", "Status", "Time-in"));
+
+                    if (count($array) > 0) {
+                        foreach ($array as $row) {
+                            fputcsv($file, $row);
+                        }
+                    }
 
                     fclose($file);
 
