@@ -18,7 +18,8 @@
         <table>
             <h1> Register Teacher </h1>
             <p class="instructions">
-                Fill up all the text fields below for registering <br/> the teacher into the Attendance Monitoring System.</a>
+                Fill up all the text fields below for registering <br/> the teacher into the Attendance Monitoring System.</br>
+                <i>A randomly generated password will be sent to the teacher's email address after clicking the <b>Register</b> button.</i></a>
             </p>
 
             <?php
@@ -60,6 +61,7 @@
                 </tr>
             </div>
 
+            <!--
             <div class="Password">
                 <tr>
                     <td>
@@ -70,6 +72,7 @@
                     </td>
                 </tr>
             </div>
+            -->
 
             <div class="form-group">
                 <tr>
@@ -95,7 +98,7 @@
     </table>
     <br/>
     <hr/>
-    <input type="submit" name="return-to-admin-main" class="btn btn-info" style="color:300px; color: white; background: #dc3545;" value="Return to Administrator Menu" formnovalidate/>
+    <input type="submit" name="return-to-admin-main" class="btn btn-info" style=";color: white; background-color:#0b8f47;" value="Return to Administrator Menu" formnovalidate/>
     <!-- THIS PART IS FOR DISPLAYING IF THE PUSHING TO LOGIN TABLE AND CREATING USER DATABASE IS SUCCESSFUL -->
     <?php
 	    // Create connection directly to specific database

@@ -14,7 +14,7 @@ body {
 h1 {
     padding-top: 50px;
     padding-bottom:10px;
-    color:#dd6e42;
+    color:#d9534f;
     font-size: 28px;
     font-weight: 500;
 }
@@ -26,7 +26,7 @@ h1 {
 }
 
 .btnInput{
-    background-color: #dc3545;
+    background-color: #039fe2;
     color: white;
     text-align: center;
     display:inline-block;
@@ -41,7 +41,7 @@ h1 {
 }
 
 .topnav {
-    background-color: #4f6d7a;
+    background-color: #0b8f47;
     overflow: hidden;
 }
 
@@ -59,8 +59,8 @@ h1 {
 /* Change the color of links on hover */
 .topnav a:hover {
     text-decoration: none;
-    background-color:darkgray;
-    color: black;
+    background-color: #00652c;
+    color: #f2f2f2;
 }
 
 /* Add a color to the active/current link */

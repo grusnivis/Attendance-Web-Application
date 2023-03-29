@@ -1,31 +1,27 @@
-@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;1,100;1,300;1,400;1,700&display=swap');
-
-body{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto;
-    font-family: "Lato", sans-serif;
-    background-color: #eaeaea
+.topnav {
+    background-color: #0b8f47;
+    overflow: hidden;
 }
 
-.monitoring-main-con{
-    width: 500px;
-    height: 300px;
-    border-radius: 5%;
+/* Style the links inside the navigation bar */
+.topnav a {
+    float: left;
+    color: #f2f2f2;
     text-align: center;
-    padding: 7px;
-    background-color: #4f6d7a;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+    text-transform: capitalize;
 }
 
-h1{
-    color:#dd6e42;
-    font-family: "Lato", sans-serif;
-    font-size: 30px;
+/* Add a color to the active/current link */
+.topnav a.active {
+    background-color: #e1af30;
+    color: white;
 }
-.instructions{
-    color: #e8dab2;
-    font-family: "Lato", sans-serif;
-    font-weight: 400;
-    text-align: center;
+
+.topnav a:hover {
+    text-decoration: none;
+    background-color: #00652c;
+    color: #f2f2f2;
 }

@@ -11,7 +11,7 @@ a {
 }
 
 h1 {
-    color: #dd6e42;
+    color: #d9534f;
     font-size: 28px;
 }
 
@@ -36,7 +36,7 @@ h2 {
 }
 
 .topnav {
-    background-color: #4f6d7a;
+    background-color: #0b8f47;
     overflow: hidden;
 }
 
@@ -54,13 +54,13 @@ h2 {
 /* Change the color of links on hover */
 .topnav a:hover {
     text-decoration: none;
-    background-color: darkgray;
-    color: black;
+    background-color: #00652c;
+    color: #f2f2f2;
 }
 
 /* Add a color to the active/current link */
 .topnav a.active {
-    background-color: #dd6e42;
+    background-color: #e1af30;
     color: white;
 }
 

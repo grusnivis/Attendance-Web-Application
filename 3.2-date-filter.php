@@ -131,7 +131,7 @@ mysqli_close($teacherEmailDB);
     <div class="container pt-5" style="text-align:center">
         <!-- class course code display -->
         <div style="text-align:center">
-            <h1 style="color:#dd6e42;font-size: 28px;"> <?php echo $cg; ?> Attendance Log</h1>
+            <h1 style="color:#d9534f;font-size: 28px;"> <?php echo $cg; ?> Attendance Log</h1>
 
             <div style="padding-top: 40px; padding-bottom: 20px; text-align:center">
                 <!-- Date Filtering (this is for date selection)-->
@@ -144,7 +144,7 @@ mysqli_close($teacherEmailDB);
                     <input type="date" name="end_date">
 
                     <!-- button! -->
-                    <btn><input type="submit" style="background-color: #dd6e42; color: white;border:0"
+                    <btn><input type="submit" style="background-color: #039fe2; color: white;border:0"
                                 method="GET" name="btn" value="Filter"></btn>
                 </form>
             </div>
@@ -208,7 +208,7 @@ mysqli_close($teacherEmailDB);
             ?>
             <div style="display:inline-flex;">
                 <h5> <?php echo "Checking attendance on:</br>" . $date; ?> </h5>
-                <a class="btn btn-danger"
+                <a class="btn btn-info"
                 href="#exportFromDateInputOnly" title="Export Attendance Log From the Set Date"
                    style="border-radius: 7px; padding: 6px 15px; margin: 10 5px 0 20px;
 									width:fit-content; text-align: center;
@@ -248,7 +248,7 @@ mysqli_close($teacherEmailDB);
                 <!--This part will show if the FROM date field is only inputted-->
                 <div id="exportFromDateInputOnly" class="overlay">
                     <div class="popup" style="width:83%;">
-                        <h2 style="font-size:28px;">ATTENDANCE REPORT (SPECIFIC DATE)</h2>
+                        <h2 style="font-size:28px;color: #d9534f;">Attendance Report (Specific Date)</h2>
                         <a class="close" href="#">&times;</a>
 
                         <div class="content" style="padding-top:50px">
@@ -277,7 +277,7 @@ mysqli_close($teacherEmailDB);
                                         <input type="hidden" name="btn" value="filter"/>
 
 
-                                        <input class="btn btn-danger" type="submit" name="send_email" value="Send"
+                                        <input class="btn btn-info" type="submit" name="send_email" value="Send"
                                                style="margin:15px 20px; padding:10px 17px; border-radius:18px;"/>
                                     </div>
                                 </form>
@@ -289,7 +289,7 @@ mysqli_close($teacherEmailDB);
                                         <p></p>
 
 
-                                        <input class="btn btn-danger" type="submit" name="Dl" value="Download"
+                                        <input class="btn btn-info" type="submit" name="Dl" value="Download"
                                                style="margin:19 20px; padding:10px 17px; border-radius:18px;"/>
 
                                         <!--
@@ -308,7 +308,7 @@ mysqli_close($teacherEmailDB);
                         if (isset($_GET['download'])) {
                             // filename = download path/filename
                             //NOTE: CHANGE FILEPATH ON THE SERVER PC
-                            $filename = "D:/Downloads/" . strtoupper($teacher_name) . "_" . $cg . "_SpecificDate" . ".csv";
+                            $filename = "C:/Users/Kath/Downloads/" . strtoupper($teacher_name) . "_" . $cg . "_SpecificDate" . ".csv";
                             $file = fopen($filename, "w");
                             fputcsv($file, array("ID#", "Lastname", "Name", "Date", "Status", "Time-in"));
 
@@ -323,7 +323,7 @@ mysqli_close($teacherEmailDB);
                         if (isset($_POST['send_email'])) {
                             // filename = download path/filename
                             // NOTE: CHANGE FILEPATH ON THE SERVER PC
-                            $filename = "D:/Downloads/" . strtoupper($teacher_name) . "_" . $cg . "_SpecificDate" . ".csv";
+                            $filename = "C:/Users/Kath/Downloads/" . strtoupper($teacher_name) . "_" . $cg . "_SpecificDate" . ".csv";
                             $file = fopen($filename, "w");
                             fputcsv($file, array("ID#", "Lastname", "Name", "Date", "Status", "Time-in"));
 
@@ -388,9 +388,8 @@ mysqli_close($teacherEmailDB);
     <!--jump-->
         <div id="dl_options_specificDate" class="overlay">
             <div class="popup" style="width:40%; margin:10% 30%">
-                <h2>Download Options:</h2>
-                <h5>Select a file format to download. For CSV format, the attendance report will be placed in the computer's
-                    Downloads folder.</h5>
+                <h2 style="color: #d9534f;">Download Options</h2>
+                <h5>Select a file format to download below.</h5>
                 <a class="close" href="#">&times;</a>
                 <form method="POST" action = "3.2-date-filter-download-log.php">
                     <div class="form-group">
@@ -408,9 +407,9 @@ mysqli_close($teacherEmailDB);
                         <!--<input type="hidden" name="end_date" value="<?php //echo $_GET['end_date'] ?>"/>-->
                         <input type="hidden" name="btn" value="filter"/>
 
-                        <input type="submit" name="download_pdf" value="PDF" class="btn btn-danger"
+                        <input type="submit" name="download_pdf" value="PDF" class="btn btn-info"
                                style="border-radius:18px; margin-top:35px; padding:10px 17px;"/>
-                        <input type="submit" name="download" value="CSV" class="btn btn-danger"
+                        <input type="submit" name="download" value="CSV" class="btn btn-info"
                                style="border-radius:18px; margin-top:35px; padding:10px 17px;"/>
                     </div>
                 </form>
@@ -429,7 +428,7 @@ mysqli_close($teacherEmailDB);
 
 
     <div style="text-align:center">
-        <a class="btn btn-danger" href="#summary" title="Export Summarized Report of Logs"
+        <a class="btn btn-info" href="#summary" title="Export Summarized Report of Logs"
            style="border-radius: 7px; padding: 6px 10px; margin: 10 5px 0 20px;
 									width:fit-content">
             Export (Summary)
@@ -437,7 +436,7 @@ mysqli_close($teacherEmailDB);
 
         <a class="btn" href="#date" title="Export Detailed Report of Logs"
            style="border-radius: 7px; padding: 6px 10px; margin: 10 5px 0 20px;
-							background-color:white;color:#dc3545;border-color:#dc3545;border-width:2px; width:fit-content">
+							background-color:white;color:#039fe2;border-color:#039fe2;border-width:2px; width:fit-content">
             Export (Detailed)
         </a>
     </div>
@@ -512,7 +511,7 @@ mysqli_close($teacherEmailDB);
 
     <div id="summary" class="overlay">
         <div class="popup" style="width:83%;">
-            <h2 style="font-size:28px;">ATTENDANCE REPORT (SUMMARY)</h2>
+            <h2 style="font-size:28px;color: #d9534f;">Attendance Report (Summary)</h2>
             <a class="close" href="#">&times;</a>
 
             <div class="content">
@@ -679,7 +678,7 @@ mysqli_close($teacherEmailDB);
                             <input type="hidden" name="end_date" value="<?php echo $_GET['end_date'] ?>"/>
                             <input type="hidden" name="btn" value="filter"/>
 
-                            <input class="btn btn-danger" type="submit" name="send_email_s" value="Send"
+                            <input class="btn btn-info" type="submit" name="send_email_s" value="Send"
                                    style="margin:15px 20px; padding:10px 17px; border-radius:18px;"/>
                         </div>
                     </form>
@@ -690,7 +689,7 @@ mysqli_close($teacherEmailDB);
                         <input type="hidden" name="btn" value="filter"/>
 
                         <!-- automatically creates the csv file for the download option to function -->
-                        <input class="btn btn-danger" type="submit" name="Dl_s" value="Download"
+                        <input class="btn btn-info" type="submit" name="Dl_s" value="Download"
                                style="margin:35px 20px; padding:10px 17px; border-radius:18px;"/>
                     </form>
                 </div>
@@ -726,7 +725,7 @@ mysqli_close($teacherEmailDB);
 
                     // filename = download path/filename
                     // NOTE: CHANGE FILEPATH ON THE SERVER PC
-                    $filename = "D:/Downloads/" . strtoupper($teacher_name) . "_" . $cg . "_Summary" . ".csv";
+                    $filename = "C:/Users/Kath/Downloads/" . strtoupper($teacher_name) . "_" . $cg . "_Summary" . ".csv";
                     $file = fopen($filename, "w");
                     fputcsv($file, array("Name", "Present", "Late", "Excused", "Absent", "Attendance Days", "% Presence"));
 
@@ -793,9 +792,8 @@ mysqli_close($teacherEmailDB);
     <!--jump-->
     <div id="dl_options_s" class="overlay">
         <div class="popup" style="width:40%; margin:10% 30%">
-            <h2>Download Options:</h2>
-            <h5>Select a file format to download. For CSV format, the attendance report will be placed in the computer's
-                Downloads folder.</h5>
+            <h2 style="color: #d9534f;">Download Options</h2>
+            <h5>Select a file format to download below.</h5>
             <a class="close" href="#">&times;</a>
             <form method="POST" action="3.2-date-filter-download-log.php">
                 <div class="form-group">
@@ -803,9 +801,9 @@ mysqli_close($teacherEmailDB);
                     <input type="hidden" name="end_date" value="<?php echo $_GET['end_date'] ?>"/>
                     <input type="hidden" name="btn" value="filter"/>
 
-                    <input type="submit" name="download_s_pdf" value="PDF" class="btn btn-danger"
+                    <input type="submit" name="download_s_pdf" value="PDF" class="btn btn-info"
                            style="border-radius:18px; margin-top:35px; padding:10px 17px;"/>
-                    <input type="submit" name="download_s_csv" value="CSV" class="btn btn-danger"
+                    <input type="submit" name="download_s_csv" value="CSV" class="btn btn-info"
                            style="border-radius:18px; margin-top:35px; padding:10px 17px;"/>
                 </div>
             </form>
@@ -824,9 +822,9 @@ mysqli_close($teacherEmailDB);
                     <input type="hidden" name="end_date" value="<?php echo $_GET['end_date'] ?>"/>
                     <input type="hidden" name="btn" value="filter"/>
 
-                    <input type="submit" name="download_pdf" value="PDF" class="btn btn-danger"
+                    <input type="submit" name="download_pdf" value="PDF" class="btn btn-info"
                            style="border-radius:18px; margin-top:35px; padding:10px 17px;"/>
-                    <input type="submit" name="download_csv" value="CSV" class="btn btn-danger"
+                    <input type="submit" name="download_csv" value="CSV" class="btn btn-info"
                            style="border-radius:18px; margin-top:35px; padding:10px 17px;"/>
                 </div>
             </form>
@@ -836,7 +834,7 @@ mysqli_close($teacherEmailDB);
     <!-- This is used for export (detailed) options -->
     <div id="date" class="overlay">
         <div class="popup" style="width:83%;">
-            <h2 style="margin-top:90px; font-size:28px;">ATTENDANCE REPORT (DETAILED)</h2>
+            <h2 style="color: #d9534f; margin-top:90px; font-size:28px;">Attendance Log (Detailed)</h2>
             <h5>You can send a copy of the attendance report via email or you can download it in CSV or PDF format.</h5>
             <a class="close" href="#">&times;</a>
 
@@ -860,7 +858,7 @@ mysqli_close($teacherEmailDB);
                             <input type="hidden" name="end_date" value="<?php echo $_GET['end_date'] ?>"/>
                             <input type="hidden" name="btn" value="filter"/>
 
-                            <input class="btn btn-danger" type="submit" name="send_email" value="Send"
+                            <input class="btn btn-info" type="submit" name="send_email" value="Send"
                                    style="margin:0 20px; padding:10px 17px; border-radius:18px;"/>
                         </div>
                     </form>
@@ -871,7 +869,7 @@ mysqli_close($teacherEmailDB);
                             <input type="hidden" name="end_date" value="<?php echo $_GET['end_date'] ?>"/>
                             <input type="hidden" name="btn" value="filter"/>
 
-                            <input class="btn btn-danger" type="submit" name="Dl" value="Download"
+                            <input class="btn btn-info" type="submit" name="Dl" value="Download"
                                    style="margin:0 20px; padding:10px 17px; border-radius:18px;"/>
 
                             <!--
@@ -911,7 +909,7 @@ mysqli_close($teacherEmailDB);
                 if (isset($_GET['download_csv'])) {
                     // filename = download path/filename
                     // NOTE: CHANGE FILEPATH ON THE SERVER PC
-                    $filename = "D:/Downloads/" . strtoupper($teacher_name) . "_" . $cg . "_Detailed" . ".csv";
+                    $filename = "C:/Users/Kath/Downloads/" . strtoupper($teacher_name) . "_" . $cg . "_Detailed" . ".csv";
                     $file = fopen($filename, "w");
                     fputcsv($file, array("Start date:", $_GET['start_date'], " ", "End date:", $_GET['end_date']));
                     fputcsv($file, array("ID#", "Lastname", "Name", "Date", "Status", "Time-in"));
@@ -927,7 +925,7 @@ mysqli_close($teacherEmailDB);
                 if (isset($_POST['send_email'])) {
                     // filename = download path/filename
                     // NOTE: CHANGE FILEPATH ON THE SERVER PC
-                    $filename = "D:/Downloads/" . strtoupper($teacher_name) . "_" . $cg . "_Detailed" . ".csv";
+                    $filename = "C:/Users/Kath/Downloads/" . strtoupper($teacher_name) . "_" . $cg . "_Detailed" . ".csv";
                     $file = fopen($filename, "w");
                     fputcsv($file, array("ID#", "Lastname", "Name", "Date", "Status", "Time-in"));
 

@@ -27,13 +27,13 @@ body{
 
 /*text options*/
 h1{
-    color:#4f6d7a;
+    color:#f22f22;
     font-family: "Lato", sans-serif;
     font-size: 30px;
 }
 
 p{
-    color: #dd6e42;
+    color: black;
 }
 
 .instructions{
@@ -47,7 +47,7 @@ p{
 input[type="submit"] { /*upload button */
     border: 0px;
     color: white;
-    background: #dc3545;
+    background: #0b8f47;
     margin: 10px 0;
     border-radius: 5px;
     font-weight: bold;
@@ -56,5 +56,5 @@ input[type="submit"] { /*upload button */
 }
 
 input[type="submit"]:hover {
-    background: #555;
+    background: #00652c;
 }

@@ -283,13 +283,13 @@ mysqli_close($teacherEmailDB);
     <!-- class course code display -->
     <div style="text-align:center">
         <!--[NAME OF THE SELECTED ATTENDANCE LOG] + "Attendance Log" -->
-        <h1 style="color:#dd6e42;font-size: 28px;"> <?php echo $cg; ?> Attendance Log</h1>
+        <h1 style="color:#dc3545;font-size: 28px;"> <?php echo $cg; ?> Attendance Log</h1>
     </div>
 
     <!-- Export (Summary) Button -->
     <div style="margin-right:10px; margin-top:10px; text-align:center">
         <!-- jump to the summary div id in this php file -->
-        <a class="btn btn-danger" href="#summary" title="Export Summarized Report of Logs"
+        <a class="btn btn-info" href="#summary" title="Export Summarized Report of Logs"
            style="border-radius: 7px; padding: 6px 10px; margin-top:10px;margin-right:10px; width:150px;">
             Export (Summary)
         </a>
@@ -298,7 +298,7 @@ mysqli_close($teacherEmailDB);
         <!-- jump to the #classlist div id in this php file -->
         <a class="btn" href="#classlist" title="Export Detailed Report of Logs"
            style="border-radius: 7px; padding: 6px 10px; margin-top:10px;margin-left:10px; width:150px;
-					   background-color:white;color:#dc3545;border-color:#dc3545;border-width:2px">
+					   background-color:white;color:#039fe2;border-color:#039fe2;border-width:2px">
             Export (Detailed)
         </a>
     </div>
@@ -333,7 +333,7 @@ mysqli_close($teacherEmailDB);
 
 <div id="classlist" class="overlay">
     <div class="popup">
-        <h2>CLASS LIST ATTENDANCE REPORT (DETAILED)</h2>
+        <h2 style = "color:#dc3545;">Class List Attendance Report (Detailed)</h2>
         <a class="close" href="#">&times;</a>
 
         <div class="content">
@@ -420,13 +420,13 @@ mysqli_close($teacherEmailDB);
                     </div>
 
                     <div class="form-group">
-                        <input class="btn btn-danger" type="submit" name="send_email" value="Send"
+                        <input class="btn btn-info" type="submit" name="send_email" value="Send"
                                style="margin:15px 20px; padding:10px 17px; border-radius:18px;"/>
                     </div>
                 </form>
 
                 <form method="GET" action="#dl_options">
-                    <input class="btn btn-danger" type="submit" name="Dl" value="Download"
+                    <input class="btn btn-info" type="submit" name="Dl" value="Download"
                            style="margin:35px 20px; padding:10px 17px; border-radius:18px;"/>
                 </form>
 
@@ -462,7 +462,7 @@ mysqli_close($teacherEmailDB);
             if (isset($_POST['send_email'])) {
                 // filename = download path/filename
                 //$filename = "C:/Users/Amber/Downloads/". strtoupper($teacher_name) . "_" . $cg . ".csv";
-                $filename = "D:/Downloads/" . strtoupper($teacher_name) . "_" . $cg . "_Detailed" . ".csv";
+                $filename = "C:/Users/Kath/Downloads/" . strtoupper($teacher_name) . "_" . $cg . "_Detailed" . ".csv";
                 $file = fopen($filename, "w");
                 fputcsv($file, array("ID#", "Lastname", "Name", "Date", "Status", "Time-in"));
 
@@ -526,14 +526,14 @@ mysqli_close($teacherEmailDB);
 <div id="dl_options_s" class="overlay">
     <div class="popup" style="width:40%; margin:10% 30%">
 
-        <h2>Download Options:</h2>
-        <h5>Select a file format to download. For CSV format, the attendance report will be placed in the computer's Downloads folder.</h5>
+        <h2>Download Options</h2>
+        <h5>Select a file format to download below.</h5>
         <a class="close" href="3.1-class-list.php#">&times;</a>
         <form method="POST" action="3.1-class-list-download-log.php">
             <div class="form-group">
-                <input type="submit" name="download_s_pdf" value="PDF" class="btn btn-danger"
+                <input type="submit" name="download_s_pdf" value="PDF" class="btn btn-info"
                        style="border-radius:18px; margin-top:35px; padding:10px 17px;"/>
-                <input type="submit" name="download_s_csv" value="CSV" class="btn btn-danger"
+                <input type="submit" name="download_s_csv" value="CSV" class="btn btn-info"
                        style="border-radius:18px; margin-top:35px; padding:10px 17px;"/>
             </div>
         </form>
@@ -556,14 +556,14 @@ mysqli_close($teacherEmailDB);
     fclose($file);
     ?>
     <div class="popup" style="width:40%; margin:10% 30%">
-        <h2>Download Options:</h2>
-        <h5>Select a file format to download. For CSV format, the attendance report will be placed in the computer's Downloads folder.</h5>
+        <h2>Download Options</h2>
+        <h5>Select a file format to download below.</h5>
         <a class="close" href="3.1-class-list.php#">&times;</a>
         <form method="POST" action = "3.1-class-list-download-log.php">
             <div class="form-group">
-                <input type="submit" name="download_pdf" value="PDF" class="btn btn-danger"
+                <input type="submit" name="download_pdf" value="PDF" class="btn btn-info"
                        style="border-radius:18px; margin-top:35px; padding:10px 17px;"/>
-                <input type="submit" name="download_csv" value="CSV" class="btn btn-danger"
+                <input type="submit" name="download_csv" value="CSV" class="btn btn-info"
                        style="border-radius:18px; margin-top:35px; padding:10px 17px;"/>
             </div>
         </form>
@@ -572,7 +572,7 @@ mysqli_close($teacherEmailDB);
 
 <div id="summary" class="overlay">
     <div class="popup">
-        <h2>Class List Attendance Report (Summary)</h2>
+        <h2 style = "color:#dc3545;">Class List Attendance Report (Summary)</h2>
         <a class="close" href="#">&times;</a>
 
         <!-- THIS PART IS FOR THE WEB APP POPUP-->
@@ -720,13 +720,13 @@ mysqli_close($teacherEmailDB);
                     </div>
 
                     <div class="form-group">
-                        <input class="btn btn-danger" type="submit" name="send_email_s" value="Send"
+                        <input class="btn btn-info" type="submit" name="send_email_s" value="Send"
                                style="margin:15px 20px; padding:10px 17px; border-radius:18px;"/>
                     </div>
                 </form>
 
                 <form method="GET" action="#dl_options_s">
-                    <input class="btn btn-danger" type="submit" name="Dl_s" value="Download"
+                    <input class="btn btn-info" type="submit" name="Dl_s" value="Download"
                            style="margin:35px 20px; padding:10px 17px; border-radius:18px;"/>
                 </form>
             </div>
@@ -766,7 +766,7 @@ mysqli_close($teacherEmailDB);
             if (isset($_POST['send_email_s'])) {
 
                 // filename = download path/filename
-                $filename = "D:/Downloads/" . strtoupper($teacher_name) . "_" . $cg . "_Summary" . ".csv";
+                $filename = "C:/Users/Kath/Downloads/" . strtoupper($teacher_name) . "_" . $cg . "_Summary" . ".csv";
                 $file = fopen($filename, "w");
                 fputcsv($file, array("Name", "Present", "Late", "Excused", "Absent", "Attendance Days", "% Presence"));
 

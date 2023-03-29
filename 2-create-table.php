@@ -503,7 +503,7 @@ include('0-connect.php');
 <!-- THIS SECTION IS FOR THE TOP NAVIGATION OF THE CLASS MONITORING LANDING PAGE -->
 <div>
     <nav class="topnav">
-        <a style="color:white;background-color: #4f6d7a;text-decoration:none"><?php echo "Welcome, " . $teacher_name . "!" ?></a>
+        <a style="color:white;background-color: #0b8f47;text-decoration:none"><?php echo "Welcome, <b>" . $teacher_name . "!</b>" ?></a>
         <a href=".\class-list-upload.php" style="color:white">Upload Class Lists</a>
         <a href=".\teacher-change-password.php" style="color:white">Change Password
         <a href=".\user-manual-download-teacher.php" style="color:white">Download User Manual</a>

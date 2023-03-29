@@ -130,6 +130,7 @@ if (isset($_POST['database-drop']) && $_POST['database-drop'] == 'Delete All Dat
         if ($databaseList[$i] != "admin" &&
             $databaseList[$i] != "teacher" &&
             $databaseList[$i] != "authorized users" &&
+            $databaseList[$i] != "temp" &&
             $databaseList[$i] != "information_schema" &&
             $databaseList[$i] != "performance_schema" &&
             $databaseList[$i] != "phpmyadmin" &&

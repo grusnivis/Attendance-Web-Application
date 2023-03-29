@@ -7,6 +7,7 @@ session_start();
 ?>
 
 <html lang="en">
+
 <head>
     <title> Change Teacher Password </title>
     <link type="text/css" rel="stylesheet" href="css/register-teacher-style.css"/>
@@ -21,8 +22,8 @@ session_start();
         <p class="instructions">
         <div class="form-group">
             <h1> Change Teacher Password</h1>
-            <p class="notification">Change your password in the text field below.</p>
-            <input type="password" class="password" name="teacherPassword" placeholder="New Password" required/>
+            <p class="instructions">Change your password in the text field below.</p>
+            <input type="password" class="password fieldSettings" name="teacherPassword" placeholder="Password" required/>
         </div>
         <div class="form-group">
             <input type="submit" name="change-teacher-password" class="btn btn-info" value="Update Password"/>
@@ -30,7 +31,7 @@ session_start();
         </p>
         <hr/>
         <input type="submit" name="return-to-create-table" class="btn btn-info"
-               style="color: white; background: #dc3545;" value="Return to Teacher Main Menu" formnovalidate/>
+               style="color: white; background: #0b8f47;" value="Return to Teacher Main Menu" formnovalidate/>
     </form>
     <!-- text prompt if updating the password is successful or not -->
     <?php
