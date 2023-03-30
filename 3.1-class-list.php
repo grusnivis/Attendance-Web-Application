@@ -378,7 +378,7 @@ mysqli_close($teacherEmailDB);
             function dl($array, $teacher_name, $cg)
             {
                 // filename = download path/filename
-                $tempname = strtoupper($teacher_name) . "_" . $cg . "_Detailed" . ".csv";
+                $tempname = "./Exporting/" . strtoupper($teacher_name) . "_" . $cg . "_Detailed" . ".csv";
                 $file = fopen($tempname, "w");
                 fputcsv($file, array("ID#", "Lastname", "Name", "Date", "Status", "Time-in"));
 
@@ -526,7 +526,7 @@ mysqli_close($teacherEmailDB);
 <div id="dl_options_s" class="overlay">
     <div class="popup" style="width:40%; margin:10% 30%">
 
-        <h2>Download Options</h2>
+        <h2 style = "color: #d9534f;">Download Options</h2>
         <h5>Select a file format to download below.</h5>
         <a class="close" href="3.1-class-list.php#">&times;</a>
         <form method="POST" action="3.1-class-list-download-log.php">
@@ -543,7 +543,7 @@ mysqli_close($teacherEmailDB);
 <div id="dl_options" class="overlay">
     <?php
     //premade file for detailed
-    $filename = strtoupper($teacher_name) . "_" . $cg . "_Detailed" . ".csv";
+    $filename = "./Exporting/" . strtoupper($teacher_name) . "_" . $cg . "_Detailed" . ".csv";
     $file = fopen($filename, "w");
     fputcsv($file, array("ID#", "Lastname", "Name", "Date", "Status", "Time-in"));
 
@@ -556,7 +556,7 @@ mysqli_close($teacherEmailDB);
     fclose($file);
     ?>
     <div class="popup" style="width:40%; margin:10% 30%">
-        <h2>Download Options</h2>
+        <h2 style = "color: #d9534f;">Download Options</h2>
         <h5>Select a file format to download below.</h5>
         <a class="close" href="3.1-class-list.php#">&times;</a>
         <form method="POST" action = "3.1-class-list-download-log.php">
@@ -690,7 +690,7 @@ mysqli_close($teacherEmailDB);
             function dl_s($array_s, $teacher_name, $cg)
             {
                 // filename = download path/filename
-                $tempname = strtoupper($teacher_name) . "_" . $cg . "_Summary" . ".csv";
+                $tempname = "./Exporting/" . strtoupper($teacher_name) . "_" . $cg . "_Summary" . ".csv";
 	            // Create connection directly to specific database
 	            $conn = new mysqli('localhost', 'root', '', 'temp');
 	            $sql = "INSERT INTO temptb (varname, val) VALUES ('file', '$tempname')";

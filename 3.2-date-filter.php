@@ -620,7 +620,7 @@ mysqli_close($teacherEmailDB);
                 function dl($array, $teacher_name, $cg)
                 {
                     // filename = download path/filename
-                    $tempname = strtoupper($teacher_name) . "_" . $cg . "_Detailed" . ".csv";
+                    $tempname = "./Exporting/" . strtoupper($teacher_name) . "_" . $cg . "_Detailed" . ".csv";
                     $file = fopen($tempname, "w");
                     fputcsv($file, array("Start date:", $_GET['start_date'], " ", "End date:", $_GET['end_date']));
                     fputcsv($file, array("ID#", "Lastname", "Name", "Date", "Status", "Time-in"));
@@ -639,7 +639,7 @@ mysqli_close($teacherEmailDB);
                 function dl_s($array_s, $teacher_name, $cg)
                 {
                     // filename = download path/filename
-                    $tempname = strtoupper($teacher_name) . "_" . $cg . "_Summary" . ".csv";
+                    $tempname = "./Exporting/" . strtoupper($teacher_name) . "_" . $cg . "_Summary" . ".csv";
 	                $conn = new mysqli("localhost", "root", "", "temp");
 	                // Check connection
 	                if ($conn->connect_error) {
@@ -812,9 +812,8 @@ mysqli_close($teacherEmailDB);
 
     <div id="dl_options" class="overlay">
         <div class="popup" style="width:40%; margin:10% 30%">
-            <h2>Download Options:</h2>
-            <h5>Select a file format to download. For CSV format, the attendance report will be placed in the computer's
-                Downloads folder.</h5>
+            <h2 style="color: #d9534f;">Download Options</h2>
+            <h5>Select a file format to download.</h5>
             <a class="close" href="#">&times;</a>
             <form method="POST" action = "3.2-date-filter-download-log.php">
                 <div class="form-group">
