@@ -50,7 +50,7 @@
     }
 
     .topnav {
-        background-color: #4f6d7a;
+        background-color:#0b8f47;
         overflow: hidden;
         width: 100vw;
     }
@@ -135,8 +135,8 @@ https://code.tutsplus.com/tutorials/how-to-upload-a-file-in-php-with-example--cm
     <div class="topnav">
         <a href="2-create-table.php" style="color: #f2f2f2;"><i class="fa fa-home"
                                                                 style="font-size: 25px;text-align:center"></i></a>
-        <a style="text-decoration: none; background-color: #4f6d7a; color: #f2f2f2;">
-            <?php echo "Welcome, " . $tempvar1 . "!"; ?></a>
+        <a style="text-decoration: none; background-color: #0b8f47; color: #f2f2f2;">
+            <?php echo "Welcome, <b>" . $tempvar1 . "!</b>"; ?></a>
 
         <a class="active" href="class-list-upload.php">Upload Class Lists</a>
         <a href="teacher-change-password.php">Change Password</a>
@@ -147,12 +147,12 @@ https://code.tutsplus.com/tutorials/how-to-upload-a-file-in-php-with-example--cm
     </div>
     <div class="container pt-5" style="text-align:center">
         <h1>
-            <center> Class List Uploading</center>
+            <center> Upload Class Lists </center>
         </h1>
     </div>
 
     <div class="tab">
-        <p class="instructions"> Upload your Class List File that is in .CSV format. </p>
+        <p class="instructions"> Upload your class list file that is in <b>CSV</b> format. </p>
         <div class="upload-con">
             <table>
                 <tr>
@@ -200,12 +200,13 @@ https://code.tutsplus.com/tutorials/how-to-upload-a-file-in-php-with-example--cm
 	                    $result = mysqli_query($conn, $sql);
 	                    if (mysqli_num_rows($result) > 0) {
 		                    $row = mysqli_fetch_assoc($result);
-		                    $tempvar1 = $row["val"];
+		                    $tempvar2 = $row["val"];
 		                    mysqli_close($conn);
 	                    }
 	                    if (isset($tempvar1) && $tempvar1) {
 	                    echo '<p class = "notification">';
-	                    echo $tempvar1;
+                        //the @ sign suppresses warnings
+	                    echo @$tempvar2;
 	                    echo '</p>';
 	                    $conn = new mysqli("localhost", "root", "", "temp");
 	                    // Check connection
@@ -228,13 +229,12 @@ https://code.tutsplus.com/tutorials/how-to-upload-a-file-in-php-with-example--cm
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
     <div class="tab">
-        <h1 style="color:#4f6d7a">
+        <h1 style="color:#d9534f">
             <center> Set Personal Configurations</center>
         </h1>
         <p class="instructions">
-            This is where you will configure your uploaded class list settings for the Attendance Logging Device to use.
-            A Comma-Separated
-            Values file (.CSV) will be generated at the set directory after you click the <b><u>Upload Class List and
+            This is where you will configure your uploaded class list settings for the Attendance Logging System to use.
+            A CSV file containing the settings will be generated in the system after you click the <b><u>Upload Class List and
                     Set Configurations</u></b> button below.
         </p>
         <table>
@@ -242,22 +242,29 @@ https://code.tutsplus.com/tutorials/how-to-upload-a-file-in-php-with-example--cm
                 <div class="form-group">
                     <td>
                         <p class="config-titles"><b>MARK TEACHER ATTENDANCE</b></p>
+                        <p class="instructions"> This is where your personal attendance is marked based on <u>the time of your class</u>.</p>
+                        <!--
                         <p class="instructions">
                             If you wish to mark your personal attendance based on the <u>time of your class</u>,
                             input <b><i>YES</i></b>. If you wish for your attendance to always be <u>PRESENT</u>
                             regardless of the time from the start of your class, input <b><i>NO</i></b>.
                         </p>
+                        -->
                     </td>
                     <td>
+                        <!--
                         <div class='dropdown-con'>
                             <?php
-                            echo "<select name = 'mark-teacher' style = 'width: 150px'>";
-                            echo "<option value = 'NO'>NO </option>";
-                            echo "<option value = 'YES'>YES</option>";
-                            echo "</select>";
+                            //readonly cannot be edited by the user but can still be POSTed
+                            //echo "<select required readonly = 'readonly' name = 'mark-teacher' style = 'width: 150px'>";
+                            //echo "<option value = 'NO'>NO </option>";
+                            //echo "<option selected value = 'YES'>YES</option>";
+                            //echo "</select>";
                             ?>
                         </div>
-                        <p class="instructions"><i>The default selection for this setting is <b><u>NO</u></b></i>.</p>
+                        -->
+                        <input required readonly type="text" class="fieldSettings" name="mark-teacher" value = "YES"/>
+                        <p class="instructions"><i>The default selection for this setting is <b><u>YES</u></b>. This setting cannot be changed.</p></i>
                     </td>
                 </div>
             </tr>
@@ -271,7 +278,7 @@ https://code.tutsplus.com/tutorials/how-to-upload-a-file-in-php-with-example--cm
                         </p>
                     </td>
                     <td>
-                        <input type="number" min="00" max="59" class="fieldSettings" name="teacher-late" value="10"/>
+                        <input required type="number" min="00" max="59" class="fieldSettings" name="teacher-late" value="10"/>
                         <p class="instructions"><i>The default time for this setting is <b><u>10</u></b> minutes.</i>
                         </p>
                     </td>
@@ -287,7 +294,7 @@ https://code.tutsplus.com/tutorials/how-to-upload-a-file-in-php-with-example--cm
                         </p>
                     </td>
                     <td>
-                        <input type="number" min="00" max="59" class="fieldSettings" name="teacher-absent" value="15"/>
+                        <input required type="number" min="00" max="59" class="fieldSettings" name="teacher-absent" value="15"/>
                         <p class="instructions"><i>The default time for this setting is <b><u>15</u></b> minutes.</i>
                         </p>
                     </td>
@@ -307,8 +314,8 @@ https://code.tutsplus.com/tutorials/how-to-upload-a-file-in-php-with-example--cm
                     <td>
                         <div class='dropdown-con'>
                             <?php
-                            echo "<select name = 'student-attendance' style = 'width: 150px'>";
-                            echo "<option value = 'YES'>YES</option>";
+                            echo "<select required name = 'student-attendance' style = 'width: 150px'>";
+                            echo "<option selected value = 'YES'>YES</option>";
                             echo "<option value = 'NO'>NO</option>";
                             echo "</select>";
                             ?>
@@ -328,7 +335,7 @@ https://code.tutsplus.com/tutorials/how-to-upload-a-file-in-php-with-example--cm
                             is set in <b>minutes</b>.
                         </p>
                     </td>
-                    <td><input type="number" min="00" max="59" class="fieldSettings" name="student-late" value="15"/>
+                    <td><input required type="number" min="00" max="59" class="fieldSettings" name="student-late" value="15"/>
                         <p class="instructions"><i>The default time for this setting is <b><u>15</u></b> minutes.</i>
                         </p>
                     </td>
@@ -346,7 +353,7 @@ https://code.tutsplus.com/tutorials/how-to-upload-a-file-in-php-with-example--cm
                         </p>
                     </td>
                     <td>
-                        <input type="number" min="00" max="59" class="fieldSettings" name="student-absent" value="30"/>
+                        <input required type="number" min="00" max="59" class="fieldSettings" name="student-absent" value="30"/>
                         <p class="instructions"><i>The default time for this setting is <b><u>30</u></b> minutes.</i>
                         </p>
                     </td>

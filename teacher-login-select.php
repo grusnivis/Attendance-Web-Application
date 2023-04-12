@@ -33,7 +33,7 @@ else{
 <!-- HTML START -->
 <html lang = 'en'>
 <head>
-    <title> Change Teacher Password </title>
+    <title> Reset Teacher Password </title>
     <link type = "text/css" rel="stylesheet" href ="css/register-teacher-style.css"/>
 </head>
 
@@ -42,13 +42,13 @@ else{
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"></script>
 
-    <form method = "POST" action = "teacher-login-modify.php">
-        <h1>Change Teacher Password</h1>
+    <form method = "POST" action = "teacher-login-reset.php">
+        <h1>Reset Teacher Password</h1>
         <p class = "instructions">
-            Please select the registered teacher that you want to modify the password from in
-            the dropdown box below:
-            <br/>
-            <br/>
+            Please select the registered teacher that you want to reset their password in
+            the dropdown box below.<br/><u><i>A randomly generated password will be sent to the selected
+                    teacher's registered email address.</i></u></p>
+
             <!-- THIS PART CONNECTS TO THE TEACHER DATABASE - LOGIN TABLE AND OUTPUTS IT TO THE DROPDOWN BOX -->
             <?php
             //https://stackoverflow.com/questions/5189662/populate-a-drop-down-box-from-a-mysql-table-in-php
@@ -72,9 +72,9 @@ else{
         </p>
         <div class="form-group">
             <!-- change button text through the value attribute -->
-            <center><input type="submit" name="uploadBtn" class="btn btn-info" value="Modify Teacher Password"/></center>
+            <center><input type="submit" name="reset-password" class="btn btn-info" value="Reset Teacher Password"/></center>
             <hr/>
-            <input type="submit" name="return-to-admin-main" class="btn btn-info" style="color:300px; color: white; background: #dc3545;" value="Return to Administrator Menu" formnovalidate/>
+            <input type="submit" name="return-to-admin-main" class="btn btn-info" style=";color: white; background-color:#0b8f47;" value="Return to Administrator Menu" formnovalidate/>
         </div>
         <?php
 	        $conn = new mysqli('localhost', 'root', '', 'temp');

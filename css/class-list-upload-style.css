@@ -10,7 +10,7 @@ body{
 }
 
   .topnav {
-    background-color: #4f6d7a;
+    background-color: #0b8f47;
     overflow: hidden;
   }
 
@@ -28,13 +28,13 @@ body{
     /* Change the color of links on hover */
   .topnav a:hover {
     text-decoration: none;
-    background-color:darkgray;
-    color: black;
+    background-color:#00652c;
+    color: white;
   }
 
     /* Add a color to the active/current link */
   .topnav a.active {
-    background-color: #dd6e42;
+    background-color: #e1af30;
     color: white;
   }
 
@@ -91,7 +91,7 @@ div.upload-wrapper {
       text-align: center;
       margin: 0px auto;
       display: block;
-      padding-left: 10px;
+      padding-left: 0px;
   }
 
   .dropdown-con{
@@ -119,7 +119,7 @@ div.upload-wrapper {
   }
 
  h1{
-    color:#dd6e42;
+    color:#d9534f;
     font-size: 30px;
     font-family: "Lato", sans-serif;
   }
@@ -141,7 +141,7 @@ div.upload-wrapper {
   }
 
   .config-titles{
-      color: #dd6e42;
+      color: #e1af30;
       font-family: "Lato", sans-serif;
       font-weight: 800;
       text-align: center;
@@ -161,7 +161,7 @@ div.upload-wrapper {
   /*browse button*/
   input[type="submit"] { /*upload button */
     border: 0px;
-    background-color: #dc3545;
+    background-color: #0b8f47;
 		color: white;
     margin: 10px 0;
     border-radius: 5px;
@@ -172,14 +172,14 @@ div.upload-wrapper {
 
   /*browse button*/
   input[type="submit"]:hover {
-    background: #555;
+    background: #00652c;
   }
    
   label[for="file-upload"] {
     padding: 0.7rem;
     display: inline-block;
     cursor: pointer;
-    background-color: #dc3545;
+    background-color: #0b8f47;
 		color: white;
     font-family: "Lato", sans-serif, bold;
     font-weight: 400;
@@ -188,7 +188,7 @@ div.upload-wrapper {
   }
 
   label[for="file-upload"]:hover {
-    background: #555;
+    background: #00652c;
   }
 
   span.file-name {

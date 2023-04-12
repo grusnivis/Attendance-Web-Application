@@ -77,7 +77,7 @@ else{
 
 	/* Create an active/current "tab button" class */
 	.tab button.active {
-		background-color: #dd6e42;
+		background-color: #e1af30;
 	}
 
 	/* Style the tab content */
@@ -155,7 +155,7 @@ else{
                     where Course='$tab_course' order by Surname";
                     
                     $chosen_course = mysqli_query($db,$display);
-                    echo "<h1>Teacher Attendance</h1>";
+                    echo "<h1>Teacher Attendance</h1><br/>";
                     display_table($chosen_course);
 				?>
 				</div>
@@ -211,6 +211,6 @@ function display_table($chosen_course){
     echo "<br/>";
     echo "<form method = 'GET' enctype='multipart/form-data'>";
     echo "<input type='submit' name='return-to-admin-menu' class='btn btn-info'
-               style='color: white; background: #dc3545;' value='Return to Administrator Menu' formnovalidate/>";
+               style='color: white; background-color: #0b8f47;' value='Return to Administrator Menu' formnovalidate/>";
     echo "</form>";
 }

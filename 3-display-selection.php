@@ -5,30 +5,31 @@ include('0-connect.php');
 if (isset($_GET['table'])) {
     //get table name and uppercase the text. assign to course group (cg) in the teacher's database
     $cg = strtoupper($_GET['table']);
-	$conn = new mysqli("localhost", "root", "", "temp");
-	// Check connection
-	if ($conn->connect_error) {
-		die("Connection failed: " . $conn->connect_error);
-	}
-	$sql = "INSERT INTO temptb (varname, val) VALUES ('table', '$cg')";
-	
-	if (mysqli_query($conn, $sql)) {
-		mysqli_close($conn);
-	}
+    $conn = new mysqli("localhost", "root", "", "temp");
+    // Check connection
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+    $sql = "INSERT INTO temptb (varname, val) VALUES ('table', '$cg')";
+
+    if (mysqli_query($conn, $sql)) {
+        mysqli_close($conn);
+    }
 } else {
-	$conn = new mysqli("localhost", "root", "", "temp");
-	// Check connection
-	if ($conn->connect_error) {
-		die("Connection failed: " . $conn->connect_error);
-	}
-	$sql = "SELECT val FROM temptb WHERE varname = 'table' ORDER BY id DESC LIMIT 1";
-	$result = mysqli_query($conn, $sql);
-	if (mysqli_num_rows($result) > 0) {
-		$row = mysqli_fetch_assoc($result);
-		$tempvar1 = $row["val"];
-		mysqli_close($conn);
-	}
-	$cg = $tempvar1;}
+    $conn = new mysqli("localhost", "root", "", "temp");
+    // Check connection
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+    $sql = "SELECT val FROM temptb WHERE varname = 'table' ORDER BY id DESC LIMIT 1";
+    $result = mysqli_query($conn, $sql);
+    if (mysqli_num_rows($result) > 0) {
+        $row = mysqli_fetch_assoc($result);
+        $tempvar1 = $row["val"];
+        mysqli_close($conn);
+    }
+    $cg = $tempvar1;
+}
 
 // query to get dates from database (no duplicates)
 $append_date = array();
@@ -267,29 +268,29 @@ $sem_a = round((($absentTotal / $total) * 100));
         datasets: [{
             data: presentArray,
             fill: false,
-            borderColor: "rgba(79, 109, 122, 1)",
-            backgroundColor: "rgba(79, 109, 122, .2)",
+            borderColor: "rgba(3,77,37,.8)",
+            backgroundColor: "rgba(4,114,55,.8)",
             borderWidth: 1,
             label: 'PRESENT'
         }, {
             data: lateArray,
             fill: false,
-            borderColor: "rgba(221, 110, 66, 1)",
-            backgroundColor: "rgba(221, 110, 66, .2)",
+            borderColor: "rgba(161, 127, 34, .8)",
+            backgroundColor: "rgba(241, 190, 54, .8)",
             borderWidth: 1,
             label: 'LATE'
         }, {
             data: excusedArray,
             fill: false,
-            borderColor: "rgba(232, 218, 178, 1)",
-            backgroundColor: "rgba(232, 218, 178, .2)",
+            borderColor: "rgba(79, 109, 122, .6)",
+            backgroundColor: "rgba(3,159,226, .6)",
             borderWidth: 1,
             label: 'EXCUSED'
         }, {
             data: absentArray,
             fill: false,
-            borderColor: "rgba(220, 53, 69, 1)",
-            backgroundColor: "rgba(220, 53, 69, .2)",
+            borderColor: "rgb(178,15,0)",
+            backgroundColor: "rgba(242, 47, 34, .4)",
             borderWidth: 1,
             label: 'ABSENT'
         }]

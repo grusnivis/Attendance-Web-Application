@@ -9,24 +9,34 @@ $lastName = '';
 $IDNum = '';
 $password = '';
 $email = '';
-    $conn = new mysqli("localhost", "root", "", "temp");
-    // Check connection
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-    $sql = "INSERT INTO temptb (varname, val) VALUES ('registerTeacherMsg', '')";
-    
-    if (mysqli_query($conn, $sql)) {
-        mysqli_close($conn);
-    }
+$conn = new mysqli("localhost", "root", "", "temp");
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+$sql = "INSERT INTO temptb (varname, val) VALUES ('registerTeacherMsg', '')";
+
+if (mysqli_query($conn, $sql)) {
+    mysqli_close($conn);
+}
+
 
 if (isset ($_POST["register"])) {
     //ucfirst - returns the first character of the string capitalized (https://www.php.net/manual/en/function.ucfirst.php)
     $firstName = strtoupper($_POST["first-name"]);
     $lastName = strtoupper($_POST["last-name"]);
     $IDNum = strtoupper($_POST["IDNum"]); //retains the numbers
-    $password = $_POST["password"];
+    //$password = $_POST["password"];
     $email = $_POST["email"]; //already validated if its in email format through bootstrap
+
+    //creates randomized password
+    //https://www.geeksforgeeks.org/php-random_bytes-function/
+    //https://paragonie.com/blog/2015/07/how-safely-generate-random-strings-and-integers-in-php
+    try {
+        $password = bin2hex(random_bytes('4'));
+    } catch (Exception $e) {
+        echo "Failed to find randomness for password.";
+    }
 
     //turns the password into a hash for security
     $hashedPassWord = password_hash($password, PASSWORD_BCRYPT);
@@ -90,7 +100,7 @@ if (isset ($_POST["register"])) {
             die("Connection failed: " . $conn->connect_error);
         }
         $sql = "INSERT INTO temptb (varname, val) VALUES ('registerTeacherMsg', 'The ID Number is already registered in the database.')";
-        
+
         if (mysqli_query($conn, $sql)) {
             mysqli_close($conn);
         }
@@ -257,18 +267,49 @@ if (isset ($_POST["register"])) {
         $sqlStatement->close();
 
         mysqli_close($creatingTeacherDB);
+
+        //send email for teacher's password
+        // the necessary email addresses
+        // edit the email address here!
+        $from = '19102579@usc.edu.ph';
+        $to = $email;
+
+        //$boundary = md5("random"); // define boundary with a md5 hashed value
+
+        //header
+        //$headers = "MIME-Version: 1.0\r\n"; // Defining the MIME version
+        $headers = "From:" . $from; // Sender Email
+        //$headers .= "Content-Type: text/plain;"; // Defining Content-Type
+        //$headers .= "boundary = $boundary\r\n"; //Defining the Boundary
+
+        //plain text
+        //$body = "--$boundary\r\n";
+        //$body .= "Content-Type: text/plain; charset=ISO-8859-1\r\n";
+        //$body .= "Content-Transfer-Encoding: base64\r\n\r\n";
+        $body = "Welcome, $firstName $lastName! 
         
-        $conn = new mysqli("localhost", "root", "", "temp");
-        // Check connection
-        if ($conn->connect_error) {
-            die("Connection failed: " . $conn->connect_error);
+Your password to access the Attendance Monitoring System is: $password. 
+Please change your password after logging in. 
+Thank you!";
+
+        $sentMailResult = mail($to, "Your Teacher Account Password for the Attendance Monitoring System", $body, $headers);
+
+        if ($sentMailResult) {
+            $conn = new mysqli("localhost", "root", "", "temp");
+            // Check connection
+            if ($conn->connect_error) {
+                die("Connection failed: " . $conn->connect_error);
+            }
+            $sql = "INSERT INTO temptb (varname, val) VALUES ('registerTeacherMsg', 'Teacher registration successful!')";
+
+            if (mysqli_query($conn, $sql)) {
+                mysqli_close($conn);
+            }
+
+            header("Location: register-teacher.php");
+        } else {
+            die("Failed to register the teacher. Check related settings and try again.");
         }
-        $sql = "INSERT INTO temptb (varname, val) VALUES ('registerTeacherMsg', 'Teacher registration successful!')";
-        
-        if (mysqli_query($conn, $sql)) {
-            mysqli_close($conn);
-        }
-        header("Location: register-teacher.php");
     }
 }
 

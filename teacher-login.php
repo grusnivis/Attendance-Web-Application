@@ -25,7 +25,7 @@
 
 <html>
 <head>
-    <title>Attendance Monitoring System</title>
+    <title>Attendance Monitoring System [Teacher]</title>
     <link type="text/css" rel="stylesheet" href="css/teacher-login-style.css"/>
 </head>
 <body>

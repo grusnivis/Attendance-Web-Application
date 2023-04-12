@@ -51,6 +51,7 @@ session_start();
             if ($databaseList[$i] != "admin" &&
                 $databaseList[$i] != "teacher" &&
                 $databaseList[$i] != "authorized users" &&
+                $databaseList[$i] != "temp" &&
                 $databaseList[$i] != "information_schema" &&
                 $databaseList[$i] != "performance_schema" &&
                 $databaseList[$i] != "phpmyadmin" &&

@@ -56,16 +56,13 @@ if (isset($_GET['download_pdf'])) {
     <meta http-equiv="Content-Type"
           content="text/html; charset=UTF-8">
 
-    <title>View Attendance</title>
-
+    <title>View Attendance of Selected Student</title>
+    <!--the inline css is located BELOW this document-->
     <link rel="stylesheet"
           href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-    <!--<link rel="stylesheet" type="text/css"
-        href="css/monitoring-style.css"> -->
 </head>
 
 
@@ -101,9 +98,8 @@ if (isset($_POST['update'])) {
 
 }
 ?>
-
 <nav class="topnav">
-    <a href="../2-create-table.php" style="color: #f2f2f2;"><i class="fa fa-home"
+    <a href="../2-create-table.php"><i class="fa fa-home"
                                                                style="font-size: 27px;text-align:center"></i></a>
     <a href="../3-display-selection.php" style="color: #f2f2f2">Overall Attendance</a>
     <a href="../3.1-class-list.php" style="color: #f2f2f2">Class List</a>
@@ -113,7 +109,7 @@ if (isset($_POST['update'])) {
 </nav>
 
 <div>
-    <a class="btn btn-danger" href="#indiv" title="indiv"
+    <a class="btn btn-info" href="#indiv" title="indiv"
        style="border-radius: 7px; padding: 6px 10px; float:right; margin-right:10px; margin-top:10px; text-align:center">
         Export
     </a>
@@ -122,12 +118,12 @@ if (isset($_POST['update'])) {
     <div class="container pt-5" style="text-align:center">
         <!-- class course code display -->
         <div style="text-align:center">
-            <h1 style="color:#dd6e42;font-size: 28px;"> <?php echo $cg; ?> Attendance</h1>
+            <h1 style="color:#dc3545;font-size: 28px;"> <?php echo $cg; ?> Attendance</h1>
         </div>
     </div>
 
     <div class="tab" style="margin-top:30px">
-        <h1 style=color:#4f6d7a;font-size:22px;>Viewing Attendance of: <?php echo $name[1] . " " . $name[0]; ?></h1>
+        <h1 style=color:#e1af30;font-size:22px;>Viewing Attendance of: <?php echo "<b>" . $name[1] . " " . $name[0] . "</b>"; ?></h1>
         <?php
         // query to get dates from database (no duplicates)
         $append_date = array();
@@ -175,13 +171,13 @@ if (isset($_POST['update'])) {
                                             //echo "<div style=background-color:#4f6d7a>" ."<br/>" . $detail_array['Status'] . "</div>";
 
                                             if ($detail_array['Status'] === "PRESENT") {
-                                                echo "<div style=background-color:#4f6d7a;color:white;margin:0;padding:0;border-radius:5px>" . $detail_array['Status'] . "</div>";
+                                                echo "<div style=background-color:#05a750;color:white;margin:0;padding:0;border-radius:5px>" . $detail_array['Status'] . "</div>";
                                             } elseif ($detail_array['Status'] === "LATE") {
-                                                echo "<div style=background-color:#dd6e42;color:white;margin:0;padding:0;border-radius:5px>" . $detail_array['Status'] . "</div>";
+                                                echo "<div style=background-color:#f1be36;color:white;margin:0;padding:0;border-radius:5px>" . $detail_array['Status'] . "</div>";
                                             } elseif ($detail_array['Status'] === "EXCUSED") {
-                                                echo "<div style=background-color:#e8dab2;color:black;margin:0;padding:0;border-radius:5px>" . $detail_array['Status'] . "</div>";
+                                                echo "<div style=background-color:#039fe2;color:white;margin:0;padding:0;border-radius:5px>" . $detail_array['Status'] . "</div>";
                                             } elseif ($detail_array['Status'] === "ABSENT") {
-                                                echo "<div style=background-color:#dc3545;color:white;margin:0;padding:0;border-radius:5px>" . $detail_array['Status'] . "</div>";
+                                                echo "<div style=background-color:#f22f22;color:white;margin:0;padding:0;border-radius:5px>" . $detail_array['Status'] . "</div>";
                                             }
                                         }
 
@@ -295,9 +291,9 @@ if (isset($_POST['update'])) {
                 $late_pie = (($late / $total) * 360) + $present_pie;
                 $excused_pie = (($excused / $total) * 360) + $late_pie;
             } else {
-                echo "No record has been found";
+                echo "No record has been found!";
             }
-            echo "<h1 style=color:#4f6d7a;font-size:22px;>Attendance Status</h1>";
+            echo "<h1 style=color:#dc3545;font-size:22px;>Attendance Status</h1>";
             ?>
 
             <div class="count_display">
@@ -332,13 +328,13 @@ if (isset($_POST['update'])) {
 
     <!-- added this bit from here-->
     <div class="tab" style="float:right; width:45%;height:fit-content;margin-left:0;margin-bottom:20px; padding:34px 0">
-        <h1 style=color:#4f6d7a;font-size:22px;> Total Attendance Days</h1>
-        <h1 style=color:black;font-size:45px;font-weight:600;><?php echo $total ?></h1>
+        <h1 style="color:#dc3545;font-size:22px;"> Total Attendance Days</h1>
+        <h1 style="color:black;font-size:45px;font-weight:600;"><?php echo $total ?></h1>
         <!-- to here -->
     </div>
 
     <div class="tab" style="float:right; width:45%;height:fit-content;margin-left:0;margin-bottom:50px">
-        <h1 style=color:#4f6d7a;font-size:22px;>Overall Attendance Percentage</h1>
+        <h1 style="color:#dc3545;font-size:22px;">Overall Attendance Percentage</h1>
         <div class="piechart" style="margin-left:16%">
             <div class="legend">
                 <div class="entry">
@@ -369,7 +365,7 @@ if (isset($_POST['update'])) {
             <a class="close" href="#">&times;</a>
 
             <div class="content" style="padding-top:50px">
-                <h2 style="text-align:center;font-size: 28px;">ATTENDANCE REPORT</h2>
+                <h2 style="text-align:center;font-size: 28px;color:#f22f22;">Attendance Report of Student</h2>
                 <?php
                 echo "<table style=margin-left:auto;margin-right:auto;text-align:center>";
                 $show_col = $db->query("SELECT ID,Surname,Name,Date,Status,Time FROM `$cg` 
@@ -434,7 +430,7 @@ if (isset($_POST['update'])) {
                         </div>
 
                         <div class="form-group">
-                            <input class="btn btn-danger" type="submit" name="send_email" value="Send"
+                            <input class="btn btn-info" type="submit" name="send_email" value="Send"
                                    style="margin:15px 20px; padding:10px 17px; border-radius:18px;"/>
                         </div>
                     </form>
@@ -442,7 +438,7 @@ if (isset($_POST['update'])) {
                     <form method="GET" action="#dl_options">
                         <div class="form-group">
                             <input type="hidden" name="name" value="<?php echo $fullname ?>"/>
-                            <input type="submit" name="download" value="Download" class="btn btn-danger"
+                            <input type="submit" name="download" value="Download" class="btn btn-info"
                                    style="border-radius:18px; margin-top:35px; padding:10px 17px;"/>
                         </div>
                     </form>
@@ -471,7 +467,7 @@ if (isset($_POST['update'])) {
 
                     // filename = download path/filename
                     // NOTE: CHANGE FILEPATH ON THE SERVER PC
-                    $filename = "D:/Downloads/" . strtoupper($teacher_name) . "_" . $cg . ".csv";
+                    $filename = "C:/Users/Kath/Downloads/" . strtoupper($teacher_name) . "_" . $cg . ".csv";
                     $file = fopen($filename, "w");
                     fputcsv($file, array("ID#", "Lastname", "Name", "Date", "Status", "Time-in"));
 
@@ -506,7 +502,7 @@ if (isset($_POST['update'])) {
                     $body = "--$boundary\r\n";
                     $body .= "Content-Type: text/plain; charset=ISO-8859-1\r\n";
                     $body .= "Content-Transfer-Encoding: base64\r\n\r\n";
-                    $body .= chunk_split(base64_encode("Requested attendance log from $cg schedule"));
+                    $body .= chunk_split(base64_encode("Requested student attendance log from $cg schedule"));
 
                     //attachment
                     $body .= "--$boundary\r\n";
@@ -534,17 +530,16 @@ if (isset($_POST['update'])) {
 
 <div id="dl_options" class="overlay">
     <div class="popup" style="width:40%; margin:10% 30%; padding: 15px; text-align: center;">
-        <h2 style="font-size: 28px;">Download Options:</h2>
-        <h5>Select a file format to download. For CSV format, the attendance report will be placed in the computer's
-            Downloads folder.</h5>
+        <h2 style="font-size: 28px;color:#f22f22;">Download Options</h2>
+        <h5>Select a file format to download below.</h5>
         <a class="close" href="#">&times;</a>
         <form method="POST" action="/4-monitoring-download.php">
             <div class="form-group">
                 <input type="hidden" name="name" value="<?php echo $fullname ?>"/>
 
-                <input type="submit" name="download_pdf" value="PDF" class="btn btn-danger"
+                <input type="submit" name="download_pdf" value="PDF" class="btn btn-info"
                        style="border-radius:18px; margin-top:35px; padding:10px 17px;"/>
-                <input type="submit" name="download_csv" value="CSV" class="btn btn-danger"
+                <input type="submit" name="download_csv" value="CSV" class="btn btn-info"
                        style="border-radius:18px; margin-top:35px; padding:10px 17px;"/>
             </div>
         </form>
@@ -552,7 +547,7 @@ if (isset($_POST['update'])) {
 </div>
 
 <div style="float:right">
-    <a class="btn btn-danger" href="#edit" title="Edit"
+    <a class="btn btn-info" href="#edit" title="Edit"
        style="border-radius: 50%; padding: 16px;position: fixed;bottom: 50px;right: 40px;">
         <i class="fa fa-pencil"></i>
     </a>
@@ -591,8 +586,8 @@ if (isset($_POST['update'])) {
                 </div>
 
                 <div style="text-align: center;padding-top:30px">
-                    <button type="submit" name="update" class="btn btn-danger"
-                            style="font-size: 13px;"> UPDATE
+                    <button type="submit" name="update" class="btn btn-info"
+                            style="font-size: 13px;"> Update
                     </button>
                 </div>
 
@@ -618,7 +613,7 @@ if (isset($_POST['update'])) {
     }
 
     .btn {
-        background-color: #dc3545;
+        background-color: #039fe2;
         color: white;
         text-align: center;
         display: inline-block;
@@ -633,7 +628,7 @@ if (isset($_POST['update'])) {
     }
 
     .topnav {
-        background-color: #4f6d7a;
+        background-color: #0b8f47;
         overflow: hidden;
     }
 
@@ -650,13 +645,13 @@ if (isset($_POST['update'])) {
     /* Change the color of links on hover */
     .topnav a:hover {
         text-decoration: none;
-        background-color: darkgray;
-        color: black;
+        background-color: #00652c;
+        color: #f2f2f2;
     }
 
     /* Add a color to the active/current link */
     .topnav a.active {
-        background-color: #dd6e42;
+        background-color: #e1af30;
         color: white;
     }
 
@@ -695,10 +690,10 @@ if (isset($_POST['update'])) {
         height: 200px;
         border-radius: 50%;
         background-image: conic-gradient(
-                #4f6d7a <?php echo $present_pie . "deg"; ?>,
-                #dd6e42 0 <?php echo $late_pie . "deg"; ?>,
-                #e8dab2 0 <?php echo $excused_pie . "deg"; ?>,
-                #dc3545 0);
+                #05a750 <?php echo $present_pie . "deg"; ?>,
+                #f1be36 0 <?php echo $late_pie . "deg"; ?>,
+                #039fe2 0 <?php echo $excused_pie . "deg"; ?>,
+                #f22f22 0);
     }
 
     .legend {
@@ -724,19 +719,19 @@ if (isset($_POST['update'])) {
     }
 
     #present-color {
-        background-color: #4f6d7a;
+        background-color: #05a750;
     }
 
     #late-color {
-        background-color: #dd6e42;
+        background-color: #f1be36;
     }
 
     #excused-color {
-        background-color: #e8dab2;
+        background-color: #039fe2;
     }
 
     #absent-color {
-        background-color: #dc3545;
+        background-color: #f22f22;
     }
 
     .accordion {
@@ -845,7 +840,7 @@ if (isset($_POST['update'])) {
     }
 
     .popup .close:hover {
-        color: #dd6e42;
+        color: #f22f22;
     }
 
     .popup .content {
