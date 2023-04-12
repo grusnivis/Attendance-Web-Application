@@ -1,7 +1,6 @@
 <html>
 
 <?php
-session_start();
 
 if (isset($_GET['return-to-admin-menu']) && $_GET['return-to-admin-menu'] == 'Return to Administrator Menu') {
     header("location: admin-main.php");

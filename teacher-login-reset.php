@@ -2,7 +2,6 @@
 THIS PAGE RESETS THE TEACHER'S PASSWORD.
 -->
 <?php
-session_start();
 
 if (isset($_POST['reset-password']) && $_POST['reset-password'] == 'Reset Teacher Password') {
     $teacherSelected = $_POST['teacherSelect'];

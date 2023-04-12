@@ -394,7 +394,7 @@ if (isset($_POST['update'])) {
 	                if (mysqli_query($conn, $sql)) {
                         mysqli_close($conn);
 	                }
-                    $_SESSION['array_student'] = $array;
+//                    $_SESSION['array_student'] = $array;
                 }
 
                 echo "</table>";

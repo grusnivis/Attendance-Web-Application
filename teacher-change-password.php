@@ -2,9 +2,6 @@
 This page is for changing the teacher's password, in that they know their password
 but they want to change it. this page is located at 2-create-table.php
 -->
-<?php
-session_start();
-?>
 
 <html lang="en">
 
