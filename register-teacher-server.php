@@ -78,7 +78,8 @@ if (isset ($_POST["register"])) {
             password VARCHAR(255) NOT NULL,
             firstName VARCHAR(255) NOT NULL,
             lastName VARCHAR(255) NOT NULL,
-            email VARCHAR(255) NOT NULL)
+            email VARCHAR(255) NOT NULL,
+            isPasswordChanged BOOLEAN NOT NULL)
             DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
     $createLoginTableStmt->execute();
     $createLoginTableStmt->close();
@@ -111,8 +112,10 @@ if (isset ($_POST["register"])) {
         ob_end_clean();
     } //if there is NO duplicate id number, then you insert the teacher data to the login table
     else {
-        $statementInsert = $teacherDB->prepare("INSERT INTO `login` (IDNumber, password, firstName, lastName, email) VALUES (?,?,?,?,?)");
-        $statementInsert->bind_param("sssss", $IDNum, $hashedPassWord, $firstName, $lastName, $email);
+        $passwordChanged = 0;
+
+        $statementInsert = $teacherDB->prepare("INSERT INTO `login` (IDNumber, password, firstName, lastName, email, isPasswordChanged) VALUES (?,?,?,?,?,?)");
+        $statementInsert->bind_param("sssssi", $IDNum, $hashedPassWord, $firstName, $lastName, $email, $passwordChanged);
         $statementInsert->execute();
         $statementInsert->close();
 
@@ -189,13 +192,14 @@ if (isset ($_POST["register"])) {
             //implode function: array to string
             $header_csv = array("RFID", "ID Number", "Surname", "Firstname");
             //\r is moving the cursor to the leftmost position. \n is new line
-            fwrite($authorizedUsersCSV, implode(",", $header_csv) . "\r\n");
+            fwrite($authorizedUsersCSV, implode(",", $header_csv));
 
 
             //prepare the array for inserting to the authorized users csv file. RFID is empty by default
             $teacher_csv[0] = array("", $IDNum, $lastName, $firstName);
             //\r is moving the cursor to the leftmost position. \n is new line
-            fwrite($authorizedUsersCSV, utf8_decode(implode(",", $teacher_csv[0])) . "\r\n");
+            fwrite($authorizedUsersCSV, "\n");
+            fwrite($authorizedUsersCSV, utf8_decode(implode(",", $teacher_csv[0])));
             fclose($authorizedUsersCSV);
         } //<-- THIS PART WILL EXECUTE IF THE AUTHORIZEDUSERS.CSV FILE EXISTS -->
         else {
@@ -231,7 +235,8 @@ if (isset ($_POST["register"])) {
             $authorizedUsersCSV = fopen("./ALS_SHARED/Authorized User Masterlist/AuthorizedUsers.csv", "a");
 
             $teacher_csv[0] = array("", $IDNum, $lastName, $firstName);
-            fwrite($authorizedUsersCSV, utf8_encode(implode(",", $teacher_csv[0])) . "\r\n");
+            fwrite($authorizedUsersCSV, "\n");
+            fwrite($authorizedUsersCSV, utf8_encode(implode(",", $teacher_csv[0])));
             fclose($authorizedUsersCSV);
         }
         mysqli_close($authorizedUsersDB);

@@ -90,6 +90,7 @@ else{
     //fetch the password from the db
     while ($row = $result->fetch_assoc()){
         $verifyPassword = $row["password"];
+        $passwordChanged = $row["isPasswordChanged"];
     }
 
     if (password_verify($password, $verifyPassword)){
@@ -103,8 +104,14 @@ else{
 	    if (mysqli_query($conn, $sql)) {
 		    mysqli_close($conn);
 	    }
-//        $_SESSION['currentUser'] = $IDNum;
-        header("location: 2-create-table.php");
+
+        if ($passwordChanged == 0){
+            header("location: teacher-change-password.php");
+        }
+        else{
+            //$_SESSION['currentUser'] = $IDNum;
+            header("location: 2-create-table.php");
+        }
     }
     else{
 	    $conn = new mysqli("localhost", "root", "", "temp");

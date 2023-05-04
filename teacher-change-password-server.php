@@ -28,9 +28,10 @@ if (isset($_POST['change-teacher-password']) && $_POST['change-teacher-password'
     }
     mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
-    $updateTeacherStmt = $teacherLoginDB->prepare("UPDATE login SET password = ? WHERE IDNumber = ?");
+    $changedPassword = 1;
+    $updateTeacherStmt = $teacherLoginDB->prepare("UPDATE login SET password = ?, isPasswordChanged = ? WHERE IDNumber = ?");
     //$_SESSION['currentUser'] is the logged in user's ID number. this is found at database-authenticate.php
-    $updateTeacherStmt->bind_param("ss", $hashedPassWord, $currentUser);
+    $updateTeacherStmt->bind_param("sis", $hashedPassWord,$changedPassword, $currentUser);
     $updateTeacherStmt->execute();
     $updateTeacherStmt->close();
 

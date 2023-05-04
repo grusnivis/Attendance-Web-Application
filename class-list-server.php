@@ -273,6 +273,8 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
                                 //should be like that. example: if you want to get the 2nd column then
                                 //$column = 1; $column < 2
                                 for ($column = 1; $column < 2; $column++) {
+                                    //$var = trim($data2[$column]);
+                                    //$idNumbers[$arrayCount] = settype($data2[$column], "string");
                                     $idNumbers[$arrayCount] = trim($data2[$column]);
                                     $arrayCount++;
                                 }
@@ -284,51 +286,6 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
 
                     //<!--- THIS PART CREATES THE FORMATTED CLASS LIST CSV FILE --->
                     //TAGS: CHECK THIS ERROR, IDNUMBER, UNSHIFT, ARRAY_UNSHIFT
-                    //$idNumIndex = 0;
-                    //prepend the id numbers of the students to the names array!
-                    //foreach ($names as &$line) { //& reference: https://stackoverflow.com/questions/25198792/array-unshift-in-multidimensional-array-insert-at-first-element-in-all-arrays
-                    //    array_unshift($line, $idNumbers[$idNumIndex]);
-                    //    $idNumIndex++;
-                    //}
-
-                    //make a copy of the array $name to use in updating and creating the masterlist csv file
-                    $namesCopy = array();
-                    $namesCopy = $names;
-
-                    //prepare header titles array at the first row of the class list csv file
-                    $header_csv = array("IDNumber", "Lastname", "Firstname");
-
-                    //create the formatted class list csv in the logged-in user's folder and write the prepared array to the file
-                    //this process overwrites the uploaded class list and will be formatted to the id number, last name and first name standard
-                    $handle = fopen($dest_path_temp, "w");
-                    //write UTF-8 byte order mark for outputting special characters to the csv file
-                    //from: https://stackoverflow.com/questions/4348802/how-can-i-output-a-utf-8-csv-in-php-that-excel-will-read-properly
-                    $BOM = chr(0xEF) . chr(0xBB) . chr(0xBF);
-                    fputs($handle, $BOM);
-
-                    //write the header titles to the first row of the csv
-                    fwrite($handle, implode(",", $header_csv) . "\r\n");
-
-                    //use for loop pls. foreach loop somehow duplicates the second to last
-                    //row values for some reason https://stackoverflow.com/questions/1293896/php-array-printing-using-a-loop
-
-                    //counter for the while loop
-                    $i = 0;
-
-                    //write to the prepared class list csv file
-                    while ($i < count($names)) {
-                        //IMPORTANT! use utf8_encode ONCE only to prevent wonky characters when outputting and writing!
-                        fwrite($handle, utf8_encode(implode(",", $names[$i])) . "\r\n");
-                        $i++;
-                    }
-                    /*
-                    foreach ($names as $line){
-                        fputcsv($handle, $line,',');
-                    }
-                    */
-                    fclose($handle);
-
-                    //<!--- THIS PART CREATES THE FORMATTED CLASS LIST CSV FILE --->
                     $idNumIndex = 0;
                     //prepend the id numbers of the students to the names array!
                     foreach ($names as &$line) { //& reference: https://stackoverflow.com/questions/25198792/array-unshift-in-multidimensional-array-insert-at-first-element-in-all-arrays
@@ -352,7 +309,7 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
                     fputs($handle, $BOM);
 
                     //write the header titles to the first row of the csv
-                    fwrite($handle, implode(",", $header_csv) . "\r\n");
+                    fwrite($handle, implode(",", $header_csv));
 
                     //use for loop pls. foreach loop somehow duplicates the second to last
                     //row values for some reason https://stackoverflow.com/questions/1293896/php-array-printing-using-a-loop
@@ -363,7 +320,8 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
                     //write to the prepared class list csv file
                     while ($i < count($names)) {
                         //IMPORTANT! use utf8_encode ONCE only to prevent wonky characters when outputting and writing!
-                        fwrite($handle, utf8_encode(implode(",", $names[$i])) . "\r\n");
+                        fwrite($handle, "\n");
+                        fwrite($handle, utf8_encode(implode(",", $names[$i])));
                         $i++;
                     }
                     /*
@@ -559,13 +517,14 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
                         //write the titles header in the first row of the csv file
                         //implode function: array to string
                         $header_csv = array("RFID", "IDNumber", "Lastname", "Firstname");
-                        fwrite($handle, implode(",", $header_csv) . "\r\n");
+                        fwrite($handle, implode(",", $header_csv));
 
                         //write to the prepared masterlist csv file!
                         $i = 0;
                         while ($i < count($namesCopy)) {
                             //\r is moving the cursor to the leftmost position. \n is new line
-                            fwrite($handle, utf8_encode(implode(",", $namesCopy[$i])) . "\r\n");
+                            fwrite($handle, "\n");
+                            fwrite($handle, utf8_encode(implode(",", $namesCopy[$i])));
                             $i++;
                         }
                     }
@@ -655,7 +614,7 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
 
                         //write the header titles to the masterlist csv file
                         $header_csv = array("RFID", "IDNumber", "Lastname", "Firstname");
-                        fwrite($handle, implode(",", $header_csv) . "\r\n");
+                        fwrite($handle, implode(",", $header_csv));
 
                         //fputcsv has double quotations within the strings WITH SPACES. normal behavior!
                         //https://stackoverflow.com/questions/24591767/php-reading-csv-issue-with-double-quotes
@@ -665,7 +624,8 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
                         //write the updated masterlist to the csv file
                         $i = 0;
                         while ($i < count($masterlistDatabaseArr)) {
-                            fwrite($handle, implode(",", $masterlistDatabaseArr[$i]) . "\r\n");
+                            fwrite($handle, "\n");
+                            fwrite($handle, implode(",", $masterlistDatabaseArr[$i]));
                             $i++;
                         }
                         fclose($handle);
@@ -714,7 +674,8 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
                     $i = 0;
                     while ($i < count($config_csv)) {
                         //\r is moving the cursor to the leftmost position. \n is new line
-                        fwrite($file_open, utf8_encode(implode(",", $config_csv[$i])) . "\r\n");
+                        fwrite($file_open, utf8_encode(implode(",", $config_csv[$i])));
+                        fwrite($file_open, "\n");
                         $i++;
                     }
                     fclose($file_open);
