@@ -1,44 +1,44 @@
 <?php
 // LOOK FOR WAY TO DELETE ALL DOWNLOADED FILES FROM THE HTDOCS
 // CHANGE LOCATION OF DOWNLOAD
-	//declare variables upon start
-	include '0-connect.php';
- 
-	$conn = new mysqli("localhost", "root", "", "temp");
-	// Check connection
-	if ($conn->connect_error) {
-		die("Connection failed: " . $conn->connect_error);
-	}
-	$sql = "SELECT val FROM temptb WHERE varname = 'table' ORDER BY id DESC LIMIT 1";
-	$result = mysqli_query($conn, $sql);
-	if (mysqli_num_rows($result) > 0) {
-		$row = mysqli_fetch_assoc($result);
-		$tempvar1 = $row["val"];
-	}
-	$cg = $tempvar1;
- 
-	$sql = "SELECT val FROM temptb WHERE varname = 'teacherName' ORDER BY id DESC LIMIT 1";
-	$result = mysqli_query($conn, $sql);
-	if (mysqli_num_rows($result) > 0) {
-		$row = mysqli_fetch_assoc($result);
-		$tempvar2 = $row["val"];
-	}
-	$teacher_name = strtoupper($tempvar2);
-	
-	$sql = "SELECT val FROM temptb WHERE varname = 'currentUser' ORDER BY id DESC LIMIT 1";
-	$result = mysqli_query($conn, $sql);
-	if (mysqli_num_rows($result) > 0) {
-		$row = mysqli_fetch_assoc($result);
-		$tv3 = $row["val"];
-	}
-	$currentUser = $tv3;
-	
-	$sql = "INSERT INTO temptb (varname, val) VALUES ('table', '$tempvar1')";
-	if (mysqli_query($conn, $sql)) {
-		mysqli_close($conn);
-	}
-	$array = array();
-	$array_s = array();
+//declare variables upon start
+include '0-connect.php';
+
+$conn = new mysqli("localhost", "root", "", "temp");
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+$sql = "SELECT val FROM temptb WHERE varname = 'table' ORDER BY id DESC LIMIT 1";
+$result = mysqli_query($conn, $sql);
+if (mysqli_num_rows($result) > 0) {
+    $row = mysqli_fetch_assoc($result);
+    $tempvar1 = $row["val"];
+}
+$cg = $tempvar1;
+
+$sql = "SELECT val FROM temptb WHERE varname = 'teacherName' ORDER BY id DESC LIMIT 1";
+$result = mysqli_query($conn, $sql);
+if (mysqli_num_rows($result) > 0) {
+    $row = mysqli_fetch_assoc($result);
+    $tempvar2 = $row["val"];
+}
+$teacher_name = strtoupper($tempvar2);
+
+$sql = "SELECT val FROM temptb WHERE varname = 'currentUser' ORDER BY id DESC LIMIT 1";
+$result = mysqli_query($conn, $sql);
+if (mysqli_num_rows($result) > 0) {
+    $row = mysqli_fetch_assoc($result);
+    $tv3 = $row["val"];
+}
+$currentUser = $tv3;
+
+$sql = "INSERT INTO temptb (varname, val) VALUES ('table', '$tempvar1')";
+if (mysqli_query($conn, $sql)) {
+    mysqli_close($conn);
+}
+$array = array();
+$array_s = array();
 
 ?>
 
@@ -71,16 +71,16 @@ else {
     while ($row = $result->fetch_assoc()) {
         //set the $row[""] to the column you want to use
         $tv4 = $row["email"];
-        
-	    $conn = new mysqli("localhost", "root", "", "temp");
-	    // Check connection
-	    if ($conn->connect_error) {
-		    die("Connection failed: " . $conn->connect_error);
-	    }
-	    $sql = "INSERT INTO temptb (varname, val) VALUES ('teacherEmail', '$tv4')";
-	    if (mysqli_query($conn, $sql)) {
-		    mysqli_close($conn);
-	    }
+
+        $conn = new mysqli("localhost", "root", "", "temp");
+        // Check connection
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+        }
+        $sql = "INSERT INTO temptb (varname, val) VALUES ('teacherEmail', '$tv4')";
+        if (mysqli_query($conn, $sql)) {
+            mysqli_close($conn);
+        }
     }
 }
 
@@ -304,18 +304,84 @@ mysqli_close($teacherEmailDB);
     </div>
 </div>
 
-<div class="tabcontent" style="margin-top:20px">
+<?php
+$percentArray = array();
+$append_student = array();
+?>
+
+<div class="tabcontent" style="float:left; margin-top:20px">
     <?php
+    /*
+    *  START OF ADD
+    */
+$percentArray = array();
+    $show_col = $db->query("SELECT Name,Surname,Date FROM `$cg` WHERE NOT ID = '' AND NOT Name = '' order by Surname");
+
+    if ($show_col->num_rows > 0) {
+
+        // fetches this data if database is not empty
+        while ($row = $show_col->fetch_assoc()) {
+            $d[] = $row['Date'];
+            $n[] = $row['Surname'] . ", " . $row['Name'];
+        }
+
+        $date = array_unique($d);
+        $total = count($date);
+        $name = array_unique($n);
+
+        $count = count($name);
+        $keys = array_keys($name);
+
+        for ($i = 0; $i < $count; $i++) {
+            $present = 0;
+            $late = 0;
+            $excused = 0;
+            $absent = 0;
+
+            $split = explode(", ", $name[$keys[$i]]);
+            $stat = $db->query("SELECT Status FROM `$cg` WHERE Name='$split[1]' AND Surname='$split[0]'");
+
+            while ($s = $stat->fetch_assoc()) {
+                if ($s['Status'] === "PRESENT") {
+                    $present++;
+                }
+
+                if ($s['Status'] === "LATE") {
+                    $late++;
+                }
+            }
+
+            //changed if () to while ()
+            while (($present + $late + $excused + $absent) !== $total) {
+                $absent++;
+            }
+            $append_student[] = $name[$keys[$i]];
+
+            $percent = round(((($present + $late) / $total) * 100)) . "%";
+            $percentArray[] = $percent;
+
+            $array_s[$i] = [$name[$keys[$i]], $present, $late, $excused, $absent, $total, $percent];
+        }
+    }
+    /*
+     *
+     * END OF ADD
+     */
+
+
     echo "<table style=margin-left:auto;margin-right:auto;text-align:center>";
     //echo "<th> ID Number </th>" . "<th> Names </th>";
     echo "<th> Name </th>";
+    echo "<th> Attendance Percentage <br/> (Out of $total days) </th>";
 
     // this query doesn't include the empty ID and name columns
     // update: added (from NOT name to NOT ID)
     $rfid = $db->query("select Concat(RFID, ', ', ID) as rf_id from `$cg` WHERE NOT ID='' group by Name order by Surname");
-
     $concat = $db->query("select Concat(Surname, ', ', Name) as name from `$cg` WHERE NOT name='' group by Name order by Surname");
 
+
+    //$percentArray =  $db->query("select ");
+$i = 0;
     while ($row1 = $rfid->fetch_assoc() and $row = $concat->fetch_assoc()) {
         echo "<tr>";
         // to pass the rfid,id,name,surname to the next page (4-monitoring)
@@ -324,16 +390,22 @@ mysqli_close($teacherEmailDB);
         $name = urlencode($fullname . ", " . $rf_id);
         echo "<td style=text-align:left>" . "<a href=4-monitoring.php/?name=$name> $fullname </a>" . "</td>";
 
+        echo "<td>
+        <div style='width: 200px; height: 20px; background-color: #ddd;'> 
+        <div style='width: $percentArray[$i]; height: 100%; background-color: #4CAF50;'> <p style ='color:black;'><b>$percentArray[$i]</b></p></div></div>";
+        echo "</td>";
         echo "</tr>";
+        $i++;
     }
 
     echo "</table>";
     ?>
 </div>
 
+
 <div id="classlist" class="overlay">
     <div class="popup">
-        <h2 style = "color:#dc3545;">Class List Attendance Report (Detailed)</h2>
+        <h2 style="color:#dc3545;">Class List Attendance Report (Detailed)</h2>
         <a class="close" href="#">&times;</a>
 
         <div class="content">
@@ -360,16 +432,16 @@ mysqli_close($teacherEmailDB);
                     }
                     echo "</tr>";
                 }
-	            $conn = new mysqli("localhost", "root", "", "temp");
-	            // Check connection
-	            if ($conn->connect_error) {
-		            die("Connection failed: " . $conn->connect_error);
-	            }
+                $conn = new mysqli("localhost", "root", "", "temp");
+                // Check connection
+                if ($conn->connect_error) {
+                    die("Connection failed: " . $conn->connect_error);
+                }
                 $array_str = serialize($array);
-	            $sql = "INSERT INTO temptb (varname, val) VALUES ('array_copy', '$array_str')";
-	            if (mysqli_query($conn, $sql)) {
-		            mysqli_close($conn);
-	            }
+                $sql = "INSERT INTO temptb (varname, val) VALUES ('array_copy', '$array_str')";
+                if (mysqli_query($conn, $sql)) {
+                    mysqli_close($conn);
+                }
             }
 
             echo "</table>";
@@ -403,20 +475,21 @@ mysqli_close($teacherEmailDB);
 
                     <div class="form-group">
                         <?php
-	                        $conn = new mysqli("localhost", "root", "", "temp");
-	                        // Check connection
-	                        if ($conn->connect_error) {
-		                        die("Connection failed: " . $conn->connect_error);
-	                        }
-	                        $sql = "SELECT val FROM temptb WHERE varname = 'teacherEmail' ORDER BY id DESC LIMIT 1";
-	                        $result = mysqli_query($conn, $sql);
-	                        if (mysqli_num_rows($result) > 0) {
-		                        $row = mysqli_fetch_assoc($result);
-		                        $tEmail = $row["val"];
-	                        }
+                        $conn = new mysqli("localhost", "root", "", "temp");
+                        // Check connection
+                        if ($conn->connect_error) {
+                            die("Connection failed: " . $conn->connect_error);
+                        }
+                        $sql = "SELECT val FROM temptb WHERE varname = 'teacherEmail' ORDER BY id DESC LIMIT 1";
+                        $result = mysqli_query($conn, $sql);
+                        if (mysqli_num_rows($result) > 0) {
+                            $row = mysqli_fetch_assoc($result);
+                            $tEmail = $row["val"];
+                        }
                         ?>
                         <input class="form-control" type="email" name="email" placeholder="Email Address" required
-                               style="margin-top:20px; padding:15px 80px;text-align:center" value = "<?php echo $tEmail?>"/>
+                               style="margin-top:20px; padding:15px 80px;text-align:center"
+                               value="<?php echo $tEmail ?>"/>
                     </div>
 
                     <div class="form-group">
@@ -436,25 +509,25 @@ mysqli_close($teacherEmailDB);
             <?php
             //jump
             if (array_key_exists('Dl', $_GET)) {
-	            $conn = new mysqli("localhost", "root", "", "temp");
-	            // Check connection
-	            if ($conn->connect_error) {
-		            die("Connection failed: " . $conn->connect_error);
-	            }
+                $conn = new mysqli("localhost", "root", "", "temp");
+                // Check connection
+                if ($conn->connect_error) {
+                    die("Connection failed: " . $conn->connect_error);
+                }
                 $array_str = serialize($array);
-	            $sql = "INSERT INTO temptb (varname, val) VALUES ('array_copy', '$array_str')";
-	
-	            if (mysqli_query($conn, $sql)) {
-		            $sql = "INSERT INTO temptb (varname, val) VALUES ('sd_copy', 'Not Applicable')";
-		
-		            if (mysqli_query($conn, $sql)) {
-			            $sql = "INSERT INTO temptb (varname, val) VALUES ('ed_copy', 'Not Applicable')";
-			
-			            if (mysqli_query($conn, $sql)) {
-				            mysqli_close($conn);
-			            }
-		            }
-	            }
+                $sql = "INSERT INTO temptb (varname, val) VALUES ('array_copy', '$array_str')";
+
+                if (mysqli_query($conn, $sql)) {
+                    $sql = "INSERT INTO temptb (varname, val) VALUES ('sd_copy', 'Not Applicable')";
+
+                    if (mysqli_query($conn, $sql)) {
+                        $sql = "INSERT INTO temptb (varname, val) VALUES ('ed_copy', 'Not Applicable')";
+
+                        if (mysqli_query($conn, $sql)) {
+                            mysqli_close($conn);
+                        }
+                    }
+                }
                 dl($array, $teacher_name, $cg);
             }
 
@@ -526,7 +599,7 @@ mysqli_close($teacherEmailDB);
 <div id="dl_options_s" class="overlay">
     <div class="popup" style="width:40%; margin:10% 30%">
 
-        <h2 style = "color: #d9534f;">Download Options</h2>
+        <h2 style="color: #d9534f;">Download Options</h2>
         <h5>Select a file format to download below.</h5>
         <a class="close" href="3.1-class-list.php#">&times;</a>
         <form method="POST" action="3.1-class-list-download-log.php">
@@ -556,10 +629,10 @@ mysqli_close($teacherEmailDB);
     fclose($file);
     ?>
     <div class="popup" style="width:40%; margin:10% 30%">
-        <h2 style = "color: #d9534f;">Download Options</h2>
+        <h2 style="color: #d9534f;">Download Options</h2>
         <h5>Select a file format to download below.</h5>
         <a class="close" href="3.1-class-list.php#">&times;</a>
-        <form method="POST" action = "3.1-class-list-download-log.php">
+        <form method="POST" action="3.1-class-list-download-log.php">
             <div class="form-group">
                 <input type="submit" name="download_pdf" value="PDF" class="btn btn-info"
                        style="border-radius:18px; margin-top:35px; padding:10px 17px;"/>
@@ -572,7 +645,7 @@ mysqli_close($teacherEmailDB);
 
 <div id="summary" class="overlay">
     <div class="popup">
-        <h2 style = "color:#dc3545;">Class List Attendance Report (Summary)</h2>
+        <h2 style="color:#dc3545;">Class List Attendance Report (Summary)</h2>
         <a class="close" href="#">&times;</a>
 
         <!-- THIS PART IS FOR THE WEB APP POPUP-->
@@ -644,6 +717,7 @@ mysqli_close($teacherEmailDB);
 
                     echo "<td>";
                     echo $name[$keys[$i]];
+                    $append_student[] = $name[$keys[$i]];
                     echo "</td>";
 
                     echo "<td>";
@@ -669,21 +743,22 @@ mysqli_close($teacherEmailDB);
                     echo "<td>";
                     $percent = round(((($present + $late) / $total) * 100)) . "%";
                     echo $percent;
+                    $percentArray[] = $percent;
                     echo "</td>";
 
                     $array_s[$i] = [$name[$keys[$i]], $present, $late, $excused, $absent, $total, $percent];
                     echo "</tr>";
                 }
-	            $conn = new mysqli("localhost", "root", "", "temp");
-	            // Check connection
-	            if ($conn->connect_error) {
-		            die("Connection failed: " . $conn->connect_error);
-	            }
+                $conn = new mysqli("localhost", "root", "", "temp");
+                // Check connection
+                if ($conn->connect_error) {
+                    die("Connection failed: " . $conn->connect_error);
+                }
                 $array_s_str = serialize($array_s);
                 $sql = "INSERT INTO temptb (varname, val) VALUES ('array_s_copy', '$array_s_str')";
-	            if (mysqli_query($conn, $sql)) {
-		            mysqli_close($conn);
-	            }
+                if (mysqli_query($conn, $sql)) {
+                    mysqli_close($conn);
+                }
                 echo "</table>";
             }
 
@@ -691,12 +766,12 @@ mysqli_close($teacherEmailDB);
             {
                 // filename = download path/filename
                 $tempname = "./Exporting/" . strtoupper($teacher_name) . "_" . $cg . "_Summary" . ".csv";
-	            // Create connection directly to specific database
-	            $conn = new mysqli('localhost', 'root', '', 'temp');
-	            $sql = "INSERT INTO temptb (varname, val) VALUES ('file', '$tempname')";
-	            if (mysqli_query($conn, $sql)) {
-		            mysqli_close($conn);
-	            }
+                // Create connection directly to specific database
+                $conn = new mysqli('localhost', 'root', '', 'temp');
+                $sql = "INSERT INTO temptb (varname, val) VALUES ('file', '$tempname')";
+                if (mysqli_query($conn, $sql)) {
+                    mysqli_close($conn);
+                }
                 $file = fopen($tempname, "w");
                 fputcsv($file, array("Name", "Present", "Late", "Excused", "Absent", "Attendance Days", "% Presence"));
 
@@ -715,7 +790,8 @@ mysqli_close($teacherEmailDB);
                 <form enctype="multipart/form-data" method="POST" action=""
                       style="margin-top:20px; margin-left:25%; display:flex; text-align:center">
                     <div class="form-group">
-                        <input class="form-control" type="email" name="email" placeholder="Email Address" value="<?php echo $tEmail?>" required
+                        <input class="form-control" type="email" name="email" placeholder="Email Address"
+                               value="<?php echo $tEmail ?>" required
                                style="margin-top:20px; padding:15px 80px;text-align:center"/>
                     </div>
 
@@ -740,26 +816,26 @@ mysqli_close($teacherEmailDB);
             //jump
             // if Download button was clicked
             if (array_key_exists('Dl_s', $_GET)) {
-	            $conn = new mysqli("localhost", "root", "", "temp");
-	            // Check connection
-	            if ($conn->connect_error) {
-		            die("Connection failed: " . $conn->connect_error);
-	            }
-             
+                $conn = new mysqli("localhost", "root", "", "temp");
+                // Check connection
+                if ($conn->connect_error) {
+                    die("Connection failed: " . $conn->connect_error);
+                }
+
                 $array_s_str = serialize($array_s);
-	            $sql = "INSERT INTO temptb (varname, val) VALUES ('array_s_copy', '$array_s_str')";
-	
-	            if (mysqli_query($conn, $sql)) {
-		            $sql = "INSERT INTO temptb (varname, val) VALUES ('sd_copy', 'Not Applicable')";
-		
-		            if (mysqli_query($conn, $sql)) {
-			            $sql = "INSERT INTO temptb (varname, val) VALUES ('ed_copy', 'Not Applicable')";
-			
-			            if (mysqli_query($conn, $sql)) {
-				            mysqli_close($conn);
-			            }
-		            }
-	            }
+                $sql = "INSERT INTO temptb (varname, val) VALUES ('array_s_copy', '$array_s_str')";
+
+                if (mysqli_query($conn, $sql)) {
+                    $sql = "INSERT INTO temptb (varname, val) VALUES ('sd_copy', 'Not Applicable')";
+
+                    if (mysqli_query($conn, $sql)) {
+                        $sql = "INSERT INTO temptb (varname, val) VALUES ('ed_copy', 'Not Applicable')";
+
+                        if (mysqli_query($conn, $sql)) {
+                            mysqli_close($conn);
+                        }
+                    }
+                }
                 dl_s($array_s, $teacher_name, $cg);
             }
 

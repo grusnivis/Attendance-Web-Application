@@ -120,8 +120,8 @@ $sqlStatement->bind_param("ss", $rfidTeacher, $idnumTeacher);
 //try: https://stackoverflow.com/questions/39818418/using-php-to-insert-array-into-mysql-database
 foreach ($AuthorizedUsersArr as $row) {
     //rfid, id
-    $rfidTeacher = $row[0];
-    $idnumTeacher = $row[1];
+    @$rfidTeacher = $row[0];
+    @$idnumTeacher = $row[1];
     $sqlStatement->execute();
 }
 $sqlStatement->close();
