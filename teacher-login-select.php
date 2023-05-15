@@ -1,7 +1,6 @@
 <!--
 THIS PAGE (teacher-login-select.php) IS FOR DISPLAYING THE TEACHER DROPDOWN MENU TO BE SELECTED.
-After selecting the teacher to be updated, it will
-redirect to teacher-login-modify.php
+it will go to teacher-login-reset.php for the sending of the randomly generated password.
 -->
 
 <?php
@@ -16,7 +15,7 @@ if (!($sqlStatement->num_rows == 1)){ //if there are no databases with "teacher 
 	$conn = new mysqli('localhost', 'root', '', 'temp');
 	// Obtain last value of variable user as 1 row
 	// format goes "SELECT value column FROM temptb table WHERE variable is user ORDER BY last input of id in descending with 1 row
-	$sql = "INSERT INTO temptb (varname, val) VALUES ('checkTeacherAttendanceDB', 'There are no registered teachers in the web application.')";
+	$sql = "INSERT INTO temptb (varname, val) VALUES ('checkTeacherAttendanceDB', 'There are no registered teachers in the teacher database.')";
 	if (mysqli_query($conn, $sql)) {
 		mysqli_close($conn);
 	}

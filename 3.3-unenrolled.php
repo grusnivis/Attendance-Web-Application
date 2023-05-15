@@ -65,6 +65,7 @@ if (isset($_POST['update-info']) && $_POST['update-info'] == "UPDATE STUDENT RFI
     $lastname = trim(strtoupper($_POST['studentLName']));
     $firstname = trim(strtoupper($_POST['studentFName']));
 
+
     $query = "UPDATE `$cg` SET ID = '$id_number', Surname = '$lastname', Name = '$firstname' WHERE RFID = '$rfid_tag'";
     $query_run = mysqli_query($db, $query);
 
@@ -291,8 +292,8 @@ if (isset($_POST['update-info']) && $_POST['update-info'] == "UPDATE STUDENT RFI
                                style="font-size: 13px;" value="FIND STUDENT RFID"/>
                     </div>
 
-                    <!-- THIS PART SHOWS IF THE RFID SEARCH IN MASTERLIST IS UNSUCCESSFUL -->
                     <?php
+                    // THIS PART SHOWS IF THE RFID SEARCH IN MASTERLIST IS UNSUCCESSFUL
                     // Create connection directly to specific database
                     $conn = new mysqli('localhost', 'root', '', 'temp');
                     // Obtain last value of variable user as 1 row
@@ -317,6 +318,8 @@ if (isset($_POST['update-info']) && $_POST['update-info'] == "UPDATE STUDENT RFI
                             mysqli_close($conn);
                         }
                     }
+
+                    // <-- THIS PART WILL EXECUTE FOR THE EDITING OF THE STUDENT RFIDS PROMPT -->
                     // Create connection directly to specific database
                     $conn = new mysqli('localhost', 'root', '', 'temp');
                     // Obtain last value of variable user as 1 row
@@ -342,6 +345,7 @@ if (isset($_POST['update-info']) && $_POST['update-info'] == "UPDATE STUDENT RFI
 
                         }
                     }
+
                     ?>
                 </div>
             </form>
@@ -350,6 +354,7 @@ if (isset($_POST['update-info']) && $_POST['update-info'] == "UPDATE STUDENT RFI
     </div>
 </div>
 
+<!-- THIS PART WILL EXECUTE IF THE RFID IS FOUND IN THE MASTERLIST -->
 <div id="fillOutStudentRFID" class="overlay">
     <div class="popup">
         <h2 style="color:#d9534f;">Edit Student RFID Information</h2>

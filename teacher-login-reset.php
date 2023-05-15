@@ -23,6 +23,7 @@ if (isset($_POST['reset-password']) && $_POST['reset-password'] == 'Reset Teache
 	    }
         //$_SESSION['modifyLoginMsg'] = "No teacher selected!";
         header("Location: teacher-login-select.php");
+        exit;
     }
     else{
         $teacherLoginDB = mysqli_connect('localhost', 'root', '', 'teacher');
@@ -62,7 +63,7 @@ if (isset($_POST['reset-password']) && $_POST['reset-password'] == 'Reset Teache
             //turns the password into a hash for security
             $hashedPassWord = password_hash($passwordReset, PASSWORD_BCRYPT);
 
-            //insert unhashed password
+            //insert hashed password
             $statementInsert = $teacherLoginDB->prepare("UPDATE login SET password = ? WHERE IDNumber = ?");
             $statementInsert->bind_param("ss", $hashedPassWord, $teacherIDNum);
             $statementInsert->execute();
@@ -109,6 +110,7 @@ Thank you!";
                 }
 
                 header("Location: teacher-login-select.php");
+                exit;
             } else {
                 $conn = new mysqli("localhost", "root", "", "temp");
                 // Check connection
@@ -125,12 +127,16 @@ Thank you!";
             }
             $searchTeacherStmt->close();
             mysqli_close($teacherLoginDB);
+            header("Location: teacher-login-select.php");
+            exit;
         }
     }
 }
 
 //returns to administrator menu
 if (isset($_POST['return-to-admin-main']) && $_POST['return-to-admin-main'] == 'Return to Administrator Menu'){
+    ob_end_clean();
     header("location: admin-main.php");
+    exit;
 }
 ?>

@@ -14,7 +14,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-    <form method="POST" action="register-teacher-server.php" enctype="multipart/form-data">
+    <form method="POST" action="register-teacher-server.php" enctype="multipart/form-data" accept-charset="utf-8">
         <table>
             <h1> Register Teacher </h1>
             <p class="instructions">
@@ -112,9 +112,9 @@
 		    $tempvar1 = $row["val"];
 	    }
 	    if (isset($tempvar1) && $tempvar1) {
-	    echo '<p class = "notification">';
+	    echo '<p class = "notification"><b>';
 	    echo $tempvar1;
-	    echo '</p>';
+	    echo '</b></p>';
 	    
 	    $sql = "INSERT INTO temptb (varname, val) VALUES ('registerTeacherMsg', '')";
 	    if (mysqli_query($conn, $sql)) {

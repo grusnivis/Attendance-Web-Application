@@ -130,6 +130,11 @@ select{
 p{
     color: #dd6e42;
 }
+
+p.notification {
+    color:#e1af30;
+}
+
 .read-file-con{
     width: 390px;
     height: 900px;

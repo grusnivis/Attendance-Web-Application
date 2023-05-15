@@ -23,8 +23,8 @@ if (mysqli_query($conn, $sql)) {
 
 if (isset ($_POST["register"])) {
     //ucfirst - returns the first character of the string capitalized (https://www.php.net/manual/en/function.ucfirst.php)
-    $firstName = strtoupper($_POST["first-name"]);
-    $lastName = strtoupper($_POST["last-name"]);
+    $firstName = mb_strtoupper($_POST["first-name"]);
+    $lastName = mb_strtoupper($_POST["last-name"]);
     $IDNum = strtoupper($_POST["IDNum"]); //retains the numbers
     //$password = $_POST["password"];
     $email = $_POST["email"]; //already validated if its in email format through bootstrap
@@ -91,25 +91,69 @@ if (isset ($_POST["register"])) {
     $rowResults = mysqli_fetch_array($statementDuplicate, MYSQLI_ASSOC);
     $countDup = mysqli_num_rows($statementDuplicate);
     //$countDup = $statementDuplicate->num_rows;
+    //THE TEACHER DB IS CLOSED AT LINE 167!
 
+    //<!-- CREATE THE AUTHORIZED USERS DATABASE IF IT DOES NOT EXIST AND CHECK IF THE ID NUMBER IS ALSO REGISTERED THERE -->
+    //create the "authorized users" database if it does not exist
+    $dbConnect = mysqli_connect("localhost", "root", "");
+    $dbName = "authorized users";
 
-    //if there is a duplicate id number
-    if ($countDup >= 1) {
+    if ($dbConnect->connect_error) {
+        //die() kinda functions like an exit() function
+        exit('Error connecting to the server.');
+    }
+    mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+
+    $sqlStatement = $dbConnect->prepare("CREATE DATABASE IF NOT EXISTS `$dbName` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+    $sqlStatement->execute();
+    $sqlStatement->close();
+    mysqli_close($dbConnect);
+
+    //connect to authorized users database
+    $authorizedUsersDB = mysqli_connect("localhost", "root", "", $dbName);
+
+    if ($authorizedUsersDB->connect_error) {
+        //die() kinda functions like an exit() function
+        exit('Error connecting to the authorized users database in the server.');
+    }
+    mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+
+    //create the "users" table on the "authorized users" database if it does not exist
+    $sqlStatement = $authorizedUsersDB->prepare("CREATE TABLE IF NOT EXISTS users (
+                    RFID VARCHAR(255),
+                    IDNumber VARCHAR(255) PRIMARY KEY,
+                    Lastname VARCHAR(255),
+                    Firstname VARCHAR(255)) 
+                    DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+    $sqlStatement->execute();
+    $sqlStatement->close();
+
+    //check if the authorized users database has the duplicate RFID to be registered
+    //it does duplicate checking first to see if the teacher is registered already
+    $checkAuthorizedUsersDBDuplicate = "SELECT * FROM users WHERE IDNumber = '$IDNum'";
+    $statementDuplicate = mysqli_query($authorizedUsersDB, $checkAuthorizedUsersDBDuplicate);
+    $rowResults = mysqli_fetch_array($statementDuplicate, MYSQLI_ASSOC);
+    $authUsersCountDup = mysqli_num_rows($statementDuplicate);
+    //THE AUTHORIZED USERS DATABASE IS CLOSED AT LINE 261!
+
+    //if there is a duplicate id number on both the teacher and authorized users databases
+    if (($countDup >= 1) && ($authUsersCountDup >= 1)) {
         $conn = new mysqli("localhost", "root", "", "temp");
         // Check connection
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
         }
-        $sql = "INSERT INTO temptb (varname, val) VALUES ('registerTeacherMsg', 'The ID Number is already registered in the database.')";
+        $sql = "INSERT INTO temptb (varname, val) VALUES ('registerTeacherMsg', 'The ID Number is already registered in either the Teacher or the Authorized Users databases.')";
 
         if (mysqli_query($conn, $sql)) {
             mysqli_close($conn);
         }
 //        $_SESSION['registerTeacherMsg'] = "The ID number is already registered in the database.";
         mysqli_close($teacherDB);
-        //returns to the register teacher page. it "aborts" the rest of the process
-        header("Location: register-teacher.php");
         ob_end_clean();
+        //returns to the register teacher page. Call the exit function after it to "abort" the rest of the process
+        header("Location: register-teacher.php");
+        exit;
     } //if there is NO duplicate id number, then you insert the teacher data to the login table
     else {
         $passwordChanged = 0;
@@ -124,6 +168,7 @@ if (isset ($_POST["register"])) {
 
         //<--- PART 1.1: connect to the authorized users database and insert the registered teacher
         //using the AuthorizedUsers.csv specific format
+        //NOTE: YOU ARE ALREADY CONNECTED TO THE AUTHORIZED USRS DB!
 
         //creating the Authorized User Masterlist folder
         //take note of the slashes and the period!
@@ -135,40 +180,6 @@ if (isset ($_POST["register"])) {
             //https://www.php.net/manual/en/function.mkdir.php
             mkdir($authorizedUsersFolder, 0777, true);
         }
-
-        //create the "authorized users" database if it does not exist
-        $dbConnect = mysqli_connect("localhost", "root", "");
-        $dbName = "authorized users";
-
-        if ($dbConnect->connect_error) {
-            //die() kinda functions like an exit() function
-            exit('Error connecting to the server.');
-        }
-        mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
-
-        $sqlStatement = $dbConnect->prepare("CREATE DATABASE IF NOT EXISTS `$dbName` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
-        $sqlStatement->execute();
-        $sqlStatement->close();
-        mysqli_close($dbConnect);
-
-        //connect to authorized users database
-        $authorizedUsersDB = mysqli_connect("localhost", "root", "", $dbName);
-
-        if ($authorizedUsersDB->connect_error) {
-            //die() kinda functions like an exit() function
-            exit('Error connecting to the authorized users database in the server.');
-        }
-        mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
-
-        //create the "users" table on the "authorized users" database if it does not exist
-        $sqlStatement = $authorizedUsersDB->prepare("CREATE TABLE IF NOT EXISTS users (
-                    RFID VARCHAR(255),
-                    IDNumber VARCHAR(255) PRIMARY KEY,
-                    Lastname VARCHAR(255),
-                    Firstname VARCHAR(255)) 
-                    DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
-        $sqlStatement->execute();
-        $sqlStatement->close();
 
         //insert the newly registered teacher to the authorized users database
         //the rfid variable is empty by default to the database
@@ -199,7 +210,11 @@ if (isset ($_POST["register"])) {
             $teacher_csv[0] = array("", $IDNum, $lastName, $firstName);
             //\r is moving the cursor to the leftmost position. \n is new line
             fwrite($authorizedUsersCSV, "\n");
-            fwrite($authorizedUsersCSV, utf8_decode(implode(",", $teacher_csv[0])));
+            //fwrite($authorizedUsersCSV, utf8_encode(implode(",", $teacher_csv[0])));
+            $data = implode(",", $teacher_csv[0]);
+            //mb_convert_encoding and mb_detect_encoding serves to display special characters on csv files.
+            $data_utf8 = mb_convert_encoding($data, 'UTF-8', mb_detect_encoding($data));
+            fwrite($authorizedUsersCSV, $data_utf8);
             fclose($authorizedUsersCSV);
         } //<-- THIS PART WILL EXECUTE IF THE AUTHORIZEDUSERS.CSV FILE EXISTS -->
         else {
@@ -236,7 +251,11 @@ if (isset ($_POST["register"])) {
 
             $teacher_csv[0] = array("", $IDNum, $lastName, $firstName);
             fwrite($authorizedUsersCSV, "\n");
-            fwrite($authorizedUsersCSV, utf8_encode(implode(",", $teacher_csv[0])));
+            //fwrite($authorizedUsersCSV, utf8_encode(implode(",", $teacher_csv[0])));
+            //230507 UPDATE: USING MB_CONVERT_ENCODING WORKS!
+            $data = implode(",", $teacher_csv[0]);
+            $data_utf8 = mb_convert_encoding($data, 'UTF-8', mb_detect_encoding($data));
+            fwrite($authorizedUsersCSV, $data_utf8);
             fclose($authorizedUsersCSV);
         }
         mysqli_close($authorizedUsersDB);
@@ -312,6 +331,7 @@ Thank you!";
             }
 
             header("Location: register-teacher.php");
+            exit;
         } else {
             die("Failed to register the teacher. Check related settings and try again.");
         }
@@ -319,8 +339,8 @@ Thank you!";
 }
 
 if (isset ($_POST["return-to-admin-main"])) {
+    ob_end_clean();
     header("location: admin-main.php");
+    exit;
 }
-
-ob_end_clean();
 ?>

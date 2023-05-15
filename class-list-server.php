@@ -421,7 +421,7 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
 
                         //[CHECK] what if same teacher but different courses/partners
                         $teamTeachSchedule = $schedule[0][2] . " " . $schedule[0][3] . "-G" . $schedule[0][1];
-                        $sqlStatement = $teamTeachDB->prepare("INSERT INTO teamteach(Teacher, Partner, Course) VALUES ('$teacherFullname','$partnerFullname','$teamTeachSchedule')");
+                        $sqlStatement = $teamTeachDB->prepare("INSERT IGNORE INTO teamteach(Teacher, Partner, Course) VALUES ('$teacherFullname','$partnerFullname','$teamTeachSchedule')");
                         $sqlStatement->execute();
                         $sqlStatement->close();
 
@@ -491,7 +491,7 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
                         //insert the class list array to the student table in the masterlist database
                         //insert multidimensional array to mysql https://stackoverflow.com/questions/7746720/inserting-a-multi-dimensional-php-array-into-a-mysql-database
                         //try: https://stackoverflow.com/questions/39818418/using-php-to-insert-array-into-mysql-database
-                        $sqlStatement = $studentMasterlistDB->prepare("INSERT INTO `student` (RFID, ID, Lastname, Firstname) VALUES (?,?,?,?)");
+                        $sqlStatement = $studentMasterlistDB->prepare("INSERT IGNORE INTO `student` (RFID, ID, Lastname, Firstname) VALUES (?,?,?,?)");
                         $sqlStatement->bind_param("ssss", $rfid, $id, $lastnm, $firstnm);
 
                         //loop each execution to insert each student data
@@ -576,10 +576,11 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
                         //echo "Done updating masterlist database from masterlist csv array!" . "<br/>";
 
                         //prepare the query to insert the class list array contents to the masterlist database with no duplicates
+                        //IGNORE statement inserts the values that aren't in the table yet. if there are duplicates, it won't insert them and just generates a warning
                         $sqlStatement = $studentMasterlistDB->prepare("INSERT IGNORE INTO student (ID, Lastname, Firstname) VALUES (?,?,?)");
                         $sqlStatement->bind_param("sss", $idnum, $lastnm, $firstnm);
 
-                        //insert the class list array to the database while skipping the duplicate ones
+                        //insert the class list array to the database while skipping the duplicate ones (see IGNORE statement)
                         foreach ($namesCopy as $row) {
                             //id number, last name, first name
                             //if NULL (empty) is in the particular rfid column, it will be skipped. hence the indexing starts at the id number (zero) to the firstnm (2)
@@ -684,6 +685,7 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
                     //TAGS: FILE ADDRESS, DIRECTORY, FOLDER
                     rename($configFile, "./ALS_SHARED/" . $firstName . " " . $lastName . "/" . $configFile);
 
+                    //<!--THIS PART WILL PUT THE CLASS LIST'S CONFIGURATION FILE TO THE SELECTED PARTNER'S FOLDER!-->
                     if ($teamTeachPartner != '0'){
                         //TAGS: FILE ADDRESS, DIRECTORY, FOLDER
                         if (!copy($dest_path_temp, './ALS_SHARED/' . $partnerFirstName . " " . $partnerLastName . '/' . $configFile)) {
@@ -723,6 +725,7 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
 	}
 //$_SESSION['classListServerMsg'] = $classListServerMsg;
 
-header("Location: class-list-upload.php");
 ob_end_clean();
+header("Location: class-list-upload.php");
+exit;
 ?>

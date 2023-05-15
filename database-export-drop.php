@@ -61,7 +61,7 @@ session_start();
                 $databaseList[$i] != "masterlist"){
                 //skip those databases. do not export them
                 $dbListVar = $databaseList[$i];
-                echo "<option value = '". $databaseList[$i] ."'>". strtoupper($databaseList[$i]) ."</option>";
+                echo "<option value = '". $databaseList[$i] ."'>". mb_strtoupper($databaseList[$i]) ."</option>";
             }
             $i++;
         }
@@ -120,7 +120,7 @@ session_start();
 		        mysqli_close($conn);
 	        }
         if (isset($tv2) && $tv2) {
-	        echo '<p class = "notification">' . $tv2 . '</p>';
+	        echo '<p class = "notification"><b>' . $tv2 . '</b></p>';
 	
 	        $conn = new mysqli("localhost", "root", "", "temp");
 	        // Check connection
