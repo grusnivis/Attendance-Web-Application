@@ -64,8 +64,9 @@ if (isset($_POST['reset-password']) && $_POST['reset-password'] == 'Reset Teache
             $hashedPassWord = password_hash($passwordReset, PASSWORD_BCRYPT);
 
             //insert hashed password
-            $statementInsert = $teacherLoginDB->prepare("UPDATE login SET password = ? WHERE IDNumber = ?");
-            $statementInsert->bind_param("ss", $hashedPassWord, $teacherIDNum);
+            $isPasswordChanged = 0;
+            $statementInsert = $teacherLoginDB->prepare("UPDATE login SET password = ?, isPasswordChanged = ? WHERE IDNumber = ?");
+            $statementInsert->bind_param("sis", $hashedPassWord, $isPasswordChanged, $teacherIDNum);
             $statementInsert->execute();
             $statementInsert->close();
 

@@ -118,7 +118,7 @@ if (isset($_POST['update'])) {
     <div class="container pt-5" style="text-align:center">
         <!-- class course code display -->
         <div style="text-align:center">
-            <h1 style="color:#dc3545;font-size: 28px;"> <?php echo $cg; ?> Attendance</h1>
+            <h1 style="color:#000000;font-size: 28px;"> <?php echo $cg; ?> Attendance</h1>
         </div>
     </div>
 
@@ -293,7 +293,7 @@ if (isset($_POST['update'])) {
             } else {
                 echo "No record has been found!";
             }
-            echo "<h1 style=color:#dc3545;font-size:22px;>Attendance Status</h1>";
+            echo "<h1 style=color:#000000;font-size:22px;>Attendance Status</h1>";
             ?>
 
             <div class="count_display">
@@ -328,13 +328,13 @@ if (isset($_POST['update'])) {
 
     <!-- added this bit from here-->
     <div class="tab" style="float:right; width:45%;height:fit-content;margin-left:0;margin-bottom:20px; padding:34px 0">
-        <h1 style="color:#dc3545;font-size:22px;"> Total Attendance Days</h1>
+        <h1 style="color:#000000;font-size:22px;"> Total Attendance Days</h1>
         <h1 style="color:black;font-size:45px;font-weight:600;"><?php echo $total ?></h1>
         <!-- to here -->
     </div>
 
     <div class="tab" style="float:right; width:45%;height:fit-content;margin-left:0;margin-bottom:50px">
-        <h1 style="color:#dc3545;font-size:22px;">Overall Attendance Percentage</h1>
+        <h1 style="color:#000000;font-size:22px;">Overall Attendance Percentage</h1>
         <div class="piechart" style="margin-left:16%">
             <div class="legend">
                 <div class="entry">
@@ -365,7 +365,7 @@ if (isset($_POST['update'])) {
             <a class="close" href="#">&times;</a>
 
             <div class="content" style="padding-top:50px">
-                <h2 style="text-align:center;font-size: 28px;color:#f22f22;">Attendance Report of Student</h2>
+                <h2 style="text-align:center;font-size: 28px;color:#000000;">Attendance Report of Student</h2>
                 <?php
                 echo "<table style=margin-left:auto;margin-right:auto;text-align:center>";
                 $show_col = $db->query("SELECT ID,Surname,Name,Date,Status,Time FROM `$cg` 
@@ -515,7 +515,7 @@ if (isset($_POST['update'])) {
                     $sentMailResult = mail($to, "Exported Attendance Log", $body, $headers);
 
                     if ($sentMailResult) {
-                        echo "<h3 style=text-align:center>Attendance report sent successfully!</h3>";
+                        echo "<h3 style='text-align:center; color:#0b8f47'>Attendance report sent successfully!</h3>";
                         unlink($filename); // delete the file after attachment sent.
                     } else {
                         die("Sorry but the email could not be sent.
@@ -530,7 +530,7 @@ if (isset($_POST['update'])) {
 
 <div id="dl_options" class="overlay">
     <div class="popup" style="width:40%; margin:10% 30%; padding: 15px; text-align: center;">
-        <h2 style="font-size: 28px;color:#f22f22;">Download Options</h2>
+        <h2 style="font-size: 28px;color:#000000;">Download Options</h2>
         <h5>Select a file format to download below.</h5>
         <a class="close" href="#">&times;</a>
         <form method="POST" action="/4-monitoring-download.php">
@@ -628,7 +628,7 @@ if (isset($_POST['update'])) {
     }
 
     .topnav {
-        background-color: #0b8f47;
+        background-color: #173513;
         overflow: hidden;
     }
 

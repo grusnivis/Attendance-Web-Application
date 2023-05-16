@@ -131,10 +131,6 @@ p{
     color: #dd6e42;
 }
 
-p.notification {
-    color:#e1af30;
-}
-
 .read-file-con{
     width: 390px;
     height: 900px;
@@ -145,7 +141,7 @@ p.notification {
 }
 
 h1{
-    color:#d9534f;
+    color:#173513;
     font-family: "Lato", sans-serif;
     font-size: 30px;
 }

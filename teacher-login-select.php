@@ -86,9 +86,17 @@ else{
 		        $tempvar1 = $row["val"];
 	        }
 	        if (isset($tempvar1) && $tempvar1) {
-	        echo '<p class = "notification">';
-	        echo $tempvar1;
-	        echo '</p>';
+                if ($tempvar1 == "The selected teacher's new password is sent successfully!"){
+                    echo '<p class = "notification" style = "color:#0b8f47">';
+                    echo $tempvar1;
+                    echo '</p>';
+                }
+                else{
+                    echo '<p class = "notification" style = "color:#d9534f">';
+                    echo $tempvar1;
+                    echo '</p>';
+                }
+
 	        $sql = "INSERT INTO temptb (varname, val) VALUES ('modifyLoginMsg', '')";
 	
 	        if (mysqli_query($conn, $sql)) {

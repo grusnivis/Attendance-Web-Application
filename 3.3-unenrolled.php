@@ -113,7 +113,7 @@ if (isset($_POST['update-info']) && $_POST['update-info'] == "UPDATE STUDENT RFI
 <div class="container pt-5" style="text-align:center">
     <!-- class course code display -->
     <div style="text-align:center">
-        <h1 style="color:#d9534f;font-size: 28px;"> <?php echo $cg; ?> Attendance</h1>
+        <h1 style="color:#000000;font-size: 28px;"> <?php echo $cg; ?> Attendance</h1>
     </div>
 
     <div class=tab style=margin-top:50px>
@@ -160,7 +160,7 @@ if (isset($_POST['update-info']) && $_POST['update-info'] == "UPDATE STUDENT RFI
 
 <div id="findStudentRFIDPopup" class="overlay">
     <div class="popup">
-        <h2 style="color:#d9534f;">EDIT ATTENDANCE<br/>(for Unenrolled RFIDs)</h2>
+        <h2 style="color:#000000;">EDIT ATTENDANCE<br/>(for Unenrolled RFIDs)</h2>
         <a class="close" href="#">&times;</a>
         <h3 style="font-size:medium;color:#dd6e42;text-align:left;padding-left:30px">
         </h3>
@@ -357,7 +357,7 @@ if (isset($_POST['update-info']) && $_POST['update-info'] == "UPDATE STUDENT RFI
 <!-- THIS PART WILL EXECUTE IF THE RFID IS FOUND IN THE MASTERLIST -->
 <div id="fillOutStudentRFID" class="overlay">
     <div class="popup">
-        <h2 style="color:#d9534f;">Edit Student RFID Information</h2>
+        <h2 style="color:#000000;">Edit Student RFID Information</h2>
         <a class="close" href="#">&times;</a>
         <h3 style="font-size:medium;color:#dd6e42;text-align:left;padding-left:30px">
         </h3>

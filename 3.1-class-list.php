@@ -283,7 +283,7 @@ mysqli_close($teacherEmailDB);
     <!-- class course code display -->
     <div style="text-align:center">
         <!--[NAME OF THE SELECTED ATTENDANCE LOG] + "Attendance Log" -->
-        <h1 style="color:#dc3545;font-size: 28px;"> <?php echo $cg; ?> Attendance Log</h1>
+        <h1 style="color:#000000;font-size: 28px;"> <?php echo $cg; ?> Attendance Log</h1>
     </div>
 
     <!-- Export (Summary) Button -->
@@ -405,7 +405,7 @@ $i = 0;
 
 <div id="classlist" class="overlay">
     <div class="popup">
-        <h2 style="color:#dc3545;">Class List Attendance Report (Detailed)</h2>
+        <h2 style="color:#000000;">Class List Attendance Report (Detailed)</h2>
         <a class="close" href="#">&times;</a>
 
         <div class="content">
@@ -584,7 +584,7 @@ $i = 0;
                 $sentMailResult = mail($to, "Exported Attendance Log", $body, $headers);
 
                 if ($sentMailResult) {
-                    echo "<h3 style=text-align:center>Attendance report sent successfully!<h3>";
+                    echo "<h3 style='text-align:center; color:#0b8f47'>Attendance report sent successfully!<h3>";
                     unlink($filename); // delete the file after attachment sent.
                 } else {
                     die("Sorry, but the attendance log file could not be sent. Please try again!");
@@ -599,7 +599,7 @@ $i = 0;
 <div id="dl_options_s" class="overlay">
     <div class="popup" style="width:40%; margin:10% 30%">
 
-        <h2 style="color: #d9534f;">Download Options</h2>
+        <h2 style="color: #000000;">Download Options</h2>
         <h5>Select a file format to download below.</h5>
         <a class="close" href="3.1-class-list.php#">&times;</a>
         <form method="POST" action="3.1-class-list-download-log.php">
@@ -629,7 +629,7 @@ $i = 0;
     fclose($file);
     ?>
     <div class="popup" style="width:40%; margin:10% 30%">
-        <h2 style="color: #d9534f;">Download Options</h2>
+        <h2 style="color: #000000;">Download Options</h2>
         <h5>Select a file format to download below.</h5>
         <a class="close" href="3.1-class-list.php#">&times;</a>
         <form method="POST" action="3.1-class-list-download-log.php">
@@ -645,7 +645,7 @@ $i = 0;
 
 <div id="summary" class="overlay">
     <div class="popup">
-        <h2 style="color:#dc3545;">Class List Attendance Report (Summary)</h2>
+        <h2 style="color:#000000;">Class List Attendance Report (Summary)</h2>
         <a class="close" href="#">&times;</a>
 
         <!-- THIS PART IS FOR THE WEB APP POPUP-->
@@ -890,7 +890,7 @@ $i = 0;
                 $sentMailResult = mail($to, "Exported Attendance Log", $body, $headers);
 
                 if ($sentMailResult) {
-                    echo "<h3 style=text-align:center>Attendance report sent successfully!</h3>";
+                    echo "<h3 style='text-align:center; color:#0b8f47'>Attendance report sent successfully!</h3>";
                     //unlink($tempname); // delete the file after attachment sent.
                 } else {
                     die("Sorry, but the attendance log file could not be sent. Please try again!");

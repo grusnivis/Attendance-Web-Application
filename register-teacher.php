@@ -112,9 +112,16 @@
 		    $tempvar1 = $row["val"];
 	    }
 	    if (isset($tempvar1) && $tempvar1) {
-	    echo '<p class = "notification"><b>';
-	    echo $tempvar1;
-	    echo '</b></p>';
+            if ($tempvar1 == "The ID Number is already registered in either the Teacher or the Authorized Users databases."){
+                echo '<p class = "notification" style = "color:#d9534f"><b>';
+                echo $tempvar1;
+                echo '</b></p>';
+            }
+            else{
+                echo '<p class = "notification" style = "color:#0b8f47"><b>';
+                echo $tempvar1;
+                echo '</b></p>';
+            }
 	    
 	    $sql = "INSERT INTO temptb (varname, val) VALUES ('registerTeacherMsg', '')";
 	    if (mysqli_query($conn, $sql)) {

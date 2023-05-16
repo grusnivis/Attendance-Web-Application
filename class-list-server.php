@@ -4,20 +4,19 @@
 ob_start();
 header('Content-Encoding: utf-8');
 header('Content-Type: text/csv; charset=utf-8mb4');
-
 //session_start();
-	$conn = new mysqli("localhost", "root", "", "temp");
-	// Check connection
-	if ($conn->connect_error) {
-		die("Connection failed: " . $conn->connect_error);
-	}
-	$sql = "SELECT val FROM temptb WHERE varname = 'currentUser' ORDER BY id DESC LIMIT 1";
-	$result = mysqli_query($conn, $sql);
-	if (mysqli_num_rows($result) > 0) {
-		$row = mysqli_fetch_assoc($result);
-		$tempvar1 = $row["val"];
-		mysqli_close($conn);
-	}
+$conn = new mysqli("localhost", "root", "", "temp");
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+$sql = "SELECT val FROM temptb WHERE varname = 'currentUser' ORDER BY id DESC LIMIT 1";
+$result = mysqli_query($conn, $sql);
+if (mysqli_num_rows($result) > 0) {
+    $row = mysqli_fetch_assoc($result);
+    $tempvar1 = $row["val"];
+    mysqli_close($conn);
+}
 //print_r($_SESSION);
 
 $classListServerMsg = '';
@@ -33,10 +32,9 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
 
         $allowedfileExtensions = array('csv'); //array('txt', 'xls', 'csv');
 
-        if (!in_array($fileExtension, $allowedfileExtensions)){
+        if (!in_array($fileExtension, $allowedfileExtensions)) {
             $classListServerMsg = 'The file uploaded is not a .csv file. Please make sure the class list file uploaded is in the .csv format.';
-        }
-        else {
+        } else {
             //<!--- GET THE "CLASS LIST" PART OF THE CLASS LIST FILE --->
             //set the row to get the schedule and the time in the class list
             $row = 1;
@@ -97,7 +95,7 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
 
 
             //<!--- [IF STMT] THIS PART CHECKS IF THE UPLOADED FILE IS REALLY THE CLASS LIST--->
-            if (($classListCheck[0] == "Class List") && ($uniCheck[1] == "UNIVERSITY OF SAN CARLOS"))  {
+            if (($classListCheck[0] == "Class List") && ($uniCheck[1] == "UNIVERSITY OF SAN CARLOS")) {
                 //<!--- MOVE THE UPLOADED FILE TO THE CURRENTLY LOGGED-IN USER'S FOLDER --->
                 /* similar to this: https://www.javatpoint.com/php-mysql-login-system */
 
@@ -203,7 +201,7 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
                 $startingTime = str_replace(array('\'', '"', ',', ';', ':', '<', '>'), '', $time[0][2]);
                 $endingTime = str_replace(array('\'', '"', ',', ';', ':', '<', '>'), '', $time[0][5]);
                 //formatting is: STARTING TIME AM/PM - ENDING TIME AM/PM
-                $finalTime = $time[0][0] . " - " . $startingTime . " " . $time[0][3] . " - " . $endingTime . " ". $time[0][6];
+                $finalTime = $time[0][0] . " - " . $startingTime . " " . $time[0][3] . " - " . $endingTime . " " . $time[0][6];
                 //$finalTime = trim($finalTime); //removes whitespaces before and after the time string
 
                 //uses the teamteach selection to see if the file needs to prepend a "TM -" before the new filename
@@ -331,103 +329,308 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
                     */
                     fclose($handle);
 
-                    //<!--- THIS PART WILL BE EXECUTED IF A PARTNER IS SELECTED ASIDE FROM "NOT A TEAM TEACH COURSE"
-                    if ($teamTeachPartner != '0') {
-                        //<!--- PART 1: copying the formatted class list to the partner's folder --->
-                        //move the created file to the currently logged-in user's designated folder
-                        /* similar to this: https://www.javatpoint.com/php-mysql-login-system */
+                    //<!-- TEAM TEACH DATABASE ACTIONS -->
 
+                    //<!--- PART 1: creating teamTeach database with teamteach table --->
+                    $teamTeachDB = mysqli_connect('localhost', 'root', '');
+                    $dbName = "teamteach";
+
+                    //check the connection to the localhost host
+                    if ($teamTeachDB->connect_error) {
+                        //die() kinda functions like an exit() function
+                        exit('Error connecting to the server.');
+                    }
+                    mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+
+                    //create the "teamteach" database if it does not exist
+                    //mysql and sessions (use curly braces) https://stackoverflow.com/questions/5746614/session-variable-in-mysql-query
+                    $sqlStatement = $teamTeachDB->prepare("CREATE DATABASE IF NOT EXISTS " . $dbName . " DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+                    $sqlStatement->execute();
+                    $sqlStatement->close();
+                    mysqli_close($teamTeachDB);
+
+                    //connect to the teamteach database
+                    $teamTeachDB = mysqli_connect('localhost', 'root', '', 'teamteach');
+                    if ($teamTeachDB->connect_error) {
+                        //die() kinda functions like an exit() function
+                        exit('Error connecting to the teamteach database in the server.');
+                    }
+                    mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+
+                    //create the "teamteach" table in the "teamteach" database if it does not exist, while setting utf-8 formatting
+                    $sqlStatement = $teamTeachDB->prepare("CREATE TABLE IF NOT EXISTS teamteach(
+                                    Teacher VARCHAR(255),
+                                    Partner VARCHAR(255),
+                                    Course VARCHAR(255) PRIMARY KEY)
+                                    DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+                    $sqlStatement->execute();
+
+                    //create the course for inserting to the database if needed
+                    $teamTeachSchedule = $schedule[0][2] . " " . $schedule[0][3] . "-G" . $schedule[0][1];
+
+                    //check for teamteach duplicates
+                    $teamTeachCheck = "SELECT * FROM teamteach WHERE Course = '$teamTeachSchedule'";
+                    $teamTeachDuplicate = mysqli_query($teamTeachDB, $teamTeachCheck);
+                    $rowResults = mysqli_fetch_array($teamTeachDuplicate, MYSQLI_ASSOC);
+                    $teamTeachCountDup = mysqli_num_rows($teamTeachDuplicate);
+
+                    //if the course already has a team teach
+                    if ($teamTeachCountDup > 0) {
+                        //get the previously stored partner for that particular class list first
                         //database credentials, running MySQL with default setting (user 'root' with no password)
                         //attempt to connect to MySQL "teacher" database
-                        $databaseLink = mysqli_connect('localhost', 'root', '', 'teacher');
+                        $teamTeachPartnerDB = mysqli_connect('localhost', 'root', '', 'teamteach');
 
                         //check the connection to the database
-                        if ($databaseLink->connect_error) {
-                            //die() kinda functions like an exit() function
-                            exit('Error connecting to the teacher database in the server.');
-                        }
-                        mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
-
-                        //on the 'teacher' database, 'login' table in phpmyadmin, search for the id number in the session array (of the logged-in user)
-                        //mysql and sessions (use curly braces) https://stackoverflow.com/questions/5746614/session-variable-in-mysql-query
-                        $sqlStatement = $databaseLink->prepare("SELECT * FROM login WHERE IDNumber = ?");
-                        $sqlStatement->bind_param("s", $teamTeachPartner);
-                        $sqlStatement->execute();
-                        //$result = mysqli_query($databaseLink, $sql);
-                        //$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
-                        //$count = mysqli_num_rows($result);
-
-                        //<!--- THIS PART FETCHES THE PARTNER'S FIRST AND LAST NAME TO CREATE THE FILE PATH --->
-                        //from: https://websitebeaver.com/prepared-statements-in-php-mysqli-to-prevent-sql-injection
-                        //this uses sql prepared statements
-                        $result = $sqlStatement->get_result();
-                        if ($result->num_rows == 0) {
-                            exit('The teacher is not registered in the database. Failed in copying the file to the partner folder.');
-                        }
-                        while ($row = $result->fetch_assoc()) {
-                            //set the $row[""] to the column you want to use
-                            $partnerFirstName = $row["firstName"];
-                            $partnerLastName = $row["lastName"];
-                        }
-                        $sqlStatement->close();
-                        mysqli_close($databaseLink);
-
-                        //TAGS: FILE ADDRESS, DIRECTORY, FOLDER
-                        if (!copy($dest_path_temp, './ALS_SHARED/' . $partnerFirstName . " " . $partnerLastName . '/' . $newFileName . ".csv")) {
-                            die("Copying to the selected partner's folder failed.");
-                        }
-                        else {
-                            echo("The formatted class list has been copied to the partner's folder!");
-                        }
-
-                        //<!--- PART 2: creating teamTeach database with teamteach table --->
-                        $teamTeachDB = mysqli_connect('localhost', 'root', '');
-                        $dbName = "teamteach";
-
-                        //check the connection to the localhost host
-                        if ($teamTeachDB->connect_error) {
-                            //die() kinda functions like an exit() function
-                            exit('Error connecting to the server.');
-                        }
-                        mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
-
-                        //create the "teamteach" database if it does not exist
-                        //mysql and sessions (use curly braces) https://stackoverflow.com/questions/5746614/session-variable-in-mysql-query
-                        $sqlStatement = $teamTeachDB->prepare("CREATE DATABASE IF NOT EXISTS " . $dbName . " DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
-                        $sqlStatement->execute();
-                        $sqlStatement->close();
-                        mysqli_close($teamTeachDB);
-
-                        //connect to the teamteach database
-                        $teamTeachDB = mysqli_connect('localhost', 'root', '', 'teamteach');
-                        if ($teamTeachDB->connect_error) {
+                        if ($teamTeachPartnerDB->connect_error) {
                             //die() kinda functions like an exit() function
                             exit('Error connecting to the teamteach database in the server.');
                         }
                         mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
-                        //create the "teamteach" table in the "teamteach" database if it does not exist, while setting utf-8 formatting
-                        $sqlStatement = $teamTeachDB->prepare("CREATE TABLE IF NOT EXISTS teamteach(
-                                    Teacher VARCHAR(255),
-                                    Partner VARCHAR(255),
-                                    Course VARCHAR(255))
-                                    DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+                        //on the 'teamteach' database, 'teamteach' table in phpmyadmin, search for the course
+                        $sqlStatement = $teamTeachPartnerDB->prepare("SELECT * FROM teamteach WHERE Course = ?");
+                        $sqlStatement->bind_param("s", $teamTeachSchedule);
                         $sqlStatement->execute();
 
-                        //create the teacher name for inserting the currently logged-in user's name to the teamteach database
-                        $teacherFullname = $firstName . " " . $lastName;
-                        //create the partner's name for inserting them to the teamteach database
-                        $partnerFullname = $partnerFirstName . " " . $partnerLastName;
 
-                        //[CHECK] what if same teacher but different courses/partners
-                        $teamTeachSchedule = $schedule[0][2] . " " . $schedule[0][3] . "-G" . $schedule[0][1];
-                        $sqlStatement = $teamTeachDB->prepare("INSERT IGNORE INTO teamteach(Teacher, Partner, Course) VALUES ('$teacherFullname','$partnerFullname','$teamTeachSchedule')");
-                        $sqlStatement->execute();
+                        //get the recorded partner for that class list in the database
+                        $result = $sqlStatement->get_result();
+                        if ($result->num_rows == 0) {
+                            exit('The partner is not registered in the database.');
+                        }
+                        while ($row = $result->fetch_assoc()) {
+                            //set the $row[""] to the column you want to use
+                            $previousPartnerName = $row["Partner"];
+                        }
                         $sqlStatement->close();
 
-                        //close connection to the teamteach database
-                        mysqli_close($teamTeachDB);
+                        //if the user selected the "not a team teach class" prior to uploading the class list,
+                        // and the class was a team teach class before.
+                        //[IF STATEMENT] if the user selected "NOT A TEAM TEACH CLASS"
+                        if ($teamTeachPartner == '0') {
+                            //delete the row of the associated class list in the team teach database!
+                            $sql = "DELETE FROM teamteach WHERE Course = '$teamTeachSchedule'";
+                            $result = $teamTeachDB->query($sql);
+                            if ($result === true) {
+                                echo "Row deleted successfully.";
+                            } else {
+                                echo "Error deleting row: " . $conn->error;
+                            }
+                            $teamTeachPartnerDB->close();
+
+                            //then, delete the previously registered partner's associated class list files
+                            //added "TM -" since the file name does not have it (check previous lines of code, particulary $newFileName setting)
+                            $teamTeachFileName = "TM - " . $newFileName . ".csv";
+                            $teamTeachConfigFilename = "TM - " . $newFileName . "_config.csv";
+
+                            //previous partner's directory is this one!
+                            $previousPartnerFolderPath = "./ALS_SHARED/" . $previousPartnerName . "/";
+
+                            //make an array of files to delete!
+                            $teamTeachFiles = array($teamTeachFileName, $teamTeachConfigFilename);
+
+                            foreach ($teamTeachFiles as $filename) {
+                                //search for files that have the matching file names
+                                $files = glob($previousPartnerFolderPath . $filename);
+
+                                //loop through the matching files and delete!
+                                foreach ($files as $file) {
+                                    if (is_file($file)) {
+                                        unlink($file); //unlink() will delete the file selected
+                                    }
+                                } //will do nothing if no match
+                            }
+
+                            //delete also the team teach files in the teacher directory.
+                            //the newly uploaded class list without the "TM" is spared
+                            //note: teacher folder is $uploadFileDir.
+                            foreach ($teamTeachFiles as $filename) {
+                                //search for files that have the matching file names
+                                $files = glob($uploadFileDir . $filename);
+
+                                //loop through matching files and delete!
+                                foreach ($files as $file) {
+                                    if (is_file($file)) {
+                                        unlink($file); //unlink() will delete the file selected
+                                    }
+                                } //will do nothing if no match
+                            }
+                        }
+                        //[ELSE STATEMENT] if the user selected a new partner
+                        //if the teacher selected a new teacher, remove the duplicate in the db, and insert the new partner,
+                        //remove the previous partner's files, and copy the class lists to the new partner instead
+                        else {
+                            //database credentials, running MySQL with default setting (user 'root' with no password)
+                            //attempt to connect to MySQL "teacher" database
+                            $databaseLink = mysqli_connect('localhost', 'root', '', 'teacher');
+
+                            //check the connection to the database
+                            if ($databaseLink->connect_error) {
+                                //die() kinda functions like an exit() function
+                                exit('Error connecting to the teacher database in the server.');
+                            }
+                            mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+
+                            //on the 'teacher' database, 'login' table in phpmyadmin, search for the id number
+                            //mysql and sessions (use curly braces) https://stackoverflow.com/questions/5746614/session-variable-in-mysql-query
+                            $sqlStatement = $databaseLink->prepare("SELECT * FROM login WHERE IDNumber = ?");
+                            $sqlStatement->bind_param("s", $teamTeachPartner);
+                            $sqlStatement->execute();
+                            //$result = mysqli_query($databaseLink, $sql);
+                            //$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+                            //$count = mysqli_num_rows($result);
+
+                            //<!--- THIS PART FETCHES THE NEW PARTNER'S FIRST AND LAST NAME TO CREATE THE FILE PATH --->
+                            //from: https://websitebeaver.com/prepared-statements-in-php-mysqli-to-prevent-sql-injection
+                            //this uses sql prepared statements
+                            $result = $sqlStatement->get_result();
+                            if ($result->num_rows == 0) {
+                                exit('The partner is not registered in the database.');
+                            }
+                            while ($row = $result->fetch_assoc()) {
+                                //set the $row[""] to the column you want to use
+                                $partnerFirstName = $row["firstName"];
+                                $partnerLastName = $row["lastName"];
+                            }
+                            $sqlStatement->close();
+                            mysqli_close($databaseLink);
+
+                            //create the file path for the new partner!
+                            //$partnerFolderPath = './ALS_SHARED/' . $partnerFirstName . " " . $partnerLastName . '/' . $teamTeachFileName . ".csv";
+                            $partnerFolderPath = './ALS_SHARED/' . $partnerFirstName . " " . $partnerLastName . '/';
+
+                            //create the teacher name for inserting the currently logged-in user's name to the teamteach database
+                            $teacherFullname = $firstName . " " . $lastName;
+                            //create the NEW partner's name for inserting them to the teamteach database
+                            $partnerFullname = $partnerFirstName . " " . $partnerLastName;
+
+                            //update the associated class list values in the database
+                            $sqlStatement = $teamTeachDB->prepare("UPDATE teamteach SET Teacher = ?, Partner = ? WHERE Course = ?");
+                            $sqlStatement->bind_param("sss", $teacherFullname, $partnerFullname, $teamTeachSchedule);
+                            $sqlStatement->execute();
+                            $sqlStatement->close();
+
+                            //remove the previous partner's team teach files
+                            //then, delete the previously registered partner's associated class list files
+                            $teamTeachFileName = $newFileName . ".csv";
+                            $teamTeachConfigFilename = $newFileName . "_config.csv";
+
+                            //previous partner's directory is this one!
+                            $previousPartnerFolderPath = "./ALS_SHARED/" . $previousPartnerName . "/";
+
+                            //make an array of files to delete!
+                            $teamTeachFiles = array($teamTeachFileName, $teamTeachConfigFilename);
+
+                            foreach ($teamTeachFiles as $filename) {
+                                //search for files that have the matching pattern
+                                $files = glob($previousPartnerFolderPath . $filename);
+
+                                //loop through matching files and delete!
+                                foreach ($files as $file) {
+                                    if (is_file($file)) {
+                                        unlink($file);
+                                    }
+                                } //will do nothing if no match
+                            }
+                            //copy the team teach file from the teacher to the NEW partner
+                            //TAGS: FILE ADDRESS, DIRECTORY, FOLDER
+                            if (!copy($dest_path_temp, './ALS_SHARED/' . $partnerFirstName . " " . $partnerLastName . '/' . $newFileName . ".csv")) {
+                                die("Copying to the selected partner's folder failed.");
+                            } else {
+                                echo("The formatted class list has been copied to the partner's folder!");
+                            }
+                        }
                     }
+                    //if there is no duplicates, check if the user selected the team teach class option!
+                    else{
+                        if ($teamTeachPartner != '0'){
+                            //database credentials, running MySQL with default setting (user 'root' with no password)
+                            //attempt to connect to MySQL "teacher" database
+                            $databaseLink = mysqli_connect('localhost', 'root', '', 'teacher');
+
+                            //check the connection to the database
+                            if ($databaseLink->connect_error) {
+                                //die() kinda functions like an exit() function
+                                exit('Error connecting to the teacher database in the server.');
+                            }
+                            mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+
+                            //on the 'teacher' database, 'login' table in phpmyadmin, search for the id number
+                            //mysql and sessions (use curly braces) https://stackoverflow.com/questions/5746614/session-variable-in-mysql-query
+                            $sqlStatement = $databaseLink->prepare("SELECT * FROM login WHERE IDNumber = ?");
+                            $sqlStatement->bind_param("s", $teamTeachPartner);
+                            $sqlStatement->execute();
+                            //$result = mysqli_query($databaseLink, $sql);
+                            //$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+                            //$count = mysqli_num_rows($result);
+
+                            //<!--- THIS PART FETCHES THE PARTNER'S FIRST AND LAST NAME TO CREATE THE FILE PATH --->
+                            //from: https://websitebeaver.com/prepared-statements-in-php-mysqli-to-prevent-sql-injection
+                            //this uses sql prepared statements
+                            $result = $sqlStatement->get_result();
+                            if ($result->num_rows == 0) {
+                                exit('The teacher is not registered in the database.');
+                            }
+                            while ($row = $result->fetch_assoc()) {
+                                //set the $row[""] to the column you want to use
+                                $partnerFirstName = $row["firstName"];
+                                $partnerLastName = $row["lastName"];
+                            }
+                            $sqlStatement->close();
+                            mysqli_close($databaseLink);
+
+                            //create the file path for the partner!
+                            //$partnerFolderPath = './ALS_SHARED/' . $partnerFirstName . " " . $partnerLastName . '/' . $teamTeachFileName . ".csv";
+                            $partnerFolderPath = './ALS_SHARED/' . $partnerFirstName . " " . $partnerLastName . '/';
+
+                            //create the teacher name for inserting the currently logged-in user's name to the teamteach database
+                            $teacherFullname = $firstName . " " . $lastName;
+                            //create the NEW partner's name for inserting them to the teamteach database
+                            $partnerFullname = $partnerFirstName . " " . $partnerLastName;
+
+                            //update the associated class list values in the database
+                            $sqlStatement = $teamTeachDB->prepare("INSERT INTO teamteach (Teacher, Partner, Course) VALUES (?,?,?)");
+                            $sqlStatement->bind_param("sss", $teacherFullname, $partnerFullname, $teamTeachSchedule);
+                            $sqlStatement->execute();
+                            $sqlStatement->close();
+
+                            //<!-- DELETE THE NON TEAM TEACH FILES IF THEY EXIST -->
+                            //situation: if the teacher initially uploads the class list as "without team teach",
+                            //but after that they decided the class list will be team teach after all
+                            $nonTeamTeachFileName = str_replace("TM - ", "", $newFileName . ".csv");
+                            $nonTeamTeachConfigFilename = str_replace("TM - ", "", $newFileName . "_config.csv");
+
+                            //set the teacher's directory
+                            $teacherFolderPath = "./ALS_SHARED/" . $teacherFullname . "/";
+
+                            //make an array of files to delete!
+                            $nonTeamTeachFiles = array($nonTeamTeachFileName, $nonTeamTeachConfigFilename);
+
+                            foreach ($nonTeamTeachFiles as $filename) {
+                                //search for files that have the matching file names
+                                $files = glob($teacherFolderPath . $filename);
+
+                                //loop through the matching files and delete!
+                                foreach ($files as $file) {
+                                    if (is_file($file)) {
+                                        unlink($file); //unlink() will delete the file selected
+                                    }
+                                } //will do nothing if no match!
+                            }
+
+                            //copy the team teach file from the teacher to the partner
+                            //TAGS: FILE ADDRESS, DIRECTORY, FOLDER
+                            if (!copy($dest_path_temp, './ALS_SHARED/' . $partnerFirstName . " " . $partnerLastName . '/' . $newFileName . ".csv")) {
+                                die("Copying to the selected partner's folder failed.");
+                            } else {
+                                echo("The formatted class list has been copied to the partner's folder!");
+                            }
+                        }
+                        mysqli_close($teamTeachDB);
+                        //if the user did not select the team teach partner, then it won't do anything.
+                    }
+                    //<!--END TEAM TEACH PROCESS--->
 
                     //<!--- THIS PART IS TO CREATE/UPDATE STUDENT MASTERLIST DATABASE AND CSV FILE --->
 
@@ -435,7 +638,7 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
 
                     //<!--- CREATE THE STUDENT MASTERLIST DIRECTORY IF IT DOES NOT EXIST --->
                     //TAGS: FILE ADDRESS, DIRECTORY, FOLDER
-                    if (!file_exists("./ALS_SHARED/Student Masterlist/")){
+                    if (!file_exists("./ALS_SHARED/Student Masterlist/")) {
                         //TAGS: FILE ADDRESS, DIRECTORY, FOLDER
                         mkdir("./ALS_SHARED/Student Masterlist/", 0777, true);
                     }
@@ -527,9 +730,7 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
                             fwrite($handle, utf8_encode(implode(",", $namesCopy[$i])));
                             $i++;
                         }
-                    }
-
-                    //<!--- IF THE STUDENT MASTERLIST DIRECTORY EXISTS, UPDATE IT WITH THE EXISTING STUDENT MASTERLIST CSV FILE --->
+                    } //<!--- IF THE STUDENT MASTERLIST DIRECTORY EXISTS, UPDATE IT WITH THE EXISTING STUDENT MASTERLIST CSV FILE --->
 
                     else {
                         //getting the current masterlist contents to update the masterlist database with the rfid column
@@ -560,7 +761,7 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
 
                         //prepare the query to update the rfid column in the student table using the primary key ID
                         $sqlStatement = $studentMasterlistDB->prepare("UPDATE student SET RFID = ? WHERE ID = ?");
-                        $sqlStatement->bind_param("ss", $rfid,  $id);
+                        $sqlStatement->bind_param("ss", $rfid, $id);
 
                         //update the student masterlist database using the masterlist csv array
                         //insert multidimensional array to mysql https://stackoverflow.com/questions/7746720/inserting-a-multi-dimensional-php-array-into-a-mysql-database
@@ -602,7 +803,7 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
                         $query = mysqli_query($studentMasterlistDB, "SELECT * FROM student ORDER BY ID ASC");
                         $masterlistDatabaseArr = array();
 
-                        while($row = mysqli_fetch_assoc($query)){
+                        while ($row = mysqli_fetch_assoc($query)) {
                             $masterlistDatabaseArr[] = $row;
                         }
 
@@ -686,43 +887,41 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
                     rename($configFile, "./ALS_SHARED/" . $firstName . " " . $lastName . "/" . $configFile);
 
                     //<!--THIS PART WILL PUT THE CLASS LIST'S CONFIGURATION FILE TO THE SELECTED PARTNER'S FOLDER!-->
-                    if ($teamTeachPartner != '0'){
+                    if ($teamTeachPartner != '0') {
                         //TAGS: FILE ADDRESS, DIRECTORY, FOLDER
-                        if (!copy($dest_path_temp, './ALS_SHARED/' . $partnerFirstName . " " . $partnerLastName . '/' . $configFile)) {
+                        if (!copy("./ALS_SHARED/" . $firstName . " " . $lastName . "/" . $configFile, './ALS_SHARED/' . $partnerFirstName . " " . $partnerLastName . '/' . $configFile)) {
                             die("Copying the configuration file to the selected partner's folder failed.");
-                        }
-                        else {
+                        } else {
                             echo("The configuration file has been copied to the partner's folder!");
                         }
                     }
 
                     $classListServerMsg = "Uploading class list done!";
 
-                } else{
+                } else {
                     $classListServerMsg = "Uploading to the teacher's folder failed!";
                 }
-            }
-            else{
+            } else {
                 $classListServerMsg = "The file uploaded is not a valid class list. Please make sure the class list is downloaded directly from the ISMIS website.";
             }
 
         }
-    } else{
+    } else {
         $classListServerMsg = "An error was encountered in uploading the file. Upload the class list in .csv format.";
     }
-} else{
+} else {
     $classListServerMsg = "File failed to upload!";
 }
-	$conn = new mysqli("localhost", "root", "", "temp");
-	// Check connection
-	if ($conn->connect_error) {
-		die("Connection failed: " . $conn->connect_error);
-	}
-	$sql = "INSERT INTO temptb (varname, val) VALUES ('classListServerMsg', '$classListServerMsg')";
-	
-	if (mysqli_query($conn, $sql)) {
-		mysqli_close($conn);
-	}
+$conn = new mysqli("localhost", "root", "", "temp");
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+$sql = "INSERT INTO temptb (varname, val) VALUES ('classListServerMsg', '$classListServerMsg')";
+
+if (mysqli_query($conn, $sql)) {
+    mysqli_close($conn);
+}
 //$_SESSION['classListServerMsg'] = $classListServerMsg;
 
 ob_end_clean();

@@ -14,7 +14,7 @@ body {
 h1 {
     padding-top: 50px;
     padding-bottom:10px;
-    color:#d9534f;
+    color: #000000;
     font-size: 28px;
     font-weight: 500;
 }
@@ -26,8 +26,8 @@ h1 {
 }
 
 .btnInput{
-    background-color:#00652c;
-    color: white;
+    background-color:white;
+    color: #173513;
     text-align: center;
     display:inline-block;
     font-weight:400;
@@ -41,7 +41,7 @@ h1 {
 }
 
 .topnav {
-    background-color: #0b8f47;
+    background-color: #173513;
     overflow: hidden;
 }
 

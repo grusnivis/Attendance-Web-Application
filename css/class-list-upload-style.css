@@ -10,7 +10,7 @@ body{
 }
 
   .topnav {
-    background-color: #0b8f47;
+    background-color: #173513;
     overflow: hidden;
   }
 
@@ -106,9 +106,6 @@ div.upload-wrapper {
 
     }
 
-  p{
-      color: #0f0f0e;
-  }
   .read-file-con{
     width: 390px;
     height: 900px;
@@ -119,7 +116,7 @@ div.upload-wrapper {
   }
 
  h1{
-    color:#d9534f;
+    color:#000000   ;
     font-size: 30px;
     font-family: "Lato", sans-serif;
   }

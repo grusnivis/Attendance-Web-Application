@@ -41,7 +41,7 @@
 		    $tempvar1 = $row["val"];
 	    }
     if (isset($tempvar1) && $tempvar1) {
-        echo '<p class = "notification">';
+        echo '<p class = "notification" style = "color:#d9534f;">';
         echo '<b><u>'. $tempvar1 .'</u></b>';
         echo '</p>';
     }

@@ -146,6 +146,7 @@ foreach ($files_arr as $file_name) {
     // &#10; is for new line
     $date = $temp[0];
     $teacher = $temp[1];
+
     $cg = $temp[3] . '-' . $temp[2] . ' ' . '(' . $temp[4] . ')';
     //$_SESSION['table'] = $cg;
 
@@ -270,38 +271,36 @@ function connect_to_db($date, $dir, $file_name, $cg, $teacher){
         $attendanceTableStmt->close();
 
         // gets the teacher info line as string then explodes based on the comma delimiter
+        // gets the second line of the attendance log csv
         $line = explode(',', fgets($file));
 
-        while (($ar = fgetcsv($file)) !== FALSE) {
-            // SQL query to store data in database
-            // table name is teacher name-schedule-g#
+        // SQL query to store data in database
+        // table name is teacher name-schedule-g#
 
-            // checks if row already exists in the table, adds if yes, does nothing if no
-            $check = mysqli_query($teacherAttendanceDB, "select * from `teacher_attendance` where
+        // checks if row already exists in the table, adds if yes, does nothing if no
+        $check = mysqli_query($teacherAttendanceDB, "select * from `teacher_attendance` where
                         Course='$cg' and RFID='$line[0]' and ID='$line[1]' and Surname='$line[2]' and Name='$line[3]'
                         and Date='$date'");
-            $checkrows = mysqli_num_rows($check);
+        $checkrows = mysqli_num_rows($check);
 
-            if ($checkrows > 0) {
-                while ($row = $check->fetch_assoc()) {
-                    if (empty($row['Time'])) {
-                        $teacherAttendanceDB->query("UPDATE `teacher_attendance` 
+        if ($checkrows > 0) {
+            while ($row = $check->fetch_assoc()) {
+                if (empty($row['Time'])) {
+                    $teacherAttendanceDB->query("UPDATE `teacher_attendance` 
                                         SET Status='$line[4]', Time='$line[5]'
                                         WHERE ID='$line[1]' AND Surname='$line[2]' AND Name='$line[3]' 
                                         AND Date='$date'");
-                    }
                 }
             }
-            else {
-                // adds row, no entry found
-                $insert = "INSERT INTO `teacher_attendance`(Course,RFID,ID,Surname,Name,Date,Status,Time) 
+        }
+        else {
+            // adds row, no entry found
+            $insert = "INSERT INTO `teacher_attendance`(Course,RFID,ID,Surname,Name,Date,Status,Time) 
                                VALUES('$cg','$line[0]','$line[1]','$line[2]','$line[3]','$date','$line[4]','$line[5]')";
-                $result = mysqli_query($teacherAttendanceDB, $insert) or die('Error querying database.');
-            }
+            $result = mysqli_query($teacherAttendanceDB, $insert) or die('Error querying database.');
+        }
 
-            //skips the teacher info line in csv
-            fgetcsv($file);
-
+        while (($ar = fgetcsv($file)) !== FALSE) {
             // reads thru the rest of the csv file
             // SQL query to store data in database
             // table name is teacher name-schedule-g#
@@ -319,6 +318,25 @@ function connect_to_db($date, $dir, $file_name, $cg, $teacher){
                                         SET Status='$ar[4]', Time='$ar[5]'
                                         WHERE ID='$ar[1]' AND Surname='$ar[2]' AND Name='$ar[3]' 
                                         AND Date='$date'");
+                    }
+                    else{
+                        $timeExplodeDB = explode(":", $row['Time']);
+                        $timeExplodeOnLog = explode(":", $ar[5]);
+
+                        if ($timeExplodeOnLog[0] > $timeExplodeDB[0]){
+                            $db->query("UPDATE `$cg` 
+                                        SET Status='$ar[4]', Time='$ar[5]'
+                                        WHERE ID='$ar[1]' AND Surname='$ar[2]' AND Name='$ar[3]' 
+                                        AND Date='$date'");
+                        }
+                        else if ($timeExplodeOnLog[0] == $timeExplodeDB[0]){
+                            if ($timeExplodeOnLog[1] > $timeExplodeDB[1]){
+                                $db->query("UPDATE `$cg` 
+                                        SET Status='$ar[4]', Time='$ar[5]'
+                                        WHERE ID='$ar[1]' AND Surname='$ar[2]' AND Name='$ar[3]' 
+                                        AND Date='$date'");
+                            }
+                        }
                     }
                 }
             }
@@ -503,7 +521,7 @@ include('0-connect.php');
 <!-- THIS SECTION IS FOR THE TOP NAVIGATION OF THE CLASS MONITORING LANDING PAGE -->
 <div>
     <nav class="topnav">
-        <a style="color:white;background-color: #0b8f47;text-decoration:none"><?php echo "Welcome, <b>" . $teacher_name . "!</b>" ?></a>
+        <a style="color:white;background-color: #173513;text-decoration:none"><?php echo "Welcome, <b>" . $teacher_name . "!</b>" ?></a>
         <a href=".\class-list-upload.php" style="color:white">Upload Class Lists</a>
         <a href=".\teacher-change-password.php" style="color:white">Change Password
         <a href=".\user-manual-download-teacher.php" style="color:white">Download User Manual</a>
@@ -520,7 +538,7 @@ include('0-connect.php');
             <div class="tableBtnCon">
                 <!--once the user clicks the buttons it will redirect to 3-display-selection.php-->
                 <form method="get" action="3-display-selection.php">
-                    <input class="btnInput" type="submit" name="table" value="<?php echo strtoupper($table); ?>"/>
+                    <input class="btnInput" type="submit" name="table" style ="border-color:#173513;border-width:2px;" value="<?php echo strtoupper($table); ?>"/>
                 </form>
             </div>
             <?php

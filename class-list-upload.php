@@ -50,7 +50,7 @@
     }
 
     .topnav {
-        background-color:#0b8f47;
+        background-color:#173513;
         overflow: hidden;
         width: 100vw;
     }
@@ -135,7 +135,7 @@ https://code.tutsplus.com/tutorials/how-to-upload-a-file-in-php-with-example--cm
     <div class="topnav">
         <a href="2-create-table.php" style="color: #f2f2f2;"><i class="fa fa-home"
                                                                 style="font-size: 25px;text-align:center"></i></a>
-        <a style="text-decoration: none; background-color: #0b8f47; color: #f2f2f2;">
+        <a style="text-decoration: none; background-color: #173513; color: #f2f2f2;">
             <?php echo "Welcome, <b>" . $tempvar1 . "!</b>"; ?></a>
 
         <a class="active" href="class-list-upload.php">Upload Class Lists</a>
@@ -152,6 +152,7 @@ https://code.tutsplus.com/tutorials/how-to-upload-a-file-in-php-with-example--cm
     </div>
 
     <div class="tab">
+
         <p class="instructions"> Upload your class list file that is in <b>CSV</b> format. </p>
         <div class="upload-con">
             <table>
@@ -203,11 +204,20 @@ https://code.tutsplus.com/tutorials/how-to-upload-a-file-in-php-with-example--cm
 		                    $tempvar2 = $row["val"];
 		                    mysqli_close($conn);
 	                    }
-	                    if (isset($tempvar1) && $tempvar1) {
-	                    echo '<p class = "notification">';
-                        //the @ sign suppresses warnings
-	                    echo @$tempvar2;
-	                    echo '</p>';
+	                    if (isset($tempvar2) && $tempvar2) {
+                            if ($tempvar2 == "Uploading class list done!"){
+                                echo '<p style = "color:#0b8f47;">';
+                                //the @ sign suppresses warnings
+                                echo @$tempvar2;
+                                echo '</p>';
+                            }
+                            else {
+                                echo '<p class = "notification" style = "color:#dc3545;">';
+                                //the @ sign suppresses warnings
+                                echo @$tempvar2;
+                                echo '</p>';
+                            }
+
 	                    $conn = new mysqli("localhost", "root", "", "temp");
 	                    // Check connection
 	                    if ($conn->connect_error) {
@@ -229,7 +239,7 @@ https://code.tutsplus.com/tutorials/how-to-upload-a-file-in-php-with-example--cm
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
     <div class="tab">
-        <h1 style="color:#d9534f">
+        <h1 style="color:#000000">
             <center> Set Personal Configurations</center>
         </h1>
         <p class="instructions">
@@ -274,12 +284,12 @@ https://code.tutsplus.com/tutorials/how-to-upload-a-file-in-php-with-example--cm
                     <td>
                         <p class="config-titles"><b>TEACHER LATE</b></p>
                         <p class="instructions">
-                            If MARK TEACHER is set as YES, what time would you be marked LATE? The time is set in <b>minutes</b>.
+                           The time at which the teacher will be marked as late. The time is set in <b>minutes</b>.
                         </p>
                     </td>
                     <td>
-                        <input required type="number" min="00" max="59" class="fieldSettings" name="teacher-late" value="10"/>
-                        <p class="instructions"><i>The default time for this setting is <b><u>10</u></b> minutes.</i>
+                        <input required readonly type="text" class="fieldSettings" name="teacher-late" value="10"/>
+                        <p class="instructions"><i>The default time for this setting is <b><u>10</u></b> minutes. This setting cannot be changed.</i>
                         </p>
                     </td>
                 </div>
@@ -290,12 +300,12 @@ https://code.tutsplus.com/tutorials/how-to-upload-a-file-in-php-with-example--cm
                     <td>
                         <p class="config-titles"><b>TEACHER ABSENT</b></p>
                         <p class="instructions">
-                            If MARK TEACHER is set as YES, what time would you be marked ABSENT? The time is set in <b>minutes</b>.
+                            The time at which the teacher is marked absent. The time is set in <b>minutes</b>.
                         </p>
                     </td>
                     <td>
-                        <input required type="number" min="00" max="59" class="fieldSettings" name="teacher-absent" value="15"/>
-                        <p class="instructions"><i>The default time for this setting is <b><u>15</u></b> minutes.</i>
+                        <input required readonly type="text" class="fieldSettings" name="teacher-absent" value="15"/>
+                        <p class="instructions"><i>The default time for this setting is <b><u>15</u></b> minutes. This setting cannot be changed.</i>
                         </p>
                     </td>
                 </div>

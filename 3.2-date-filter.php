@@ -131,7 +131,7 @@ mysqli_close($teacherEmailDB);
     <div class="container pt-5" style="text-align:center">
         <!-- class course code display -->
         <div style="text-align:center">
-            <h1 style="color:#d9534f;font-size: 28px;"> <?php echo $cg; ?> Attendance Log</h1>
+            <h1 style="color:#000000;font-size: 28px;"> <?php echo $cg; ?> Attendance Log</h1>
 
             <div style="padding-top: 40px; padding-bottom: 20px; text-align:center">
                 <!-- Date Filtering (this is for date selection)-->
@@ -248,7 +248,7 @@ mysqli_close($teacherEmailDB);
                 <!--This part will show if the FROM date field is only inputted-->
                 <div id="exportFromDateInputOnly" class="overlay">
                     <div class="popup" style="width:83%;">
-                        <h2 style="font-size:28px;color: #d9534f;">Attendance Report (Specific Date)</h2>
+                        <h2 style="font-size:28px;color: #000000;">Attendance Report (Specific Date)</h2>
                         <a class="close" href="#">&times;</a>
 
                         <div class="content" style="padding-top:50px">
@@ -372,7 +372,7 @@ mysqli_close($teacherEmailDB);
                             $sentMailResult = mail($to, "Exported Attendance Log", $body, $headers);
 
                             if ($sentMailResult) {
-                                echo "<h3 style=text-align:center>Attendance report sent successfully!<h3>";
+                                echo "<h3 style='text-align:center; color:#0b8f47'>Attendance report sent successfully!<h3>";
                                 unlink($filename); // delete the file after attachment sent.
                             } else {
                                 die("Sorry but the email could not be sent.
@@ -388,7 +388,7 @@ mysqli_close($teacherEmailDB);
     <!--jump-->
         <div id="dl_options_specificDate" class="overlay">
             <div class="popup" style="width:40%; margin:10% 30%">
-                <h2 style="color: #d9534f;">Download Options</h2>
+                <h2 style="color: #000000;">Download Options</h2>
                 <h5>Select a file format to download below.</h5>
                 <a class="close" href="#">&times;</a>
                 <form method="POST" action = "3.2-date-filter-download-log.php">
@@ -511,7 +511,7 @@ mysqli_close($teacherEmailDB);
 
     <div id="summary" class="overlay">
         <div class="popup" style="width:83%;">
-            <h2 style="font-size:28px;color: #d9534f;">Attendance Report (Summary)</h2>
+            <h2 style="font-size:28px;color: #000000;">Attendance Report (Summary)</h2>
             <a class="close" href="#">&times;</a>
 
             <div class="content">
@@ -774,7 +774,7 @@ mysqli_close($teacherEmailDB);
                     $sentMailResult = mail($to, "Exported Attendance Log", $body, $headers);
 
                     if ($sentMailResult) {
-                        echo "<h3 style=text-align:center>Attendance report sent successfully!</h3>";
+                        echo "<h3 style='text-align:center;color:#0b8f47;'>Attendance report sent successfully!</h3>";
                         unlink($filename); // delete the file after attachment sent.
                     } else {
                         die("Sorry but the email could not be sent.
@@ -792,7 +792,7 @@ mysqli_close($teacherEmailDB);
     <!--jump-->
     <div id="dl_options_s" class="overlay">
         <div class="popup" style="width:40%; margin:10% 30%">
-            <h2 style="color: #d9534f;">Download Options</h2>
+            <h2 style="color: #000000;">Download Options</h2>
             <h5>Select a file format to download below.</h5>
             <a class="close" href="#">&times;</a>
             <form method="POST" action="3.2-date-filter-download-log.php">
@@ -812,7 +812,7 @@ mysqli_close($teacherEmailDB);
 
     <div id="dl_options" class="overlay">
         <div class="popup" style="width:40%; margin:10% 30%">
-            <h2 style="color: #d9534f;">Download Options</h2>
+            <h2 style="color: #000000;">Download Options</h2>
             <h5>Select a file format to download.</h5>
             <a class="close" href="#">&times;</a>
             <form method="POST" action = "3.2-date-filter-download-log.php">
@@ -833,7 +833,7 @@ mysqli_close($teacherEmailDB);
     <!-- This is used for export (detailed) options -->
     <div id="date" class="overlay">
         <div class="popup" style="width:83%;">
-            <h2 style="color: #d9534f; margin-top:90px; font-size:28px;">Attendance Log (Detailed)</h2>
+            <h2 style="color: #000000; margin-top:90px; font-size:28px;">Attendance Log (Detailed)</h2>
             <h5>You can send a copy of the attendance report via email or you can download it in CSV or PDF format.</h5>
             <a class="close" href="#">&times;</a>
 
@@ -973,7 +973,7 @@ mysqli_close($teacherEmailDB);
                     $sentMailResult = mail($to, "Exported Attendance Log", $body, $headers);
 
                     if ($sentMailResult) {
-                        echo "<h3 style=text-align:center>Attendance report sent successfully!<h3>";
+                        echo "<h3 style='text-align:center;color:#0b8f47;'>Attendance report sent successfully!<h3>";
                         unlink($filename); // delete the file after attachment sent.
                     } else {
                         die("Sorry but the email could not be sent.

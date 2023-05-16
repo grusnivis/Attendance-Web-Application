@@ -120,7 +120,12 @@ session_start();
 		        mysqli_close($conn);
 	        }
         if (isset($tv2) && $tv2) {
-	        echo '<p class = "notification"><b>' . $tv2 . '</b></p>';
+            if ($tv2 == "The selected teacher has no attendance logs yet."){
+                echo '<p class = "notification" style ="color:#d9534f;"><b>' . $tv2 . '</b></p>';
+            }
+            else{
+                echo '<p class = "notification" style ="color:#0b8f47;"><b>' . $tv2 . '</b></p>';
+            }
 	
 	        $conn = new mysqli("localhost", "root", "", "temp");
 	        // Check connection

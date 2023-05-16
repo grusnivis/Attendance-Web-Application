@@ -46,7 +46,12 @@ session_start();
 		    $tempvar1 = $row["val"];
 	    }
     if (isset($tempvar1) && $tempvar1) {
-        echo '<p class = "notification">' . $tempvar1 . '</p>';
+        if ($tempvar1 == "Please change your password before proceeding."){
+            echo '<p class = "notification" style = "color:#d9534f;">' . $tempvar1 . '</p>';
+        }
+        else{
+            echo '<p class = "notification" style = "color:#0b8f47;">' . $tempvar1 . '</p>';
+        }
     }
 	    $sql = "INSERT INTO temptb (varname, val) VALUES ('teacherPasswordMsg', '')";
 	    if (mysqli_query($conn, $sql)) {

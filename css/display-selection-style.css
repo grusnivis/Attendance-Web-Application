@@ -11,7 +11,7 @@ a {
 }
 
 h1 {
-    color: #d9534f;
+    color: #000000;
     font-size: 28px;
 }
 
@@ -36,7 +36,7 @@ h2 {
 }
 
 .topnav {
-    background-color: #0b8f47;
+    background-color: #173513;
     overflow: hidden;
 }
 
