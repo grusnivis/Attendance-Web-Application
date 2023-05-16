@@ -141,7 +141,7 @@ mysqli_close($teacherEmailDB);
 
                     <!--do not put "required" here since the user can select specific dates-->
                     <label for="to">TO: </label>
-                    <input type="date" name="end_date">
+                    <input type="date" name="end_date" required>
 
                     <!-- button! -->
                     <btn><input type="submit" style="background-color: #039fe2; color: white;border:0"
@@ -529,7 +529,9 @@ mysqli_close($teacherEmailDB);
                     if ($show_col->num_rows > 0) {
                         // fetches this data if database is not empty
                         while ($row = $show_col->fetch_assoc()) {
-                            $n[] = $row['Surname'] . ", " . $row['Name'];
+                            if (($row['Surname'] != "") && ($row['Name'] != "")){
+                                $n[] = $row['Surname'] . ", " . $row['Name'];
+                            }
                         }
                     }
                 }

@@ -328,10 +328,10 @@ if (isset($_POST['update-info']) && $_POST['update-info'] == "UPDATE STUDENT RFI
                     $result = mysqli_query($conn, $sql);
                     if (mysqli_num_rows($result) > 0) {
                         $row = mysqli_fetch_assoc($result);
-                        $tp5 = $row["val"];
+                        $tp6 = $row["val"];
                         mysqli_close($conn);
                     }
-                    if (isset($tp5) && $tp5) {
+                    if (isset($tp6) && $tp6) {
                         echo '<p class = "notification">' . $tp5 . '</p>';
                         $conn = new mysqli("localhost", "root", "", "temp");
                         // Check connection

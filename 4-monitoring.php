@@ -35,7 +35,7 @@
 		mysqli_close($conn);
 	}
 
-	$fullname = $_GET["name"];
+	$fullname = @$_GET["name"];
 	//separate surname and name
 	$name = explode(', ', $fullname);
 	$array = array();
@@ -99,13 +99,13 @@ if (isset($_POST['update'])) {
 }
 ?>
 <nav class="topnav">
-    <a href="../2-create-table.php"><i class="fa fa-home"
+    <a href="/2-create-table.php"><i class="fa fa-home"
                                                                style="font-size: 27px;text-align:center"></i></a>
-    <a href="../3-display-selection.php" style="color: #f2f2f2">Overall Attendance</a>
-    <a href="../3.1-class-list.php" style="color: #f2f2f2">Class List</a>
-    <a href="../3.2-date-filter.php" style="color: #f2f2f2">Date Filter</a>
-    <a href="../3.3-unenrolled.php" style="color: #f2f2f2">Unenrolled RFIDs</a>
-    <a href="../logout.php" style="color: #f2f2f2; float:right">Log Out</a>
+    <a href="/3-display-selection.php" style="color: #f2f2f2">Overall Attendance</a>
+    <a href="/3.1-class-list.php" style="color: #f2f2f2">Class List</a>
+    <a href="/3.2-date-filter.php" style="color: #f2f2f2">Date Filter</a>
+    <a href="/3.3-unenrolled.php" style="color: #f2f2f2">Unenrolled RFIDs</a>
+    <a href="/logout.php" style="color: #f2f2f2; float:right">Log Out</a>
 </nav>
 
 <div>
