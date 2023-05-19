@@ -24,6 +24,8 @@ session_start();
             <h1> Change Teacher Password</h1>
             <p class="instructions">Change your password in the text field below.</p>
             <input type="password" class="password fieldSettings" name="teacherPassword" placeholder="Password" required/>
+            <p class="instructions">Please confirm your password.</p>
+            <input type="password" class="password fieldSettings" name="teacherPasswordVerify" placeholder="Confirm Password" required/>
         </div>
         <div class="form-group">
             <input type="submit" name="change-teacher-password" class="btn btn-info" value="Update Password"/>
@@ -46,11 +48,11 @@ session_start();
 		    $tempvar1 = $row["val"];
 	    }
     if (isset($tempvar1) && $tempvar1) {
-        if ($tempvar1 == "Please change your password before proceeding."){
-            echo '<p class = "notification" style = "color:#d9534f;">' . $tempvar1 . '</p>';
+        if ($tempvar1 == "Your password is now updated!"){
+            echo '<p class = "notification" style = "color:#0b8f47;">' . $tempvar1 . '</p>';
         }
         else{
-            echo '<p class = "notification" style = "color:#0b8f47;">' . $tempvar1 . '</p>';
+            echo '<p class = "notification" style = "color:#d9534f;">' . $tempvar1 . '</p>';
         }
     }
 	    $sql = "INSERT INTO temptb (varname, val) VALUES ('teacherPasswordMsg', '')";

@@ -22,11 +22,6 @@
                 <i>A randomly generated password will be sent to the teacher's email address after clicking the <b>Register</b> button.</i></a>
             </p>
 
-            <?php
-            $statusMsg = "";
-            echo $statusMsg;
-            ?>
-
             <tr>
                 <div class="form-group">
                     <td>

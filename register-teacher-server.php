@@ -1,6 +1,5 @@
 <?php
 ob_start();
-
 header('Content-Encoding: utf-8');
 header('Content-Type: text/csv; charset=utf-8mb4');
 
@@ -248,7 +247,6 @@ if (isset ($_POST["register"])) {
             //"a" mode places file pointer to the END of the file
             //TAGS: FILE ADDRESS, DIRECTORY, FOLDER
             $authorizedUsersCSV = fopen("./ALS_SHARED/Authorized User Masterlist/AuthorizedUsers.csv", "a");
-
             $teacher_csv[0] = array("", $IDNum, $lastName, $firstName);
             fwrite($authorizedUsersCSV, "\n");
             //fwrite($authorizedUsersCSV, utf8_encode(implode(",", $teacher_csv[0])));

@@ -54,6 +54,21 @@ if (isset($_POST['return-to-create-table']) && $_POST['return-to-create-table'] 
 
 if (isset($_POST['change-teacher-password']) && $_POST['change-teacher-password'] == 'Update Password') {
     $newPassword = $_POST["teacherPassword"];
+    $newPasswordVerify = $_POST["teacherPasswordVerify"];
+
+    if ($newPassword != $newPasswordVerify){
+        $conn = new mysqli('localhost', 'root', '', 'temp');
+        // Obtain last value of variable user as 1 row
+        // format goes "SELECT value column FROM temptb table WHERE variable is user ORDER BY last input of id in descending with 1 row
+        $sql = "INSERT INTO temptb (varname, val) VALUES ('teacherPasswordMsg', 'The two passwords are not the same. Please try again.')";
+        if (mysqli_query($conn, $sql)) {
+            mysqli_close($conn);
+        }
+        //go back to the teacher-change-password page since the user hasn't changed their password yet.
+        header("Location: teacher-change-password.php");
+        exit;
+    }
+
     //turns the password into a hash
     $hashedPassWord = password_hash($newPassword, PASSWORD_BCRYPT);
 

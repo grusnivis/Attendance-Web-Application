@@ -2,9 +2,12 @@
 
 <?php
 ob_start();
+
+use PhpOffice\PhpSpreadsheet\IOFactory;
+
+//for the conversion of the xls to csv format
 header('Content-Encoding: utf-8');
 header('Content-Type: text/csv; charset=utf-8mb4');
-//session_start();
 $conn = new mysqli("localhost", "root", "", "temp");
 // Check connection
 if ($conn->connect_error) {
@@ -30,14 +33,30 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
         $fileNameCmps = explode(".", $fileName);
         $fileExtension = strtolower(end($fileNameCmps));
 
-        $allowedfileExtensions = array('csv'); //array('txt', 'xls', 'csv');
+        $allowedfileExtensions = array('xls'); //array('txt', 'xls', 'csv');
 
         if (!in_array($fileExtension, $allowedfileExtensions)) {
-            $classListServerMsg = 'The file uploaded is not a .csv file. Please make sure the class list file uploaded is in the .csv format.';
+            $classListServerMsg = 'The file uploaded is not an .xls file. Please make sure the class list file uploaded is in the .xls format.';
         } else {
+            //<!--CONVERT THE XLS FILE INTO CSV -->
+            require 'vendor/autoload.php';
+
+            $inputFile = $fileTmpPath;
+            $outputFile = 'classListConverted.csv';
+
+            $spreadsheet = IOFactory::load($inputFile);
+            $sheet = $spreadsheet->getActiveSheet();
+
+            $writer = IOFactory::createWriter($spreadsheet, 'Csv');
+            $writer->setDelimiter(',');
+            $writer->setEnclosure('"');
+            $writer->setSheetIndex(0); // Set the sheet index if needed
+
+            $writer->save($outputFile);
+
             //<!--- GET THE "CLASS LIST" PART OF THE CLASS LIST FILE --->
-            //set the row to get the schedule and the time in the class list
-            $row = 1;
+            //set the row to get the "class list" text cell in the class list
+            $row = 2;
 
             //counters for the loop and array index
             $i = 1;
@@ -47,12 +66,12 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
             $classListCheck = array();
 
             //row first, then column
-            if (($handle = fopen($fileTmpPath, "r")) !== FALSE) {
+            if (($handle = fopen($outputFile, "r")) !== FALSE) {
                 while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
                     if ($i >= $row) {
                         //should be like that. ex. if get 2nd column then
                         //$column = 1; $column < 2
-                        for ($column = 6; $column < 7; $column++) {
+                        for ($column = 11; $column < 12; $column++) {
                             //next line automatically assigns them to the designated array indexes
                             //explode function: string to array via the separator/delimiter
                             $classListCheck[$arrayCount] = $data[$column];
@@ -65,23 +84,23 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
             fclose($handle);
 
             //<!--- GET THE "UNIVERSITY OF SAN CARLOS" PART OF CLASS LIST --->
-            //set the row to get the schedule and the time in the class list
-            $row = 1;
+            //set the row to get the "university of san carlos" text cell in the class list
+            $row = 2;
 
             //counters for the loop and array index
             $i = 1;
             $arrayCount = 0;
 
-            //create schedule array
+            //create usc text check array
             $uniCheck = array();
 
             //row first, then column
-            if (($handle = fopen($fileTmpPath, "r")) !== FALSE) {
+            if (($handle = fopen($outputFile, "r")) !== FALSE) {
                 while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
                     if ($i >= $row) {
                         //should be like that. ex. if get 2nd column then
                         //$column = 1; $column < 2
-                        for ($column = 8; $column < 9; $column++) {
+                        for ($column = 13; $column < 14; $column++) {
                             //next line automatically assigns them to the designated array indexes
                             //explode function: string to array via the separator/delimiter
                             $uniCheck[$arrayCount] = $data[$column];
@@ -92,7 +111,6 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
                 }
             }
             fclose($handle);
-
 
             //<!--- [IF STMT] THIS PART CHECKS IF THE UPLOADED FILE IS REALLY THE CLASS LIST--->
             if (($classListCheck[0] == "Class List") && ($uniCheck[1] == "UNIVERSITY OF SAN CARLOS")) {
@@ -141,7 +159,7 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
                 //<!--- THIS PART CREATES THE FILENAME OF THE CLASS LISTS --->
                 //<!--- GET THE SCHEDULE PART OF THE FILENAME --->
                 //set the row to get the schedule and the time in the class list
-                $row = 4;
+                $row = 7;
 
                 //counters for the loop and array index
                 $i = 1;
@@ -151,12 +169,12 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
                 $schedule = array();
 
                 //row first, then column
-                if (($handle = fopen($fileTmpPath, "r")) !== FALSE) {
+                if (($handle = fopen($outputFile, "r")) !== FALSE) {
                     while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
                         if ($i >= $row) {
                             //should be like that. ex. if get 2nd column then
                             //$column = 1; $column < 2
-                            for ($column = 4; $column < 5; $column++) {
+                            for ($column = 8; $column < 9; $column++) {
                                 //next line automatically assigns them to the designated array indexes
                                 //explode function: string to array via the separator/delimiter
                                 $schedule[] = explode(" ", $data[$column]);
@@ -167,9 +185,10 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
                 }
                 fclose($handle);
 
+
                 //<!--- GET THE TIME PART OF THE FILENAME --->
                 //set the row to get the schedule and the time in the class list
-                $row = 4;
+                $row = 7;
 
                 //counters for the loop and array index
                 $i = 1;
@@ -179,12 +198,12 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
                 $time = array();
 
                 //row first, then column
-                if (($handle = fopen($fileTmpPath, "r")) !== FALSE) {
+                if (($handle = fopen($outputFile, "r")) !== FALSE) {
                     while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
                         if ($i >= $row) {
                             //should be like that. ex. if get 2nd column then
                             //$column = 1; $column < 2
-                            for ($column = 9; $column < 10; $column++) {
+                            for ($column = 15; $column < 16; $column++) {
                                 //next line automatically assigns them to the designated array indexes
                                 $time[] = explode(" ", $data[$column]);
                             }
@@ -213,6 +232,18 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
                     $newFileName = $finalSchedule . "_" . $finalTime;
                 }
 
+                //<!--STORES THE NAME OF THE FILENAME UPLOADED -->
+                $conn = new mysqli("localhost", "root", "", "temp");
+                // Check connection
+                if ($conn->connect_error) {
+                    die("Connection failed: " . $conn->connect_error);
+                }
+                $sql = "INSERT INTO temptb (varname, val) VALUES ('fileNameMsg', '$newFileName')";
+
+                if (mysqli_query($conn, $sql)) {
+                    mysqli_close($conn);
+                }
+
                 // directory in which the uploaded file will be moved
                 //TAGS: FILE ADDRESS, DIRECTORY, FOLDER
                 $uploadFileDir = './ALS_SHARED/' . $firstName . " " . $lastName . '/';
@@ -220,13 +251,16 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
                 //concatenate file directory to file name. i.e. ./firstName lastName/filename.csv
                 $dest_path_temp = $uploadFileDir . $newFileName . ".csv";
 
-                //<!-- THIS PART MOVES THE CSV FILE FROM THE TEMPORARY PATH TO THE SET DESTINATION PATH -->
-                if (move_uploaded_file($fileTmpPath, $dest_path_temp)) {
+                //<!-- THIS PART MOVES THE CSV FILE FROM THE WEB APP ROOT PATH TO THE SET DESTINATION PATH -->
+                //move_uploaded_file(FROM,TO) <- won't work if the file is not uploaded
+                //rename() moves a LOCAL file only
+                if (rename($outputFile, $dest_path_temp)) {
+
                     //answer is a combo of both links!
                     //https://stackoverflow.com/questions/35740176/read-specific-column-in-csv-to-array
                     //https://webdiretto.it/to-extract-single-column-values-from-csv-file-php/
                     //set the row (see class list formatting for the reason!)
-                    $row = 6;
+                    $row = 11;
 
                     //counters for the loop and array index
                     $i = 1;
@@ -243,12 +277,16 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
                             if ($i >= $row) {
                                 //should be like that. example: if you want to get the 2nd column then
                                 //$column = 1; $column < 2
-                                for ($column = 5; $column < 6; $column++) {
-                                    //next line automatically assigns them to the designated array indexes
-                                    $names[$arrayCount] = explode(",", $data[$column]);
-                                    //trim removes whitespace!
-                                    $names[$arrayCount][1] = trim($names[$arrayCount][1]);
-                                    $arrayCount++;
+                                for ($column = 9; $column < 10; $column++) {
+                                    if ($data[$column] == "") {
+                                        //no action
+                                    } else {
+                                        //next line automatically assigns them to the designated array indexes
+                                        $names[$arrayCount] = explode(",", $data[$column]);
+                                        //trim removes whitespace!
+                                        $names[$arrayCount][1] = trim($names[$arrayCount][1]);
+                                        $arrayCount++;
+                                    }
                                 }
                             }
                             $i++;
@@ -258,7 +296,7 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
 
                     //<!--- THIS PART IS FOR STORING THE ID NUMBER OF THE STUDENTS! --->
                     //setting the row to start at the 6th (see class list formatting for the reason)
-                    $row = 6;
+                    $row = 11;
 
                     //counters for the array index and the loop
                     $i = 1;
@@ -270,11 +308,15 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
                             if ($i >= $row) {
                                 //should be like that. example: if you want to get the 2nd column then
                                 //$column = 1; $column < 2
-                                for ($column = 1; $column < 2; $column++) {
-                                    //$var = trim($data2[$column]);
-                                    //$idNumbers[$arrayCount] = settype($data2[$column], "string");
-                                    $idNumbers[$arrayCount] = trim($data2[$column]);
-                                    $arrayCount++;
+                                for ($column = 2; $column < 3; $column++) {
+                                    if ($data2[$column] == "ID Number") {
+                                        //no action
+                                    } else {
+                                        //$var = trim($data2[$column]);
+                                        //$idNumbers[$arrayCount] = settype($data2[$column], "string");
+                                        $idNumbers[$arrayCount] = trim($data2[$column]);
+                                        $arrayCount++;
+                                    }
                                 }
                             }
                             $i++;
@@ -319,7 +361,8 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
                     while ($i < count($names)) {
                         //IMPORTANT! use utf8_encode ONCE only to prevent wonky characters when outputting and writing!
                         fwrite($handle, "\n");
-                        fwrite($handle, utf8_encode(implode(",", $names[$i])));
+                        //fwrite($handle, utf8_encode(implode(",", $names[$i])));
+                        fwrite($handle, implode(",", $names[$i]));
                         $i++;
                     }
                     /*
@@ -541,10 +584,9 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
                                 echo("The formatted class list has been copied to the partner's folder!");
                             }
                         }
-                    }
-                    //if there is no duplicates, check if the user selected the team teach class option!
-                    else{
-                        if ($teamTeachPartner != '0'){
+                    } //if there is no duplicates, check if the user selected the team teach class option!
+                    else {
+                        if ($teamTeachPartner != '0') {
                             //database credentials, running MySQL with default setting (user 'root' with no password)
                             //attempt to connect to MySQL "teacher" database
                             $databaseLink = mysqli_connect('localhost', 'root', '', 'teacher');
@@ -701,8 +743,10 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
                         foreach ($namesCopy as $row) {
                             $rfid = $row[0];
                             $id = $row[1];
-                            $lastnm = utf8_encode($row[2]); //IMPORTANT! use utf8_encode once only in every database to prevent wonky display of special characters
-                            $firstnm = utf8_encode($row[3]);
+                            //$lastnm = utf8_encode($row[2]); //IMPORTANT! use utf8_encode once only in every database to prevent wonky display of special characters
+                            //$firstnm = utf8_encode($row[3]);
+                            $lastnm = $row[2]; //IMPORTANT! use utf8_encode once only in every database to prevent wonky display of special characters
+                            $firstnm = $row[3];
                             $sqlStatement->execute();
                         }
                         $sqlStatement->close();
@@ -727,7 +771,7 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
                         while ($i < count($namesCopy)) {
                             //\r is moving the cursor to the leftmost position. \n is new line
                             fwrite($handle, "\n");
-                            fwrite($handle, utf8_encode(implode(",", $namesCopy[$i])));
+                            fwrite($handle, implode(",", $namesCopy[$i]));
                             $i++;
                         }
                     } //<!--- IF THE STUDENT MASTERLIST DIRECTORY EXISTS, UPDATE IT WITH THE EXISTING STUDENT MASTERLIST CSV FILE --->
@@ -786,8 +830,10 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
                             //id number, last name, first name
                             //if NULL (empty) is in the particular rfid column, it will be skipped. hence the indexing starts at the id number (zero) to the firstnm (2)
                             $idnum = $row[0];
-                            $lastnm = utf8_encode($row[1]);
-                            $firstnm = utf8_encode($row[2]);
+                            //$lastnm = utf8_encode($row[1]);
+                            //$firstnm = utf8_encode($row[2]);
+                            $lastnm = $row[1];
+                            $firstnm = $row[2];
                             $sqlStatement->execute();
                         }
                         $sqlStatement->close();
@@ -876,7 +922,8 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
                     $i = 0;
                     while ($i < count($config_csv)) {
                         //\r is moving the cursor to the leftmost position. \n is new line
-                        fwrite($file_open, utf8_encode(implode(",", $config_csv[$i])));
+                        //fwrite($file_open, utf8_encode(implode(",", $config_csv[$i])));
+                        fwrite($file_open, implode(",", $config_csv[$i]));
                         fwrite($file_open, "\n");
                         $i++;
                     }
@@ -902,12 +949,13 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload Class List and 
                     $classListServerMsg = "Uploading to the teacher's folder failed!";
                 }
             } else {
-                $classListServerMsg = "The file uploaded is not a valid class list. Please make sure the class list is downloaded directly from the ISMIS website.";
+                unlink($outputFile); //deletes the converted csv file
+                $classListServerMsg = "The file uploaded is not a valid class list. Please make sure that the class list is downloaded directly from the ISMIS website.";
             }
 
         }
     } else {
-        $classListServerMsg = "An error was encountered in uploading the file. Upload the class list in .csv format.";
+        $classListServerMsg = "An error was encountered in uploading the file. Upload the class list in .xls format.";
     }
 } else {
     $classListServerMsg = "File failed to upload!";
