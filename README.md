@@ -15,4 +15,11 @@ Alpha testing cases for the web application and the portable device can be found
   <li> <a href = "https://myaccount.google.com/lesssecureapps">Turn on Google's "Less Secure Apps" setting for XAMPP sending emails</a> </li>
 </ol>
 
+<hr/>
+<b>Required Installations</b>
+<ol>
+  <li><a href = "https://www.apachefriends.org/download.html">XAMPP</a> - <b>REQUIRED.</b> This is for putting the web application on localhost. </li>
+  <li><a href = "https://getcomposer.org/download/">Composer</a> - Install this on your computer for getting phpspreadsheet.</li>
+  <li><a href = "https://github.com/PHPOffice/PhpSpreadsheet">PhpSpreadSheet</a> - Install the library to <i>the working folder of the web application.</i> The system will not work if the library isn't in the specified folder.</li>
+ </ol>
   
