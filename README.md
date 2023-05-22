@@ -18,8 +18,9 @@ Alpha testing cases for the web application and the portable device can be found
 <hr/>
 <b>Required Installations</b>
 <ol>
-  <li><a href = "https://www.apachefriends.org/download.html">XAMPP</a> - <b>REQUIRED.</b> This is for putting the web application on localhost. </li>
-  <li><a href = "https://getcomposer.org/download/">Composer</a> - Install this on your computer for getting phpspreadsheet.</li>
+  <li><a href = "https://www.apachefriends.org/download.html">XAMPP</a> - This is for putting the web application on localhost. </li>
+  <li><a href = "https://getcomposer.org/download/">Composer</a> - Install this on your computer for getting PhpSpreadSheet.</li>
   <li><a href = "https://github.com/PHPOffice/PhpSpreadsheet">PhpSpreadSheet</a> - Install the library to <i>the working folder of the web application.</i> The system will not work if the library isn't in the specified folder.</li>
+  <li><a href = "https://github.com/canton7/SyncTrayzor/tree/v1.1.29" >SyncTrayzor</a> - This is for syncing from the local server to the Raspberry Pi and vice versa. <i>Please install Syncthing on the Raspberry Pi also.</i></li>
  </ol>
   
