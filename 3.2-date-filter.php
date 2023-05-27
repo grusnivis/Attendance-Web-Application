@@ -518,24 +518,26 @@ mysqli_close($teacherEmailDB);
 
                 <?php
                 echo "<table id='test' style=margin-left:auto;margin-right:auto;text-align:center>";
-                echo "<th> Name </th>" . "<th> Present </th>" . "<th> Late </th>" .
+                echo "<th> ID# </th>" . "<th> Name </th>" . "<th> Present </th>" . "<th> Late </th>" .
                     "<th> Excused </th>" . "<th> Absent </th>" .
                     "<th> Attendance Days </th>" . "<th> % Presence </th>";
                 //$n = array();
 
                 foreach ($append_date as $filtered_date) {
-                    $show_col = $db->query("SELECT Name,Surname FROM `$cg` where Date='$filtered_date' order by Surname");
+                    $show_col = $db->query("SELECT ID,Name,Surname FROM `$cg` where Date='$filtered_date' order by Surname");
 
                     if ($show_col->num_rows > 0) {
                         // fetches this data if database is not empty
                         while ($row = $show_col->fetch_assoc()) {
                             if (($row['Surname'] != "") && ($row['Name'] != "")){
+                                $ii[] = $row['ID'];
                                 $n[] = $row['Surname'] . ", " . $row['Name'];
                             }
                         }
                     }
                 }
 
+                $id_n = array_unique($ii);
                 $total = count($append_date);
                 $name = array_unique($n);
                 $count = count($name);
@@ -579,6 +581,10 @@ mysqli_close($teacherEmailDB);
                     echo "<tr>";
 
                     echo "<td>";
+                    echo $id_n[$keys[$i]];
+                    echo "</td>";
+
+                    echo "<td>";
                     echo $name[$keys[$i]];
                     echo "</td>";
 
@@ -607,7 +613,7 @@ mysqli_close($teacherEmailDB);
                     echo $percent;
                     echo "</td>";
 
-                    $array_s[$i] = [$name[$keys[$i]], $present, $late, $excused, $absent, $total, $percent];
+                    $array_s[$i] = [$id_n[$keys[$i]], $name[$keys[$i]], $present, $late, $excused, $absent, $total, $percent];
                     echo "</tr>";
                 }
 	                // Create connection directly to specific database
@@ -654,7 +660,7 @@ mysqli_close($teacherEmailDB);
 	                }
                     $file = fopen($tempname, "w");
                     fputcsv($file, array("Start date:", $_GET['start_date'], " ", "End date:", $_GET['end_date']));
-                    fputcsv($file, array("Name", "", "Present", "Late", "Excused", "Absent", "Attendance Days", "% Presence"));
+                    fputcsv($file, array("ID#", "Name", "", "Present", "Late", "Excused", "Absent", "Attendance Days", "% Presence"));
 
                     if (count($array_s) > 0) {
                         foreach ($array_s as $row) {
@@ -729,7 +735,7 @@ mysqli_close($teacherEmailDB);
                     // NOTE: CHANGE FILEPATH ON THE SERVER PC
                     $filename = "C:/Users/Kath/Downloads/" . strtoupper($teacher_name) . "_" . $cg . "_Summary" . ".csv";
                     $file = fopen($filename, "w");
-                    fputcsv($file, array("Name", "Present", "Late", "Excused", "Absent", "Attendance Days", "% Presence"));
+                    fputcsv($file, array("ID#", "Name", "Present", "Late", "Excused", "Absent", "Attendance Days", "% Presence"));
 
                     if (count($array_s) > 0) {
                         foreach ($array_s as $row) {

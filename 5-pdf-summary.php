@@ -66,7 +66,7 @@ if ( !file_exists( $filename ) && !is_dir( $filename ) ) {
     $filename = "C:/Users/Kath/Downloads/". strtoupper($teacher) . "_" . $table . ".csv";
 	$file = fopen($filename,"w");
 	fputcsv($file, array("Start date: ", $sd, "End date: ", $ed));
-	fputcsv($file, array("Name","Present","Late","Excused","Absent","Attendance Days","% Presence"));
+	fputcsv($file, array("ID#", "Name","Present","Late","Excused","Absent","Attendance Days","% Presence"));
 															
 		if (count($array_s) > 0) {
 			foreach ($array_s as $row) {
@@ -100,8 +100,8 @@ for ($c = 0; $c < 2; $c++) {
     if ($c==1){
         $pdf->SetFont('Times', '', 10);
     }
-    $html = '<table border="0" cellspacing="0" cellpadding="5" style="border:1px solid #e1e1e1">' . '<tr>';
-    $data = explode(',', trim($row[$c], '\'"',));
+    $html = '<table border="0" cellspacing="0" cellpadding="8" style="border:1px solid #e1e1e1;width:100%">' . '<tr>';
+    $data = explode(',', trim($row[$c], '\'"'));
 
     for ($i = 0; $i < count($data); $i++) {
         $html .= '<td>' . trim($data[$i], '\'"') . '</td>';
@@ -114,14 +114,16 @@ for ($c = 0; $c < 2; $c++) {
 $pdf->SetFont('Times', '', 10);
 //skip immediately to the first student row
 for ($c = 2; $c < count($row); $c++) {
-    $html = '<table border="0" cellspacing="0" cellpadding="5" style="border:1px solid #e1e1e1">' . '<tr>';
-    $data = explode(',', trim($row[$c], '\'"',));
+    $html = '<table border="0" cellspacing="0" cellpadding="5" style="border:1px solid #e1e1e1;width:100%">' . '<tr>';
+    $data = explode(',', trim($row[$c], '\'"'));
 
     $html .= '<td width="77.5">';
-    $html .= trim($data[0], '\'"') . "," . trim($data[1], '\'"');
+    $html .= trim($data[0], '\'"');
     $html .= '</td>';
 
-    for ($i = 2; $i < count($data); $i++) {
+    $html .= '<td>' . trim($data[1], '\'"') . "," . trim($data[2], '\'"') . '</td>';
+
+    for ($i = 3; $i < count($data); $i++) {
         $html .= '<td>' . trim($data[$i], '\'"') . '</td>';
     }
     $html .= '</tr>' . '</table>';

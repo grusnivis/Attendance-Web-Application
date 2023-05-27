@@ -217,6 +217,23 @@ if (isset ($_POST["register"])) {
             fclose($authorizedUsersCSV);
         } //<-- THIS PART WILL EXECUTE IF THE AUTHORIZEDUSERS.CSV FILE EXISTS -->
         else {
+            //<!--THIS PART REMOVES ANY NEWLINE THAT MIGHT BE PRESENT AT THE END OF THE FILE-->
+            // Read the CSV file into an array
+            $csvData = file('./ALS_SHARED/Authorized User Masterlist/AuthorizedUsers.csv');
+
+            // Get the last element of the array
+            $lastLine = end($csvData);
+
+            // Check if the last line contains a newline character
+            if (strpos($lastLine, "\n") !== false) {
+                // Remove the newline character
+                $csvData[count($csvData) - 1] = rtrim($lastLine, "\r\n");
+            }
+
+            // Write the modified array back to the CSV file
+            file_put_contents('./ALS_SHARED/Authorized User Masterlist/AuthorizedUsers.csv', implode('', $csvData));
+
+            //<!--THIS PART READS THE CSV FILE-->
             //open the file as reading it to get the current contents. "r" mode places
             //file pointer to the start of the file
             //TAGS: FILE ADDRESS, DIRECTORY, FOLDER

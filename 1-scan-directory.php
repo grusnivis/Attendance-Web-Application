@@ -19,7 +19,7 @@ if (file_exists($dir) && is_dir($dir)) {
         }
     }
 } else {
-    echo "The Attendance Logs Directory does not exist!";
+    echo '<bp style = "color:#dc3545;"><b>The Attendance Logs Directory does not exist!</b></p>';
 }
 
 //return to the class monitoring page

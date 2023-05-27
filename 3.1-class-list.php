@@ -314,17 +314,19 @@ $append_student = array();
     /*
     *  START OF ADD
     */
-$percentArray = array();
-    $show_col = $db->query("SELECT Name,Surname,Date FROM `$cg` WHERE NOT ID = '' AND NOT Name = '' order by Surname");
+    $percentArray = array();
+    $show_col = $db->query("SELECT ID,Name,Surname,Date FROM `$cg` WHERE NOT ID = '' AND NOT Name = '' order by Surname");
 
     if ($show_col->num_rows > 0) {
 
         // fetches this data if database is not empty
         while ($row = $show_col->fetch_assoc()) {
+            $ii[] = $row['ID'];
             $d[] = $row['Date'];
             $n[] = $row['Surname'] . ", " . $row['Name'];
         }
 
+        $id_num = array_unique($ii);
         $date = array_unique($d);
         $total = count($date);
         $name = array_unique($n);
@@ -360,7 +362,7 @@ $percentArray = array();
             $percent = round(((($present + $late) / $total) * 100)) . "%";
             $percentArray[] = $percent;
 
-            $array_s[$i] = [$name[$keys[$i]], $present, $late, $excused, $absent, $total, $percent];
+            $array_s[$i] = [$id_num[$keys[$i]], $name[$keys[$i]], $present, $late, $excused, $absent, $total, $percent];
         }
     }
     /*
@@ -656,7 +658,8 @@ $i = 0;
             //$array_s = array();
 
             echo "<table id='test' style=margin-left:auto;margin-right:auto;text-align:center>";
-            echo "<th> Name </th>" .
+            echo "<th> ID </th>" .
+                "<th> Name </th>" .
                 "<th> Present </th>" .
                 "<th> Late </th>" .
                 "<th> Excused </th>" .
@@ -664,16 +667,18 @@ $i = 0;
                 "<th> Attendance Days </th>" .
                 "<th> % Presence </th>";
 
-            $show_col = $db->query("SELECT Name,Surname,Date FROM `$cg` WHERE NOT ID = '' AND NOT Name = '' order by Surname");
+            $show_col = $db->query("SELECT ID,Name,Surname,Date FROM `$cg` WHERE NOT ID = '' AND NOT Name = '' order by Surname");
 
             if ($show_col->num_rows > 0) {
 
                 // fetches this data if database is not empty
                 while ($row = $show_col->fetch_assoc()) {
+                    $ii[] = $row['ID'];
                     $d[] = $row['Date'];
                     $n[] = $row['Surname'] . ", " . $row['Name'];
                 }
 
+                $id_num = array_unique($ii);
                 $date = array_unique($d);
                 $total = count($date);
                 $name = array_unique($n);
@@ -716,6 +721,10 @@ $i = 0;
                     }
 
                     echo "<td>";
+                    echo $id_num[$keys[$i]];
+                    echo "</td>";
+
+                    echo "<td>";
                     echo $name[$keys[$i]];
                     $append_student[] = $name[$keys[$i]];
                     echo "</td>";
@@ -746,7 +755,7 @@ $i = 0;
                     $percentArray[] = $percent;
                     echo "</td>";
 
-                    $array_s[$i] = [$name[$keys[$i]], $present, $late, $excused, $absent, $total, $percent];
+                    $array_s[$i] = [$id_num[$keys[$i]], $name[$keys[$i]], $present, $late, $excused, $absent, $total, $percent];
                     echo "</tr>";
                 }
                 $conn = new mysqli("localhost", "root", "", "temp");
@@ -773,7 +782,7 @@ $i = 0;
                     mysqli_close($conn);
                 }
                 $file = fopen($tempname, "w");
-                fputcsv($file, array("Name", "Present", "Late", "Excused", "Absent", "Attendance Days", "% Presence"));
+                fputcsv($file, array("ID#", "Name", "Present", "Late", "Excused", "Absent", "Attendance Days", "% Presence"));
 
                 if (count($array_s) > 0) {
                     foreach ($array_s as $row) {
@@ -844,7 +853,7 @@ $i = 0;
                 // filename = download path/filename
                 $filename = "C:/Users/Kath/Downloads/" . strtoupper($teacher_name) . "_" . $cg . "_Summary" . ".csv";
                 $file = fopen($filename, "w");
-                fputcsv($file, array("Name", "Present", "Late", "Excused", "Absent", "Attendance Days", "% Presence"));
+                fputcsv($file, array("ID#", "Name", "Present", "Late", "Excused", "Absent", "Attendance Days", "% Presence"));
 
                 if (count($array_s) > 0) {
                     foreach ($array_s as $row) {

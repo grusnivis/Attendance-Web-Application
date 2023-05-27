@@ -34,7 +34,7 @@ header('Content-Type: text/csv');
 header('Content-Disposition: attachment; filename="' . $filename . '"');
 
 $output = fopen('php://output', 'w');
-fputcsv($output, array("Name", "Present", "Late", "Excused", "Absent", "Attendance Days", "% Presence"));
+fputcsv($output, array("ID#", "Name", "Present", "Late", "Excused", "Absent", "Attendance Days", "% Presence"));
 foreach($array_s as $row){
     fputcsv($output, $row);
 }

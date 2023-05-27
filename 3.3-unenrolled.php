@@ -182,6 +182,28 @@ if (isset($_POST['update-info']) && $_POST['update-info'] == "UPDATE STUDENT RFI
                 mysqli_close($conn);
             }
             //database credentials, running MySQL with default setting (user 'root' with no password)
+            //check first if the masterlist database does not exist
+            $checkMasterListDB = mysqli_connect("localhost", "root", "");
+            $dbName = "masterlist";
+
+            $query = "SHOW DATABASES LIKE '$dbName'";
+            $sqlStatement = $checkMasterListDB->query($query);
+
+            //if there is no "masterlist" database
+            if (!($sqlStatement->num_rows == 1)) {
+                $conn = new mysqli('localhost', 'root', '', 'temp');
+                // Obtain last value of variable user as 1 row
+                // format goes "SELECT value column FROM temptb table WHERE variable is user ORDER BY last input of id in descending with 1 row
+                $sql = "INSERT INTO temptb (varname, val) VALUES ('findStudentRFIDMsg', 'The masterlist database does not exist. Upload class lists to enroll the students into the system.')";
+                if (mysqli_query($conn, $sql)) {
+                    mysqli_close($conn);
+                }
+                mysqli_close($checkMasterListDB);
+                header("location: #findStudentRFIDPopup");
+            } else {
+                mysqli_close($checkMasterListDB);
+            }
+
             //attempt to connect to MySQL "masterlist" database
             $rfidFindDB = mysqli_connect('localhost', 'root', '', 'masterlist');
 
@@ -306,7 +328,13 @@ if (isset($_POST['update-info']) && $_POST['update-info'] == "UPDATE STUDENT RFI
                         mysqli_close($conn);
                     }
                     if (isset($tp5) && $tp5) {
-                        echo '<p class = "notification">' . $tp5 . '</p>';
+                        if ($tp5 == "The selected student is not enrolled in the Attendance Logging System."
+                            || $tp5 == "The masterlist database does not exist. Upload class lists to enroll the students into the system.") {
+                            echo '<p class = "notification" style =  "color:#dc3545;">' . $tp5 . '</p>';
+                        } else {
+                            echo '<p class = "notification" style = "color:#0b8f47;">' . $tp5 . '</p>';
+                        }
+
                         $conn = new mysqli("localhost", "root", "", "temp");
                         // Check connection
                         if ($conn->connect_error) {
@@ -332,7 +360,12 @@ if (isset($_POST['update-info']) && $_POST['update-info'] == "UPDATE STUDENT RFI
                         mysqli_close($conn);
                     }
                     if (isset($tp6) && $tp6) {
-                        echo '<p class = "notification">' . $tp5 . '</p>';
+                        if ($tp6 == "Updated the selected RFID successfully!") {
+                            echo '<p class = "notification" style = "color:#0b8f47;">' . $tp6 . '</p>';
+                        } else {
+                            echo '<p class = "notification" style =  "color:#dc3545;">' . $tp6 . '</p>';
+                        }
+
                         $conn = new mysqli("localhost", "root", "", "temp");
                         // Check connection
                         if ($conn->connect_error) {

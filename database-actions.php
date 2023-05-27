@@ -122,7 +122,7 @@ if (isset($_POST['database-export']) && $_POST['database-export'] == 'Export Sel
         //filename format
         //$backup_name = $backup_name ? $backup_name : $dbTeacherExport.'___('.date('H-i-s').'_'.date('d-m-Y').').sql';
         $backup_name = $backup_name ? $backup_name : $dbTeacherExport . '_db_exported on ' . date('Y-m-d') . '.sql';
-        ob_get_clean();
+        ob_end_clean();
         header('Content-Type: application/octet-stream');
         header("Content-Transfer-Encoding: Binary");
         header('Content-Length: ' . (function_exists('mb_strlen') ? mb_strlen($content, '8bit') : strlen($content)));
@@ -142,6 +142,7 @@ if (isset($_POST['database-export']) && $_POST['database-export'] == 'Export Sel
     }
     //returns to the database-export-drop.php
     header("location: database-export-drop.php");
+    exit;
 }
 
 //<!-- THIS PART WILL EXECUTE IF "Drop All Databases" IS SELECTED -->
