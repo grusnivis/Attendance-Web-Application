@@ -11,9 +11,46 @@ Alpha testing cases for the web application and the portable device can be found
   <li> <a href = "https://git-scm.com/downloads" > Initial Git Setup </a> </li>
   <li> <a href = "https://stackoverflow.com/questions/18667582/run-my-php-files-from-outside-htdocs" > Change localhost access from htdocs to any folder </a> </li>
   <li> <a href = "https://stackoverflow.com/questions/5524116/accessing-localhost-xampp-from-another-computer-over-lan-network-how-to">Access webpage in any computer</a> </li>
-  <li> <a href = "https://www.geeksforgeeks.org/how-to-configure-xampp-to-send-mail-from-localhost-using-php/">Configure XAMPP for sending emails</a> </li>
+  <li> Configure XAMPP for sending emails <a href = "https://www.geeksforgeeks.org/how-to-configure-xampp-to-send-mail-from-localhost-using-php/">[1]</a> <a href = "https://www.w3docs.com/snippets/php/how-to-configure-xampp-to-send-email-from-localhost-with-php.html">[2]</a> <a href = "https://phpflow.com/php/how-to-send-email-from-localhost-using-php/">[3]</a></li>
   <li> <a href = "https://myaccount.google.com/lesssecureapps">Turn on Google's "Less Secure Apps" setting for XAMPP sending emails</a> </li>
 </ol>
+<br/>
+<hr/>
+For the XAMPP sendmail.ini and php.ini settings, these are the current working settings as of 3 Aug 2023:
+<br/>
+<b>For sendmail.ini</b>
+<br/> <br/>
+1.) smtp_server should be <b>smtp@gmail.com.</b> smtp_ssl should be <b>tls.</b> 
+<br/>
+![image](https://github.com/grusnivis/Attendance-Web-Application/assets/59056214/7c24eee0-30a8-49e9-98bc-3297569b4404)
+<br/>
+2.) Uncomment <b>error_logfile</b> and <b>debug_logfile</b> for you to check if there are errors during sending of mails.
+<br/>
+![image](https://github.com/grusnivis/Attendance-Web-Application/assets/59056214/6650ff56-3655-4394-b5fe-3fede350cc24)
+<br/>
+3.) Set your email and password to where you want to use as sender.
+<br/> ![sendmail](https://github.com/grusnivis/Attendance-Web-Application/assets/59056214/194b2111-5c69-47ac-8d65-a93b83eb249a)
+<br/>
+4.) Set force_sender to the same email where you want to use as sender.
+<br/>
+![emaiul](https://github.com/grusnivis/Attendance-Web-Application/assets/59056214/3e3114c0-83df-4911-be7d-86b651281f90)
+<br/>
+5.) Set hostname to <b>localhost.</b>
+<br/> 
+![image](https://github.com/grusnivis/Attendance-Web-Application/assets/59056214/7bd5ff0b-a90f-4cf8-9900-ee9a87a9a6b2)
+<br/>
+
+<hr/>
+<b>For php.ini</b>
+<br/><br/>
+1.) The <b>php_openssl.dll</b> extension must be uncommented.
+<br/>
+![image](https://github.com/grusnivis/Attendance-Web-Application/assets/59056214/ea9f94ab-97d2-43f2-ab1f-b235960b94b3)
+<br/>
+2.) SMTP should be <b>SMTP.gmail.com</b>. smtp_port should be <b>587</b>. sendmail_from should be <b>where you can configure Google's "Less Secure Apps" option.</b> sendmail_path should be <b>where the sendmail.exe file is located on your PC, WITH THE ARGUMENT.</b>
+<br/>
+![smtp](https://github.com/grusnivis/Attendance-Web-Application/assets/59056214/5304c5f0-f119-453d-baf1-dfde9ec51cb9)
+<br/>
 
 <hr/>
 <b>Required Installations</b>
