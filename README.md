@@ -72,7 +72,7 @@ For the XAMPP sendmail.ini and php.ini settings, these are the current working s
 <ol>
   <li><a href = "https://www.apachefriends.org/download.html">XAMPP</a> - This is for putting the web application on localhost. </li>
   <li><a href = "https://getcomposer.org/download/">Composer</a> - Install this on your computer for getting PhpSpreadSheet.</li>
-  <li><a href = "https://github.com/PHPOffice/PhpSpreadsheet">PhpSpreadSheet</a> - Install the library to <i>the working folder of the web application.</i> The system will not work if the library isn't in the specified folder. <i>Note: During installation, there might be errors such as "missing ex-gd" and "missing-zip". Uncomment these in the php.ini file and run the installation again.</i></li>
+  <li><a href = "https://github.com/PHPOffice/PhpSpreadsheet">PhpSpreadSheet</a> - Install the library to <i>the working folder of the web application.</i> The system will not work if the library isn't in the specified folder. <i>Note: During installation, there might be errors such as "missing ext-gd" and "missing-zip". Uncomment these in the php.ini file and run the installation again.</i></li>
   <li><a href = "https://github.com/canton7/SyncTrayzor/tree/v1.1.29" >SyncTrayzor</a> - This is for syncing from the local server to the Raspberry Pi and vice versa. <i>Please install Syncthing on the Raspberry Pi also.</i></li>
  </ol>
   
