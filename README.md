@@ -97,7 +97,7 @@ You can uncomment the <i><b>gd extension</b></i> in the "Dynamic Extensions" sec
 
 <b><i>Note: You can access the database used for storing all data by the web application by going through phpMyAdmin <u>(http\://localhost/phpmyadmin/)</u>.</i></b>
 
-3.) To open the starting page of the web application, navigate to <i><b>http\://localhost/teacher-login.php/</b></i> in the address bar. <b>Do not use https://</b> as it might be detected by the website as unsafe. <u>It is safe.</u>
+3.) To open the starting page of the web application, navigate to <i><b>http\://localhost/teacher-login.php/</b></i> in the address bar. <b>Do not use https://</b> as it might be detected by the web browser as unsafe. <u>It is safe.</u>
 <br/>
 ![homepage](https://github.com/grusnivis/Attendance-Web-Application/assets/59056214/2d634ced-f379-4847-a748-7e7a14cd967e)
 
