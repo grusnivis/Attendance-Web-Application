@@ -4,7 +4,7 @@ The web application should be used in tandem with the attendance logging system 
 
 Alpha testing cases for the web application and the portable device can be found <a href = "https://docs.google.com/spreadsheets/d/1Um_i__vagtg8pD9HuRssXADdYC0kXuq-DAEUPDDeT34/edit?usp=sharing">here</a> (only for USC email access).
 
-<hr> <b>Helpful Tutorials </b></hr>
+# <hr> <b>Helpful Tutorials </b></hr>
 <br/>
 <ol>
   <li> <a href = "https://www.freecodecamp.org/news/git-and-github-for-beginners/">How to use Git and Github</a> </li>
@@ -67,12 +67,40 @@ For the XAMPP sendmail.ini and php.ini settings, these are the current working s
 
 <br/>
 
-<hr/>
-<b>Required Installations</b>
+# <hr><b>Required Installations</b></hr>
 <ol>
   <li><a href = "https://www.apachefriends.org/download.html">XAMPP</a> - This is for putting the web application on localhost. </li>
   <li><a href = "https://getcomposer.org/download/">Composer</a> - Install this on your computer for getting PhpSpreadSheet.</li>
   <li><a href = "https://github.com/PHPOffice/PhpSpreadsheet">PhpSpreadSheet</a> - Install the library to <i>the working folder of the web application.</i> The system will not work if the library isn't in the specified folder. <i>Note: During installation, there might be errors such as "missing ext-gd" and "missing-zip". Uncomment these in the php.ini file and run the installation again.</i></li>
+  <br/>
+  
+You can uncomment the <i><b>gd extension</b></i> in the "Dynamic Extensions" section found in php.ini file.
+![image](https://github.com/grusnivis/Attendance-Web-Application/assets/59056214/88db606d-6787-4def-80c1-952da5cbdeca)
+
+  
   <li><a href = "https://github.com/canton7/SyncTrayzor/tree/v1.1.29" >SyncTrayzor</a> - This is for syncing from the local server to the Raspberry Pi and vice versa. <i>Please install Syncthing on the Raspberry Pi also.</i></li>
  </ol>
-  
+
+<br/>
+
+# <hr><b>Setting Up The Web Application</b></hr>
+<br/>
+1.) Launch XAMPP Control Panel and press the <b>Start</b> buttons beside <b>Apache and MySQL.</b> The Apache and MySQL titles will have a green background if everything is successful.
+<br/>
+
+![xamppSettings](https://github.com/grusnivis/Attendance-Web-Application/assets/59056214/7afb61d6-6650-4281-8a5a-860dc478f5f7)
+
+2.) To register an administrator in the web application, open your preferred web browser and navigate to <i><b>http\://localhost/Proponents Use Only/register-admin.php/</b></i>. Register the username and password for the administrator and press the Register button. If you want to change an already registered administrator's password, you may do so by clicking the <b>Change Administrator Password</b> button.
+<br/>
+
+![registerAdmin](https://github.com/grusnivis/Attendance-Web-Application/assets/59056214/c26c09fc-0ac5-40c5-9ad0-5a6193f3b4a2)
+
+<b><i>Note: You can access the database used for storing all data by the web application by going through phpMyAdmin <u>(http\://localhost/phpmyadmin/)</u>.</i></b>
+
+3.) To open the starting page of the web application, navigate to <i><b>http\://localhost/teacher-login.php/</b></i> in the address bar. <b>Do not use https://</b> as it might be detected by the website as unsafe. <u>It is safe.</u>
+<br/>
+![homepage](https://github.com/grusnivis/Attendance-Web-Application/assets/59056214/2d634ced-f379-4847-a748-7e7a14cd967e)
+
+
+
+
