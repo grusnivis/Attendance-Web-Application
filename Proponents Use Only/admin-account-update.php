@@ -16,7 +16,7 @@ if (isset($_POST['update-admin-password']) && $_POST['update-admin-password'] ==
     mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
     $updateAdminStmt = $adminLoginDB->prepare("UPDATE credentials SET password = ? WHERE username = ?");
-    $updateAdminStmt->bind_param("ss", $hashedPassWord, $_SESSION["referenceUsername"]);
+    $updateAdminStmt->bind_param("ss", $hashedPassWord, $_SESSION["referenceUserName"]);
 
     //execute returns true on success and false on failure
     if ($updateAdminStmt->execute()){
