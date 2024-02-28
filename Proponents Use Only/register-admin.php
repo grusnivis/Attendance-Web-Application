@@ -20,7 +20,7 @@ session_start();
 
     <form method="POST" action="register-admin-server.php" enctype="multipart/form-data">
         <table>
-            <h1> Register Teacher </h1>
+            <h1> Register Administrator </h1>
             <p><b><u>FOR PROPONENTS USE ONLY</u></b></p>
             <p class="instructions">
                 Fill up all the text fields below for registering <br/> the administrator into the Attendance Monitoring
