@@ -9,6 +9,7 @@ Alpha testing cases for the web application and the portable device can be found
 - [Helpful Tutorials](#helpful-tutorials)
 - [Setting Up XAMPP](#setting-up-xampp)
 - [Setting Up The Web Application](#setting-up-web-app)
+- [Problems That Might Occur](#problems)
 <br/>
 
 <a id='required-installations'></a>
@@ -115,4 +116,14 @@ For the XAMPP sendmail.ini and php.ini settings, these are the current working s
 
 4.) When everything has been set up, create a folder named ALS_SHARED inside the <i><b>working folder of the web application.</b></i> Then, inside this folder, put the files (especially the <i>Attendance Logs</i> and <i>Student Masterlist</i> folders!) required by the Attendance Logging System (Portable Logging Device). The ALS_SHARED folder will be used in tandem with the web application for fetching and retrieving student and teacher data.
 
+<a id='problems'></a>
+### Problems That Might Occur
+1) <b>For Sendmail</b> - During registering a teacher via the Register Teacher page, a "Save As" popup with register-teacher-server.php written on the text box might appear. There are multiple causes for this:
+   - There are conflicting databases/tables/columns already existing that has the same details inputted (e.g. already having the said databases before following the set up of the web application tutorial);
+   - There are files (e.g. folder names, masterlist files) in the ALS_SHARED folder already existing that contains the same info as the inputted teacher (e.g. already having the ALS_SHARED folder and the required files plus existing teacher-related files before following the setting up of the web application tutorial),
+   - Your internet connection has settings that prevent the sending of emails from the web application,
+   - Your internet connection is slow and/or weak, and/or
+   - You have incorrectly set up the sendmail.ini file.
+<br/>
+<b>DELETE THE FILES, CLEAR ALL RELATED DATABASES/TABLES/COLUMNS FOUND IN PHPMYADMIN, CHECK YOUR INTERNET CONNECTION AND ITS SETTINGS, AND SET UP THE SENDMAIL.INI FILE PROPERLY.</b> Then, try registering the teacher again.
 
