@@ -4,6 +4,27 @@ The web application should be used in tandem with the attendance logging system 
 
 Alpha testing cases for the web application and the portable device can be found <a href = "https://docs.google.com/spreadsheets/d/1Um_i__vagtg8pD9HuRssXADdYC0kXuq-DAEUPDDeT34/edit?usp=sharing">here</a> (only for USC email access).
 
+TEST
+- [Required Installations](#required-installations)
+
+# <hr><b>Required Installations</b></hr>
+<a id='required-installations'></a>
+### Required Installations
+<ol>
+  <li><a href = "https://www.apachefriends.org/download.html">XAMPP</a> - This is for putting the web application on localhost. </li>
+  <li><a href = "https://getcomposer.org/download/">Composer</a> - Install this on your computer for getting PhpSpreadSheet.</li>
+  <li><a href = "https://github.com/PHPOffice/PhpSpreadsheet">PhpSpreadSheet</a> - Install the library to <i>the working folder of the web application.</i> The system will not work if the library isn't in the specified folder. <i>Note: During installation, there might be errors such as "missing ext-gd" and "missing-zip". Uncomment these in the php.ini file and run the installation again.</i></li>
+  <br/>
+  
+You can uncomment the <i><b>gd extension</b></i> in the "Dynamic Extensions" section found in php.ini file.
+![image](https://github.com/grusnivis/Attendance-Web-Application/assets/59056214/88db606d-6787-4def-80c1-952da5cbdeca)
+
+  
+  <li><a href = "https://github.com/canton7/SyncTrayzor/tree/v1.1.29" >SyncTrayzor</a> - This is for syncing from the local server to the Raspberry Pi and vice versa. <i>Please install Syncthing on the Raspberry Pi also.</i></li>
+ </ol>
+
+<br/>
+
 # <hr> <b>Helpful Tutorials </b></hr>
 <br/>
 <ol>
@@ -64,22 +85,6 @@ For the XAMPP sendmail.ini and php.ini settings, these are the current working s
 <br/>
 
 ![smtp](https://github.com/grusnivis/Attendance-Web-Application/assets/59056214/5304c5f0-f119-453d-baf1-dfde9ec51cb9)
-
-<br/>
-
-# <hr><b>Required Installations</b></hr>
-<ol>
-  <li><a href = "https://www.apachefriends.org/download.html">XAMPP</a> - This is for putting the web application on localhost. </li>
-  <li><a href = "https://getcomposer.org/download/">Composer</a> - Install this on your computer for getting PhpSpreadSheet.</li>
-  <li><a href = "https://github.com/PHPOffice/PhpSpreadsheet">PhpSpreadSheet</a> - Install the library to <i>the working folder of the web application.</i> The system will not work if the library isn't in the specified folder. <i>Note: During installation, there might be errors such as "missing ext-gd" and "missing-zip". Uncomment these in the php.ini file and run the installation again.</i></li>
-  <br/>
-  
-You can uncomment the <i><b>gd extension</b></i> in the "Dynamic Extensions" section found in php.ini file.
-![image](https://github.com/grusnivis/Attendance-Web-Application/assets/59056214/88db606d-6787-4def-80c1-952da5cbdeca)
-
-  
-  <li><a href = "https://github.com/canton7/SyncTrayzor/tree/v1.1.29" >SyncTrayzor</a> - This is for syncing from the local server to the Raspberry Pi and vice versa. <i>Please install Syncthing on the Raspberry Pi also.</i></li>
- </ol>
 
 <br/>
 
