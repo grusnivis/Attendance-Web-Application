@@ -88,13 +88,15 @@ For the XAMPP sendmail.ini and php.ini settings, these are the current working s
 ![image](https://github.com/grusnivis/Attendance-Web-Application/assets/59056214/ea9f94ab-97d2-43f2-ab1f-b235960b94b3)
 
 <br/>
-2.) <b>IMPORTANT!</b> <i>This part of the setup somehow differs across devices based on multiple setups. If one configuration does not work, then try the others.</i>
-<b>CONFIGURATION 1: </b>SMTP should be <i><b>SMTP.gmail.com</b></i>. smtp_port should be <i><b>587</b></i>. sendmail_from should be <i><b>where you can configure Google's "Less Secure Apps" option.</b></i> sendmail_path should be <i><b>where the sendmail.exe file is located on your PC, WITH THE ARGUMENT (\t).</b></i>
+2.) <b>IMPORTANT!</b> <i>This part of the setup somehow differs across devices based on multiple setups. If one configuration does not work, then try the other.</i>
+<br/>
+<br/>
+<b>CONFIGURATION 1: </b>SMTP should be <i><b>SMTP.gmail.com</b></i>. smtp_port should be <i><b>587</b></i>. sendmail_from should be <i><b>where you can configure Google's "Less Secure Apps" option.</b></i> sendmail_path should be <i><b>where the sendmail.exe file is located on your PC, WITH THE ARGUMENT (-t).</b></i>
 <br/>
 
 ![smtp](https://github.com/grusnivis/Attendance-Web-Application/assets/59056214/5304c5f0-f119-453d-baf1-dfde9ec51cb9)
 
-<b>CONFIGURATION 2: </b> Put a semicolon to comment out these variables: <b>SMTP=localhost, smtp_port=25, sendmail_from=me@example.com.</b> For the sendmail_path, put the address path of the sendmail.exe. <i><b>Do not put the -t argument anymore.</b></i>
+<b>CONFIGURATION 2: </b> Put a semicolon to comment out these variables: <b>SMTP=localhost, smtp_port=25, sendmail_from/=me@example.com.</b> For the sendmail_path, put the address path of the sendmail.exe. <i><b>Do not put the -t argument anymore.</b></i>
 
 ![image](https://github.com/grusnivis/Attendance-Web-Application/assets/59056214/8b51a7b0-d76e-4be8-8ea2-dd519d6ba751)
 
