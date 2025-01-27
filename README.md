@@ -24,6 +24,7 @@ For ext-gd, uncomment the <i><b>gd extension</b></i> in the "Dynamic Extensions"
 
   
   <li><a href = "https://github.com/canton7/SyncTrayzor/tree/v1.1.29" >SyncTrayzor</a> - This is for syncing from the local server to the Raspberry Pi and vice versa. <i>Please install Syncthing on the Raspberry Pi also.</i></li>
+  <li><a href="https://tcpdf.org/">TCPDF</a> - This is for exporting the class lists into PDF format. <i>Note: As of January 27, 2025, there is a new version of the library in the works. The thesis works on the old version of the library in which the developers placed the repository <a href="https://github.com/tecnickcom/TCPDF">here.</a></i></li>
  </ol>
 
 <br/>
